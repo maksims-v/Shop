@@ -8,15 +8,16 @@ import {
   MenuOutlined,
 } from '@mui/icons-material';
 import { useState } from 'react';
-import Menu from './Menu';
+import SideBarMenu from './SideBarMenu';
+import LoginModal from './LoginModal';
 
 const pages = [
-  { id: 1, title: "MEN'S" },
-  { id: 2, title: "WOMEN'S" },
-  { id: 3, title: 'KIDS' },
-  { id: 4, title: 'BRANDS' },
-  { id: 5, title: 'SALE' },
-  { id: 6, title: 'CLERANCE' },
+  { id: 1, title: "MEN'S", path: '/mens' },
+  { id: 2, title: "WOMEN'S", path: '/womens' },
+  { id: 3, title: 'KIDS', path: 'kids' },
+  { id: 4, title: 'BRANDS', path: 'brands' },
+  { id: 5, title: 'SALE', path: 'sale' },
+  { id: 6, title: 'CLERANCE', path: 'clerance' },
 ];
 
 const mensCategory = [
@@ -41,9 +42,23 @@ const womensCategory = [
 
 const Navbar = () => {
   const [id, getId] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const firstBreakPoint = useMediaQuery('(min-width:800px)');
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const openMenu = (id) => {
     if (id === 1 || id === 2) {
@@ -66,7 +81,7 @@ const Navbar = () => {
         position="fixed"
         top="0"
         left="0"
-        zIndex="1"
+        zIndex="5"
         flexDirection="column">
         <Box
           width={firstBreakPoint ? '80%' : '95%'}
@@ -111,10 +126,12 @@ const Navbar = () => {
                 <ShoppingBagOutlined sx={{ color: 'white' }} />
               </IconButton>
             </Badge>
-            <IconButton sx={{ color: 'white' }}>
+            <IconButton sx={{ color: 'white' }} onClick={handleClickOpen}>
               <PersonOutline />
             </IconButton>
-            <IconButton sx={{ color: 'white', display: secondBreakPoint ? 'none' : 'block' }}>
+            <IconButton
+              sx={{ color: 'white', display: secondBreakPoint ? 'none' : 'block' }}
+              onClick={handleDrawerToggle}>
               <MenuOutlined />
             </IconButton>
           </Box>
@@ -159,7 +176,8 @@ const Navbar = () => {
           </Box>
         </Box>
       </Box>
-      <Menu />
+      <SideBarMenu pages={pages} handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
+      <LoginModal handleClose={handleClose} open={open} />
     </>
   );
 };
