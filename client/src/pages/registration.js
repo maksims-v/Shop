@@ -15,6 +15,7 @@ const validationSchema = yup.object({
 
 const Registration = () => {
   const [invalidPass, setInvalidPass] = useState(null);
+  const [confirmationMessage, setConfirmationMessage] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -25,11 +26,13 @@ const Registration = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       if (values.password !== values.passwordConfirm) {
+        setConfirmationMessage(null);
         setInvalidPass('Invalid password');
       } else {
-        console.log(values);
         setInvalidPass(null);
+        setConfirmationMessage('Please confirm your email address.');
       }
+      console.log(values);
     },
   });
 
@@ -73,6 +76,7 @@ const Registration = () => {
               helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
             />
             {invalidPass}
+            {confirmationMessage}
             <Button
               sx={{ width: '100px' }}
               color="primary"

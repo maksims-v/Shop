@@ -1,15 +1,19 @@
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge } from '@mui/material';
+import { Box, IconButton, Badge, MenuItem, Menu, InputBase } from '@mui/material';
 import {
   PersonOutline,
   ShoppingBagOutlined,
   SearchOutlined,
   MenuOutlined,
 } from '@mui/icons-material';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+
 import { useState } from 'react';
 import SideBarMenu from './SideBarMenu';
 import LoginModal from './LoginModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { logIn } from '../src/state/authSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
@@ -44,9 +48,17 @@ const Navbar = () => {
   const [id, getId] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const disppatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuth);
 
   const firstBreakPoint = useMediaQuery('(min-width:800px)');
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
+
+  const search = () => {
+    console.log(searchValue);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -106,9 +118,22 @@ const Navbar = () => {
             })}
           </Box>
           <Box display="flex" justifyContent="space-between" columnGap="5px" zIndex="2">
-            <IconButton sx={{ color: 'white' }}>
-              <SearchOutlined />
-            </IconButton>
+            <Box
+              backgroundColor="inherit"
+              border="1px solid white"
+              borderRadius="9px"
+              gap="3rem"
+              p="0.1rem 1.5rem">
+              <InputBase
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder="Search..."
+                sx={{ color: 'white' }}
+              />
+              <IconButton>
+                <SearchOutlined onClick={search} sx={{ color: 'white' }} />
+              </IconButton>
+            </Box>
             <Badge
               badgeContent={1}
               color="secondary"
@@ -127,7 +152,22 @@ const Navbar = () => {
               </IconButton>
             </Badge>
             <IconButton sx={{ color: 'white' }} onClick={handleClickOpen}>
-              <PersonOutline />
+              {/* <PersonOutline /> */}
+              <PopupState variant="popover" popupId="demo-popup-menu">
+                {(popupState) => (
+                  <>
+                    <PersonOutline variant="contained" {...bindTrigger(popupState)} />
+                    <Menu
+                      {...bindMenu(popupState)}
+                      sx={{ mt: '23px', display: isAuth ? 'block' : 'none' }}>
+                      <Link href="/myaccount">
+                        <MenuItem onClick={popupState.close}>My account</MenuItem>
+                      </Link>
+                      <MenuItem onClick={() => disppatch(logIn())}>Logout</MenuItem>
+                    </Menu>
+                  </>
+                )}
+              </PopupState>
             </IconButton>
             <IconButton
               sx={{ color: 'white', display: secondBreakPoint ? 'none' : 'block' }}
@@ -177,7 +217,7 @@ const Navbar = () => {
         </Box>
       </Box>
       <SideBarMenu pages={pages} handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
-      <LoginModal handleClose={handleClose} open={open} />
+      {!isAuth && <LoginModal handleClose={handleClose} open={open} />}
     </>
   );
 };
