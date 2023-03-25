@@ -160,7 +160,7 @@ const Navbar = () => {
                     <Menu
                       {...bindMenu(popupState)}
                       sx={{ mt: '23px', display: isAuth ? 'block' : 'none' }}>
-                      <Link href="/myaccount">
+                      <Link href="/user">
                         <MenuItem onClick={popupState.close}>My account</MenuItem>
                       </Link>
                       <MenuItem onClick={() => disppatch(logIn())}>Logout</MenuItem>
