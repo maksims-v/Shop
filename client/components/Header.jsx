@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge, MenuItem, Menu, InputBase } from '@mui/material';
+import { Box, IconButton, Badge, MenuItem, Menu, InputBase, Container } from '@mui/material';
 import {
   PersonOutline,
   ShoppingBagOutlined,
@@ -8,12 +8,12 @@ import {
   MenuOutlined,
 } from '@mui/icons-material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-
 import { useState } from 'react';
 import SideBarMenu from './SideBarMenu';
 import LoginModal from './LoginModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { logIn } from '../src/state/authSlice';
+import { useRouter } from 'next/router';
 
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
@@ -44,12 +44,14 @@ const womensCategory = [
   { id: 7, title: 'TECHNOLOGY', path: '/womens/technology' },
 ];
 
-const Navbar = () => {
+const Header = () => {
   const [id, getId] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
+  const router = useRouter();
+  console.log(router);
   const disppatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuth);
 
@@ -95,12 +97,14 @@ const Navbar = () => {
         left="0"
         zIndex="5"
         flexDirection="column">
-        <Box
-          width={firstBreakPoint ? '80%' : '95%'}
-          margin="auto"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center">
+        <Container
+          maxWidth="xl"
+          sx={{
+            margin: 'auto',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
           <Link href="/">
             {' '}
             <Box sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>ADVENTURE</Box>
@@ -175,7 +179,7 @@ const Navbar = () => {
               <MenuOutlined />
             </IconButton>
           </Box>
-        </Box>
+        </Container>
 
         <Box
           position="absolute"
@@ -222,4 +226,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Header;

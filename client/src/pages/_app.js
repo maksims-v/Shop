@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
-import Layout from 'components/Layout';
-import { CssBaseline } from '@mui/material';
+import Header from 'components/Header.jsx';
+import Footer from 'components/Footer.jsx';
+import { CssBaseline, Container } from '@mui/material';
 import { theme } from '../styles/theme.js';
 import { ThemeProvider } from '@mui/material';
 import { Provider } from 'react-redux';
@@ -19,12 +20,11 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <CssBaseline />
-        <Layout>
-          {' '}
-          <SessionProvider session={session}>
-            <Component {...pageProps} />
-          </SessionProvider>
-        </Layout>
+        <Header />
+        <Container maxWidth="xl" sx={{ mt: '60px' }}>
+          <Component {...pageProps} />
+        </Container>
+        <Footer />
       </Provider>
     </ThemeProvider>
   );
