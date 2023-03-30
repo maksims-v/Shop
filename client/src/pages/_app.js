@@ -7,7 +7,6 @@ import { ThemeProvider } from '@mui/material';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from '@/state/authSlice.js';
-import { SessionProvider } from 'next-auth/react';
 
 const store = configureStore({
   reducer: {
