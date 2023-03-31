@@ -68,6 +68,24 @@
     },
     "fullName": {
       "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "adress": {
+      "type": "string"
+    },
+    "postCode": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "integer"
     }
   }
 }

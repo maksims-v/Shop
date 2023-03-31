@@ -4,6 +4,26 @@ import { Tabs, Tab, Typography, Box, List, ListItem, TextField, Button } from '@
 import { useSelector, useDispatch } from 'react-redux';
 import { saveChanges } from '@/state/authSlice';
 
+async function changeUserData(newData) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/api/auth/local`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        identifier: email,
+        password: pass,
+      }),
+    });
+    const data = await res.json();
+
+    return { data };
+  } catch (e) {
+    return e;
+  }
+}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

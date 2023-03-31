@@ -9,12 +9,47 @@ import {
   Button,
   Box,
 } from '@mui/material';
-
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux';
+import { logIn } from '@/state/authSlice';
+
+async function getUser(email, pass) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/api/auth/local`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        identifier: email,
+        password: pass,
+      }),
+    });
+    const data = await res.json();
+
+    return { data };
+  } catch (e) {
+    return e;
+  }
+}
 
 const LoginModal = ({ handleClose, open }) => {
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+
+  const dispatch = useDispatch();
+
+  async function submit() {
+    const user = await getUser(email, pass);
+    if (user.data.data !== null) {
+      dispatch(logIn(user.data.user));
+      setError(null);
+    } else {
+      setError(user.data.error.message);
+      console.log(user.data);
+    }
+  }
 
   return (
     <div>
@@ -41,9 +76,13 @@ const LoginModal = ({ handleClose, open }) => {
             id="outlined-basic"
             label="Password"
             variant="outlined"
-            type="password"
+            type="text"
             sx={{ width: '100%' }}
           />
+        </Box>
+        <Box color="red" margin="0 auto" pt="10px">
+          {' '}
+          {error}
         </Box>
 
         <DialogActions>
@@ -53,7 +92,7 @@ const LoginModal = ({ handleClose, open }) => {
               Create an account
             </Button>
           </Link>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={submit} autoFocus>
             Login
           </Button>
         </DialogActions>
