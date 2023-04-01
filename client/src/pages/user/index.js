@@ -5,15 +5,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { saveChanges } from '@/state/authSlice';
 
 async function changeUserData(newData) {
+  const token = localStorage.getItem('accestoken');
+  console.log(token);
   try {
-    const res = await fetch(`${process.env.API_URL}/api/auth/local`, {
-      method: 'PATCH',
+    const res = await fetch('http://127.0.0.1:1337/api/users/1', {
+      method: 'PUT',
       headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        identifier: email,
-        password: pass,
+        lastName: 'Makc',
+        phone: '0000',
       }),
     });
     const data = await res.json();
@@ -59,6 +62,8 @@ function a11yProps(index) {
 const UserDashboard = () => {
   const user = useSelector((state) => state.auth.user);
 
+  console.log(user);
+
   const [value, setValue] = useState(0);
   const [email, setEmail] = useState(user.email);
   const [name, setName] = useState(user.name);
@@ -71,21 +76,10 @@ const UserDashboard = () => {
 
   const dispatch = useDispatch();
 
-  const saveData = () => {
-    console.log('asd');
-    dispatch(
-      saveChanges({
-        email,
-        name,
-        surname,
-        country,
-        city,
-        adress,
-        postCode,
-        phone,
-      }),
-    );
-  };
+  async function saveData() {
+    const user2 = await changeUserData();
+    console.log(user2);
+  }
 
   const orders = useSelector((state) => state.auth.orders);
 

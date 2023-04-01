@@ -51,7 +51,6 @@ const Header = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const router = useRouter();
-  console.log(router);
   const disppatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuth);
 

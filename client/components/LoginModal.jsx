@@ -35,8 +35,8 @@ async function getUser(email, pass) {
 
 const LoginModal = ({ handleClose, open }) => {
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const [email, setEmail] = useState('test@test.com');
+  const [pass, setPass] = useState('test12345');
 
   const dispatch = useDispatch();
 
@@ -44,10 +44,11 @@ const LoginModal = ({ handleClose, open }) => {
     const user = await getUser(email, pass);
     if (user.data.data !== null) {
       dispatch(logIn(user.data.user));
+      localStorage.setItem('accestoken', user.data.jwt);
+      console.log(user.data);
       setError(null);
     } else {
       setError(user.data.error.message);
-      console.log(user.data);
     }
   }
 
@@ -66,6 +67,7 @@ const LoginModal = ({ handleClose, open }) => {
           {' '}
           <TextField
             onChange={(e) => setEmail(e.target.value)}
+            value={email}
             id="outlined-basic"
             label="Email"
             variant="outlined"
@@ -74,6 +76,7 @@ const LoginModal = ({ handleClose, open }) => {
           <TextField
             onChange={(e) => setPass(e.target.value)}
             id="outlined-basic"
+            value={pass}
             label="Password"
             variant="outlined"
             type="text"

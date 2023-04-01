@@ -25,14 +25,7 @@ export const authSlice = createSlice({
   reducers: {
     logIn(state, actions) {
       state.isAuth = !state.isAuth;
-      state.user.email = actions.payload.email;
-      state.user.name = actions.payload.fullName;
-      state.user.surname = actions.payload.lastName;
-      state.user.country = actions.payload.country;
-      state.user.city = actions.payload.city;
-      state.user.adress = actions.payload.adress;
-      state.user.postCode = actions.payload.postCode;
-      state.user.phone = actions.payload.phone;
+      state.user = actions.payload;
     },
     saveChanges(state, actions) {
       state.user = actions.payload;
