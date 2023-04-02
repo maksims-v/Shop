@@ -6,7 +6,6 @@ import { saveChanges } from '@/state/authSlice';
 
 async function changeUserData(newData) {
   const token = localStorage.getItem('accestoken');
-  console.log(token);
   try {
     const res = await fetch('http://127.0.0.1:1337/api/users/1', {
       method: 'PUT',

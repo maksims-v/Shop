@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -37,14 +37,20 @@ const LoginModal = ({ handleClose, open }) => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('test@test.com');
   const [pass, setPass] = useState('test12345');
+  const [token, setToken] = useState('');
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setToken(localStorage.getItem('accestoken'));
+  });
 
   async function submit() {
     const user = await getUser(email, pass);
     if (user.data.data !== null) {
       dispatch(logIn(user.data.user));
       localStorage.setItem('accestoken', user.data.jwt);
+      localStorage.setItem('user', JSON.stringify(user.data.user));
       console.log(user.data);
       setError(null);
     } else {

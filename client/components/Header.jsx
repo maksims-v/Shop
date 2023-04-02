@@ -1,16 +1,12 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge, MenuItem, Menu, InputBase, Container } from '@mui/material';
-import {
-  PersonOutline,
-  ShoppingBagOutlined,
-  SearchOutlined,
-  MenuOutlined,
-} from '@mui/icons-material';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import { useState } from 'react';
+import { Box, IconButton, Badge, InputBase, Container } from '@mui/material';
+import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 import SideBarMenu from './SideBarMenu';
-import LoginModal from './LoginModal';
+import Auth from './Auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { logIn } from '../src/state/authSlice';
 import { useRouter } from 'next/router';
@@ -63,10 +59,6 @@ const Header = () => {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
   };
 
   const handleClose = () => {
@@ -137,46 +129,50 @@ const Header = () => {
                 <SearchOutlined onClick={search} sx={{ color: 'white' }} />
               </IconButton>
             </Box>
-            <Badge
-              badgeContent={1}
-              color="secondary"
-              invisible={0}
-              sx={{
-                '& .MuiBadge-badge': {
-                  right: 5,
-                  top: 5,
-                  padding: '0 4px',
-                  height: '14px',
-                  minWidth: '13px',
-                },
-              }}>
-              <IconButton>
-                <ShoppingBagOutlined sx={{ color: 'white' }} />
+            {isAuth ? (
+              <Box
+                sx={{
+                  color: 'white',
+                  display: 'flex',
+                  p: 0,
+                  alignItems: 'center',
+                  width: '100px',
+                  gap: '15px',
+                  pl: '10px',
+                  pt: '5px',
+                }}>
+                <Link href="/basket">
+                  <Badge
+                    badgeContent={1}
+                    color="secondary"
+                    invisible={0}
+                    sx={{
+                      '& .MuiBadge-badge': {
+                        right: 5,
+                        top: 5,
+                        padding: '0 4px',
+                        height: '14px',
+                        minWidth: '13px',
+                      },
+                    }}>
+                    <ShoppingBagOutlined sx={{ mb: '5px' }} />
+                  </Badge>
+                </Link>
+                <Link href="/usersettings">
+                  <SettingsIcon />
+                </Link>
+                <Link href="/">
+                  <LogoutIcon />
+                </Link>
+              </Box>
+            ) : (
+              <IconButton
+                sx={{
+                  color: 'white',
+                }}>
+                <PersonOutline />
               </IconButton>
-            </Badge>
-            <IconButton sx={{ color: 'white' }} onClick={handleClickOpen}>
-              {/* <PersonOutline /> */}
-              <PopupState variant="popover" popupId="demo-popup-menu">
-                {(popupState) => (
-                  <>
-                    <PersonOutline variant="contained" {...bindTrigger(popupState)} />
-                    <Menu
-                      {...bindMenu(popupState)}
-                      sx={{ mt: '23px', display: isAuth ? 'block' : 'none' }}>
-                      <Link href="/user">
-                        <MenuItem onClick={popupState.close}>My account</MenuItem>
-                      </Link>
-                      <MenuItem onClick={() => disppatch(logIn())}>Logout</MenuItem>
-                    </Menu>
-                  </>
-                )}
-              </PopupState>
-            </IconButton>
-            <IconButton
-              sx={{ color: 'white', display: secondBreakPoint ? 'none' : 'block' }}
-              onClick={handleDrawerToggle}>
-              <MenuOutlined />
-            </IconButton>
+            )}
           </Box>
         </Container>
 
@@ -220,7 +216,7 @@ const Header = () => {
         </Box>
       </Box>
       <SideBarMenu pages={pages} handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
-      {!isAuth && <LoginModal handleClose={handleClose} open={open} />}
+      {!isAuth && <Auth handleClose={handleClose} open={open} />}
     </>
   );
 };
