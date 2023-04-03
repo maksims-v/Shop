@@ -1,7 +1,14 @@
+import { useState } from 'react';
 import { Box, Drawer, Typography, Divider } from '@mui/material';
 import Link from 'next/link';
 
-const SideBarMenu = ({ pages, mobileOpen, handleDrawerToggle }) => {
+const MobileSideBarMenu = ({ pages }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
+
   return (
     <Box component="nav">
       <Drawer
@@ -37,4 +44,4 @@ const SideBarMenu = ({ pages, mobileOpen, handleDrawerToggle }) => {
   );
 };
 
-export default SideBarMenu;
+export default MobileSideBarMenu;

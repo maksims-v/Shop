@@ -58,7 +58,7 @@ function a11yProps(index) {
   };
 }
 
-const UserDashboard = () => {
+const Index = () => {
   const user = useSelector((state) => state.auth.user);
 
   console.log(user);
@@ -75,10 +75,7 @@ const UserDashboard = () => {
 
   const dispatch = useDispatch();
 
-  async function saveData() {
-    const user2 = await changeUserData();
-    console.log(user2);
-  }
+  async function saveData() {}
 
   const orders = useSelector((state) => state.auth.orders);
 
@@ -198,4 +195,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default Index;

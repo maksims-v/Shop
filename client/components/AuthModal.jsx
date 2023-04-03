@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogActions,
@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { logIn } from '@/state/authSlice';
 
-async function getUser(email, pass) {
+async function login(email, pass) {
   try {
     const res = await fetch(`${process.env.API_URL}/api/auth/local`, {
       method: 'POST',
@@ -33,26 +33,24 @@ async function getUser(email, pass) {
   }
 }
 
-const LoginModal = ({ handleClose, open }) => {
+const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState('test@test.com');
-  const [pass, setPass] = useState('test12345');
-  const [token, setToken] = useState('');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    setToken(localStorage.getItem('accestoken'));
-  });
+  const handleClose = () => {
+    setOpenModalAuth(false);
+  };
 
   async function submit() {
-    const user = await getUser(email, pass);
+    const user = await login(email, pass);
     if (user.data.data !== null) {
       dispatch(logIn(user.data.user));
       localStorage.setItem('accestoken', user.data.jwt);
-      localStorage.setItem('user', JSON.stringify(user.data.user));
-      console.log(user.data);
       setError(null);
+      handleClose();
     } else {
       setError(user.data.error.message);
     }
@@ -60,7 +58,7 @@ const LoginModal = ({ handleClose, open }) => {
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+      <Dialog open={openModalAuth} onClose={handleClose} aria-labelledby="responsive-dialog-title">
         <DialogTitle id="responsive-dialog-title">{'Adventure Rewards Members'}</DialogTitle>
         <DialogContent>
           <DialogContentText>

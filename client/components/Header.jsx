@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box, IconButton, Badge, InputBase, Container } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import SideBarMenu from './SideBarMenu';
-import Auth from './Auth';
+import MobileSideBarMenu from './MobileSideBarMenu';
+import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { logIn } from '../src/state/authSlice';
 import { useRouter } from 'next/router';
+import { logIn } from '@/state/authSlice.js';
 
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
@@ -40,30 +40,26 @@ const womensCategory = [
   { id: 7, title: 'TECHNOLOGY', path: '/womens/technology' },
 ];
 
-const Header = () => {
+const Header = ({ user }) => {
   const [id, getId] = useState(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openModalAuth, setOpenModalAuth] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-
   const router = useRouter();
-  const disppatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      dispatch(logIn(user));
+    }
+  }, [user]);
+
+  const dispatch = useDispatch();
+
   const isAuth = useSelector((state) => state.auth.isAuth);
 
   const firstBreakPoint = useMediaQuery('(min-width:800px)');
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
-  const search = () => {
-    console.log(searchValue);
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const search = () => {};
 
   const openMenu = (id) => {
     if (id === 1 || id === 2) {
@@ -71,6 +67,11 @@ const Header = () => {
     } else {
       getId(null);
     }
+  };
+
+  const logout = () => {
+    localStorage.clear();
+    router.reload();
   };
 
   return (
@@ -112,13 +113,8 @@ const Header = () => {
               );
             })}
           </Box>
-          <Box display="flex" justifyContent="space-between" columnGap="5px" zIndex="2">
-            <Box
-              backgroundColor="inherit"
-              border="1px solid white"
-              borderRadius="9px"
-              gap="3rem"
-              p="0.1rem 1.5rem">
+          <Box display="flex" justifyContent="space-between" zIndex="2">
+            <Box backgroundColor="inherit" border="1px solid white" borderRadius="9px">
               <InputBase
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
@@ -130,17 +126,7 @@ const Header = () => {
               </IconButton>
             </Box>
             {isAuth ? (
-              <Box
-                sx={{
-                  color: 'white',
-                  display: 'flex',
-                  p: 0,
-                  alignItems: 'center',
-                  width: '100px',
-                  gap: '15px',
-                  pl: '10px',
-                  pt: '5px',
-                }}>
+              <Box>
                 <Link href="/basket">
                   <Badge
                     badgeContent={1}
@@ -155,22 +141,26 @@ const Header = () => {
                         minWidth: '13px',
                       },
                     }}>
-                    <ShoppingBagOutlined sx={{ mb: '5px' }} />
+                    <IconButton sx={{ color: 'white' }}>
+                      <ShoppingBagOutlined />
+                    </IconButton>
                   </Badge>
                 </Link>
                 <Link href="/usersettings">
-                  <SettingsIcon />
+                  <IconButton sx={{ color: 'white' }}>
+                    <SettingsIcon />
+                  </IconButton>
                 </Link>
-                <Link href="/">
-                  <LogoutIcon />
-                </Link>
+                <IconButton sx={{ color: 'white' }}>
+                  <LogoutIcon onClick={logout} />
+                </IconButton>
               </Box>
             ) : (
               <IconButton
                 sx={{
                   color: 'white',
                 }}>
-                <PersonOutline />
+                <PersonOutline onClick={() => setOpenModalAuth(!openModalAuth)} />
               </IconButton>
             )}
           </Box>
@@ -215,8 +205,8 @@ const Header = () => {
           </Box>
         </Box>
       </Box>
-      <SideBarMenu pages={pages} handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
-      {!isAuth && <Auth handleClose={handleClose} open={open} />}
+      <MobileSideBarMenu pages={pages} />
+      <AuthModal setOpenModalAuth={setOpenModalAuth} openModalAuth={openModalAuth} />
     </>
   );
 };
