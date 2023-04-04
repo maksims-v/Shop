@@ -41,9 +41,14 @@ const womensCategory = [
 ];
 
 const Header = ({ user }) => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuth);
+
   const [id, getId] = useState(null);
   const [openModalAuth, setOpenModalAuth] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [badgeCount, setBadgeCount] = useState(1);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -51,10 +56,6 @@ const Header = ({ user }) => {
       dispatch(logIn(user));
     }
   }, [user]);
-
-  const dispatch = useDispatch();
-
-  const isAuth = useSelector((state) => state.auth.isAuth);
 
   const firstBreakPoint = useMediaQuery('(min-width:800px)');
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
@@ -121,17 +122,17 @@ const Header = ({ user }) => {
                 placeholder="Search..."
                 sx={{ color: 'white' }}
               />
-              <IconButton>
-                <SearchOutlined onClick={search} sx={{ color: 'white' }} />
+              <IconButton onClick={search}>
+                <SearchOutlined sx={{ color: 'white' }} />
               </IconButton>
             </Box>
             {isAuth ? (
               <Box>
                 <Link href="/basket">
                   <Badge
-                    badgeContent={1}
+                    badgeContent={badgeCount}
                     color="secondary"
-                    invisible={0}
+                    invisible={badgeCount === 0}
                     sx={{
                       '& .MuiBadge-badge': {
                         right: 5,
@@ -146,21 +147,22 @@ const Header = ({ user }) => {
                     </IconButton>
                   </Badge>
                 </Link>
-                <Link href="/usersettings">
+                <Link href="/usersdashboard">
                   <IconButton sx={{ color: 'white' }}>
                     <SettingsIcon />
                   </IconButton>
                 </Link>
-                <IconButton sx={{ color: 'white' }}>
-                  <LogoutIcon onClick={logout} />
+                <IconButton onClick={logout} sx={{ color: 'white' }}>
+                  <LogoutIcon />
                 </IconButton>
               </Box>
             ) : (
               <IconButton
+                onClick={() => setOpenModalAuth(!openModalAuth)}
                 sx={{
                   color: 'white',
                 }}>
-                <PersonOutline onClick={() => setOpenModalAuth(!openModalAuth)} />
+                <PersonOutline />
               </IconButton>
             )}
           </Box>

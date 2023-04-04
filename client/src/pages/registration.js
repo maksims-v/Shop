@@ -1,45 +1,28 @@
 import { Box, Button, TextField } from '@mui/material';
-import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useState } from 'react';
-
-const validationSchema = yup.object({
-  email: yup.string('Enter your email').email('Enter a valid email').required('Email is required'),
-  password: yup
-    .string('Enter your password')
-    .min(6, 'Password should be of minimum 6 characters length')
-    .required('Password is required'),
-  passwordConfirm: yup.string('Repeat the password').required('Repeat the password'),
-});
+import { registration } from '@/http/userAPI';
 
 const Registration = () => {
-  const [invalidPass, setInvalidPass] = useState(null);
-  const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-      passwordConfirm: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (values.password !== values.passwordConfirm) {
-        setConfirmationMessage(null);
-        setInvalidPass('Invalid password');
-      } else {
-        setInvalidPass(null);
-        setConfirmationMessage('Please confirm your email address.');
-      }
-      console.log(values);
-    },
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await registration({ username, email, password });
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Box sx={{ mt: '100px', width: '100%' }}>
       {' '}
       <Box maxWidth="400px" m="0 auto">
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Box gap="10px" display="flex" flexDirection="column" alignItems="center">
             {' '}
             <TextField
@@ -47,10 +30,17 @@ const Registration = () => {
               id="email"
               name="email"
               label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              sx={{ width: '300px' }}
+              id="username"
+              name="username"
+              label="Username"
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
               sx={{ width: '300px' }}
@@ -58,24 +48,9 @@ const Registration = () => {
               name="password"
               label="Password"
               type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <TextField
-              sx={{ width: '300px' }}
-              id="passwordConfirm"
-              name="passwordConfirm"
-              label="Password confirm"
-              type="password"
-              value={formik.values.passwordConfirm}
-              onChange={formik.handleChange}
-              error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
-              helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
-            />
-            {invalidPass}
-            {confirmationMessage}
             <Button
               sx={{ width: '100px' }}
               color="primary"

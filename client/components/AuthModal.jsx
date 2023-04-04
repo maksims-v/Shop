@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { login } from '@/http/userAPI';
 import {
   Dialog,
   DialogActions,
@@ -13,26 +14,6 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { logIn } from '@/state/authSlice';
 
-async function login(email, pass) {
-  try {
-    const res = await fetch(`${process.env.API_URL}/api/auth/local`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        identifier: email,
-        password: pass,
-      }),
-    });
-    const data = await res.json();
-
-    return { data };
-  } catch (e) {
-    return e;
-  }
-}
-
 const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
@@ -44,17 +25,22 @@ const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
     setOpenModalAuth(false);
   };
 
-  async function submit() {
-    const user = await login(email, pass);
-    if (user.data.data !== null) {
-      dispatch(logIn(user.data.user));
-      localStorage.setItem('accestoken', user.data.jwt);
-      setError(null);
-      handleClose();
-    } else {
-      setError(user.data.error.message);
+  const submit = async () => {
+    try {
+      const user = await login(email, pass);
+      if (user.data.data !== null) {
+        dispatch(logIn(user.data.user));
+        localStorage.setItem('accestoken', user.data.jwt);
+        handleClose();
+        setError(null);
+      } else {
+        setError(user.data.error.message);
+      }
+    } catch (e) {
+      setError('Something went wrong');
+      console.log(e.message);
     }
-  }
+  };
 
   return (
     <div>
