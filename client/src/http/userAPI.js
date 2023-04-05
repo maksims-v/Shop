@@ -1,60 +1,40 @@
+import { $authHost, $host } from '.';
+
 export const login = async (email, pass) => {
-  const res = await fetch(`${process.env.API_URL}/api/auth/local`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  try {
+    const response = await $host.post('/api/auth/local', {
       identifier: email,
       password: pass,
-    }),
-  });
-  const data = await res.json();
-
-  return { data };
+    });
+    return response;
+  } catch (e) {
+    return e;
+  }
 };
 
 export const registration = async (newUser) => {
-  const res = await fetch('http://localhost:1337/api/auth/local/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newUser),
-  });
-  const data = await res.json();
-
-  return { data };
+  try {
+    const response = await $host.post('/api/auth/local/register', newUser);
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
-export const getUser = async (token) => {
+export const getUser = async () => {
   try {
-    const res = await fetch('http://127.0.0.1:1337/api/users/me', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    const data = await res.json();
-    return data;
+    const response = await $authHost.get('/api/users/me');
+    return response;
   } catch (e) {
-    return false;
+    return e;
   }
 };
 
 export const changeUserData = async (newData, id) => {
-  const token = localStorage.getItem('accestoken');
-
-  const res = await fetch(`http://127.0.0.1:1337/api/users/${id}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newData),
-  });
-  const data = await res.json();
-
-  return data;
+  try {
+    const response = await $authHost.put(`/api/users/${id}`, newData);
+    return response;
+  } catch (e) {
+    return e;
+  }
 };

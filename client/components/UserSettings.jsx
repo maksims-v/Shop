@@ -13,7 +13,6 @@ const UserSettings = () => {
   const orders = useSelector((state) => state.auth.orders);
   const dispatch = useDispatch();
 
-  console.log(user);
   const [open, setOpen] = useState(false);
   const [userId] = useState(user.id);
   const [email, setEmail] = useState(user.email);

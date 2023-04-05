@@ -30,7 +30,7 @@ const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
       const user = await login(email, pass);
       if (user.data.data !== null) {
         dispatch(logIn(user.data.user));
-        localStorage.setItem('accestoken', user.data.jwt);
+        localStorage.setItem('token', user.data.jwt);
         handleClose();
         setError(null);
       } else {

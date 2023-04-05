@@ -21,15 +21,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('accestoken');
-    if (token) {
-      getUser(token).then((res) => {
-        if (res.data === null || res === false) {
-        } else {
-          setUser(res);
-        }
-      });
-    }
+    getUser().then((response) => setUser(response.data));
   }, []);
 
   return (
