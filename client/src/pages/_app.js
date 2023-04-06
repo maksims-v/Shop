@@ -3,17 +3,18 @@ import Header from 'components/Header.jsx';
 import Footer from 'components/Footer.jsx';
 import { CssBaseline, Container } from '@mui/material';
 import { theme } from '../styles/theme.js';
-import authSlice, { logIn } from '@/state/authSlice.js';
+import authSlice from '@/state/authSlice.js';
+import sliderSlice from '@/state/sliderSlice.js';
 import { ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { getUser } from '@/http/userAPI.js';
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
+    slider: sliderSlice,
   },
 });
 
