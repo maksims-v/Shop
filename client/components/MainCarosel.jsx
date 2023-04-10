@@ -1,21 +1,17 @@
-import { Box, Typography, IconButton, useMediaQuery } from '@mui/material';
+import { Box } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 const MainCarousel = () => {
   const sliderData = useSelector((state) => state.slider.items);
 
-  console.log(sliderData);
-
   return (
-    <Box width="30%" m="0 auto">
+    <Box width="30%" m="0 auto" border="1px solid black">
       <Carousel
         infiniteLoop={true}
-        autoPlay={true}
+        autoPlay={false}
         showThumbs={false}
         showIndicators={false}
         showStatus={false}>
