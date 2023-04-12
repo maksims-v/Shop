@@ -1,85 +1,69 @@
-import { IconButton, Box, Typography, Button } from '@mui/material';
-import { useState } from 'react';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
 import Link from 'next/link';
-import myImage from '../public/4.jpeg';
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  IconButton,
+  Typography,
+  CardActionArea,
+  Box,
+} from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Item = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [count, setCount] = useState(1);
-
+export default function Item({ sale, newItem }) {
   return (
-    <Box>
+    <Card sx={{ maxWidth: 280, m: '10px 0px' }}>
       <Box
-        position="relative"
-        height="400px"
-        width="300px"
-        onMouseOver={() => setIsHovered(true)}
-        onMouseOut={() => setIsHovered(false)}
-        sx={{
-          background: `url(${myImage.src}) center / 100% no-repeat`,
-        }}>
-        <Box
-          display={isHovered ? 'block' : 'none'}
-          position="absolute"
-          bottom="10%"
-          left="0"
-          width="100%"
-          padding="0 5%">
-          <Box display="flex" justifyContent="space-between">
-            <Box display="flex" alignItems="center" backgroundColor="black" borderRadius="3px">
-              <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
-                <RemoveIcon />
-              </IconButton>
-              <Typography color="black">{count}</Typography>
-              <IconButton onClick={() => setCount(count + 1)}>
-                <AddIcon />
-              </IconButton>
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        p="8px 10px 8px 10px"
+        height="54px">
+        <Box fontSize="18px" fontWeight="bold">
+          {newItem && <Box color="#0085ca">NEW</Box>}
+          {sale && (
+            <Box fontWeight="bold" fontSize="18px" color="red" textAlign="left">
+              SALE
             </Box>
-            <Button sx={{ backgroundColor: 'black', color: 'white' }}>Add to Cart</Button>
-          </Box>
+          )}
         </Box>
+        <IconButton aria-label="settings" sx={{ p: '0px' }}>
+          <FavoriteIcon fontSize="large" sx={{ color: '#e65f5f' }} />
+        </IconButton>
       </Box>
-
-      <Box mt="3px">
-        <Typography variant="subtitle2" color="black">
-          as
-        </Typography>
-        <Typography>asd</Typography>
-        <Typography fontWeight="bold">$12</Typography>
-      </Box>
-    </Box>
+      <Link href="/itemdetail">
+        <CardActionArea>
+          <CardMedia component="img" height="194" image="/7.webp" alt="Paella dish" />
+          <CardContent>
+            <Typography sx={{ textAlign: 'left' }}>
+              Columbia Powder Lite Insulated Jacket - Mens
+            </Typography>
+            <Typography
+              sx={{ textAlign: 'left', pt: '10px' }}
+              variant="body2"
+              color="text.secondary">
+              Bright Indigo
+            </Typography>
+          </CardContent>
+          <CardActions
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              p: '0px 0px 5px 10px',
+              textAlign: 'left',
+              height: '56px',
+            }}>
+            <Typography sx={{ fontWeight: 'bold', fontSize: '20px', width: '100%', pl: '7px' }}>
+              {' '}
+              $16.41
+            </Typography>
+            <Typography sx={{ fontSize: '14px', color: '#e65f5f', width: '100%' }}>
+              save: $16.41 $
+            </Typography>
+          </CardActions>
+        </CardActionArea>
+      </Link>
+    </Card>
   );
-};
-
-export default Item;
-
-{
-  /* <Box width="300px" height="400px" border="1px solid black" position="relative">
-<Box
-  sx={{
-    background: `url(${myImage.src}) center / 100% no-repeat`,
-  }}
-  height="300px"
-  position="relative"
-  onMouseOver={() => setIsHovered(true)}
-  onMouseOut={() => setIsHovered(false)}>
-  {/* <img
-    alt="error"
-    width="300px"
-    height="400px"
-    src={`/6.jpg`}
-    style={{ cursor: 'pointer' }}
-  /> 
-</Box>
-<Box mt="3px" color="black">
-  <Typography variant="subtitle2">asd</Typography>
-  <Typography>T-shirt</Typography>
-  <Typography fontWeight="bold">$12</Typography>
-</Box>
-<Box position="absolute" top="10px" width="100%">
-  <Button sx={{ backgroundColor: 'black', color: 'white' }}>Add to Cart</Button>
-</Box>
-</Box> */
 }
