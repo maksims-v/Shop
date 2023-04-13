@@ -1,15 +1,16 @@
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { useState, useCallback } from 'react';
-import Item from '../../components/Item';
+import { useState, useCallback, useEffect } from 'react';
+import Item from '../../../components/Item';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch } from 'react-redux';
-import PhotoGallery from 'components/PhotoGallery';
 import Gallery from 'react-photo-gallery-next';
 import Carousel, { Modal, ModalGateway } from 'react-images';
+import React from 'react';
+import { useRouter } from 'next/router';
 
 const photos = [
   {
@@ -45,6 +46,9 @@ const photos = [
 ];
 
 const ItemDetails = () => {
+  const router = useRouter();
+  const id = router.query.id;
+
   const dispatch = useDispatch();
   const [value, setValue] = useState('description');
   const [count, setCount] = useState(1);
@@ -55,8 +59,20 @@ const ItemDetails = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
+  async function getItems() {
+    const data = await fetch(`http://localhost:1337/api/products/${id}`, {
+      method: 'GET',
+    });
+    const item = await data.json();
+
+    console.log(item);
+  }
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
   const openLightbox = useCallback((event, { photo, index }) => {
-    console.log(photo.src);
     setPhotoSrc(photo);
     setCurrentImage(index);
     //  setViewerIsOpen(true);
@@ -163,7 +179,6 @@ const ItemDetails = () => {
         </Box>
       </Box>
 
-      {/* INFORMATION */}
       <Box m="20px 0">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="DESCRIPTION" value="description" />
@@ -175,7 +190,6 @@ const ItemDetails = () => {
         {value === 'reviews' && <div>reviews</div>}
       </Box>
 
-      {/* RELATED ITEMS */}
       <Box mt="50px" width="100%">
         <Typography variant="h3" fontWeight="bold">
           Related Products

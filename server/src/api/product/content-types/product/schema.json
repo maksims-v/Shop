@@ -61,7 +61,7 @@
       ]
     },
     "price": {
-      "type": "decimal",
+      "type": "integer",
       "required": true
     },
     "availableQty": {
@@ -69,12 +69,16 @@
       "required": true,
       "default": 0
     },
-    "category2": {
-      "type": "enumeration",
-      "enum": [
-        "newArrivals",
-        "sale"
-      ]
+    "new": {
+      "type": "boolean",
+      "default": false
+    },
+    "sale": {
+      "type": "boolean",
+      "default": false
+    },
+    "salePrice": {
+      "type": "integer"
     }
   }
 }
