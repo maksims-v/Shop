@@ -8,8 +8,6 @@ import { useSelector } from 'react-redux';
 const NewArrivalsSlider = () => {
   const sliderData = useSelector((state) => state.sliders.newArrivalsData);
 
-  console.log(sliderData);
-
   return (
     <Box width="100%">
       {' '}
