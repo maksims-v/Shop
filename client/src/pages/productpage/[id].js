@@ -1,12 +1,19 @@
-import { Box, Button, IconButton, Typography, Divider, Breadcrumbs } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  Divider,
+  Breadcrumbs,
+  List,
+  ListItem,
+} from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useState, useCallback, useEffect } from 'react';
-import Item from '../../../components/Item';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useDispatch } from 'react-redux';
 import Gallery from 'react-photo-gallery-next';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import React from 'react';
@@ -16,8 +23,6 @@ import Link from 'next/link';
 const ItemDetails = () => {
   const router = useRouter();
   const [id] = useState(router.query.id);
-
-  console.log(router);
 
   const [data, setData] = useState(null);
   const [photos, setPhotos] = useState([]);
@@ -36,10 +41,7 @@ const ItemDetails = () => {
       method: 'GET',
     });
     const item = await response.json();
-
     item.data ? setData(item.data) : setData([]);
-    console.log(data);
-
     createPhotoGallery(item?.data?.attributes?.image?.data);
   }
 
@@ -147,12 +149,26 @@ const ItemDetails = () => {
 
             <Typography sx={{ mt: '20px' }}>{data?.attributes?.description}</Typography>
           </Box>
+          <Box mb="10px">
+            <List sx={{ display: 'flex', gap: '10px', p: '0px' }}>
+              <ListItem
+                sx={{
+                  p: '0px',
+                  backgroundColor: data?.attributes?.color,
+                  height: '30px',
+                  width: '30px',
+                  border: '1px solid black',
+                  borderRadius: '50%',
+                }}></ListItem>
+            </List>
+          </Box>
 
+          <Divider />
           <Box display="flex" alignItems="center" minHeight="50px">
             <Box
               display="flex"
               alignItems="center"
-              border={`1.5px solid black`}
+              border="1.5px solid black"
               mr="20px"
               p="2px 5px">
               <IconButton onClick={() => setCount(Math.max(count - 1, 0))}>

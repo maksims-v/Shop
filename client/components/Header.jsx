@@ -5,6 +5,7 @@ import { Box, IconButton, Badge, InputBase, Container } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
 import MobileSideBarMenu from './MobileSideBarMenu';
 import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -46,6 +47,7 @@ const Header = ({ user }) => {
 
   const [id, getId] = useState(null);
   const [openModalAuth, setOpenModalAuth] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [badgeCount, setBadgeCount] = useState(1);
 
@@ -57,10 +59,13 @@ const Header = ({ user }) => {
     }
   }, [user]);
 
-  const firstBreakPoint = useMediaQuery('(min-width:800px)');
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
   const search = () => {};
+
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
 
   const openMenu = (id) => {
     if (id === 1 || id === 2) {
@@ -98,6 +103,15 @@ const Header = ({ user }) => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
+          {!secondBreakPoint && (
+            <IconButton sx={{ color: 'yellow' }}>
+              <MenuIcon
+                onClick={() => setMobileOpen(true)}
+                fontSize="large"
+                sx={{ color: 'white' }}
+              />
+            </IconButton>
+          )}
           <Link href="/">
             {' '}
             <Box sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>ADVENTURE</Box>
@@ -115,17 +129,9 @@ const Header = ({ user }) => {
             })}
           </Box>
           <Box display="flex" justifyContent="space-between" zIndex="2">
-            <Box backgroundColor="inherit" border="1px solid white" borderRadius="9px">
-              <InputBase
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search..."
-                sx={{ color: 'white' }}
-              />
-              <IconButton onClick={search}>
-                <SearchOutlined sx={{ color: 'white' }} />
-              </IconButton>
-            </Box>
+            <IconButton onClick={search}>
+              <SearchOutlined sx={{ color: 'white' }} />
+            </IconButton>
             {isAuth ? (
               <Box>
                 <Link href="/basket">
@@ -157,13 +163,20 @@ const Header = ({ user }) => {
                 </IconButton>
               </Box>
             ) : (
-              <IconButton
-                onClick={() => setOpenModalAuth(!openModalAuth)}
-                sx={{
-                  color: 'white',
-                }}>
-                <PersonOutline />
-              </IconButton>
+              <Box>
+                <Link href="/basket">
+                  <IconButton sx={{ color: 'white' }}>
+                    <ShoppingBagOutlined />
+                  </IconButton>
+                </Link>
+                <IconButton
+                  onClick={() => setOpenModalAuth(!openModalAuth)}
+                  sx={{
+                    color: 'white',
+                  }}>
+                  <PersonOutline />
+                </IconButton>
+              </Box>
             )}
           </Box>
         </Container>
@@ -207,7 +220,13 @@ const Header = ({ user }) => {
           </Box>
         </Box>
       </Box>
-      <MobileSideBarMenu pages={pages} />
+      <MobileSideBarMenu
+        pages={pages}
+        mobileOpen={mobileOpen}
+        handleDrawerToggle={handleDrawerToggle}
+        mensCategory={mensCategory}
+        womensCategory={womensCategory}
+      />
       <AuthModal setOpenModalAuth={setOpenModalAuth} openModalAuth={openModalAuth} />
     </>
   );
