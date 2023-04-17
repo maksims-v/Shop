@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "products",
+  "collectionName": "variations",
   "info": {
-    "singularName": "product",
-    "pluralName": "products",
-    "displayName": "Product",
+    "singularName": "variation",
+    "pluralName": "variations",
+    "displayName": "Variation",
     "description": ""
   },
   "options": {
@@ -14,60 +14,53 @@
   "attributes": {
     "title": {
       "type": "string",
-      "required": true,
-      "maxLength": 71,
-      "minLength": 3
+      "required": true
     },
     "slug": {
       "type": "uid",
-      "required": true,
-      "minLength": 3,
-      "maxLength": 110
+      "required": true
     },
     "description": {
-      "type": "text"
+      "type": "string",
+      "required": true
     },
     "image": {
       "type": "media",
       "multiple": true,
-      "required": true,
+      "required": false,
       "allowedTypes": [
-        "images"
+        "images",
+        "files",
+        "videos",
+        "audios"
       ]
     },
-    "category": {
+    "categoty": {
       "type": "enumeration",
       "enum": [
         "tshirt",
-        "mug",
-        "hoodie",
-        "heat"
+        "polo"
       ],
       "required": true
     },
     "price": {
-      "type": "integer",
+      "type": "decimal",
       "required": true
     },
     "availableQty": {
       "type": "integer",
-      "required": true,
-      "default": 0
+      "required": true
     },
     "new": {
       "type": "boolean",
-      "default": false
+      "required": true
     },
     "sale": {
       "type": "boolean",
-      "default": false
+      "required": true
     },
     "salePrice": {
-      "type": "integer"
-    },
-    "attributes": {
-      "type": "json",
-      "required": false
+      "type": "decimal"
     }
   }
 }

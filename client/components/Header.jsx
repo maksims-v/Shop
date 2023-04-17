@@ -104,12 +104,8 @@ const Header = ({ user }) => {
             alignItems: 'center',
           }}>
           {!secondBreakPoint && (
-            <IconButton sx={{ color: 'yellow' }}>
-              <MenuIcon
-                onClick={() => setMobileOpen(true)}
-                fontSize="large"
-                sx={{ color: 'white' }}
-              />
+            <IconButton onClick={() => setMobileOpen(true)} sx={{ color: 'yellow' }}>
+              <MenuIcon fontSize="large" sx={{ color: 'white' }} />
             </IconButton>
           )}
           <Link href="/">

@@ -21,6 +21,7 @@ const MobileSideBarMenu = ({
   mensCategory,
 }) => {
   const [expanded, setExpanded] = useState(true);
+  const disable = true;
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -60,8 +61,7 @@ const MobileSideBarMenu = ({
                 color: 'white',
                 textAlign: 'left',
               }}
-              square="true"
-              disableGutters="true"
+              disableGutters={disable}
               expanded={expanded === 'panel1'}
               onChange={handleChange('panel1')}>
               <AccordionSummary
@@ -88,9 +88,9 @@ const MobileSideBarMenu = ({
             <Divider color="white" />
             <Accordion
               sx={{ backgroundColor: '#262624', color: 'white', textAlign: 'left' }}
-              disableGutters="true"
               expanded={expanded === 'panel2'}
-              onChange={handleChange('panel2')}>
+              onChange={handleChange('panel2')}
+              disableGutters={disable}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon sx={{ color: 'white' }} />}
                 aria-controls="panel2bh-content"
@@ -114,7 +114,7 @@ const MobileSideBarMenu = ({
             <Divider color="white" />
             <Accordion
               sx={{ backgroundColor: '#262624', color: 'white', textAlign: 'left' }}
-              disableGutters="true"
+              disableGutters={disable}
               expanded={expanded === 'panel3'}
               onChange={handleChange('panel3')}>
               <AccordionSummary
@@ -133,8 +133,7 @@ const MobileSideBarMenu = ({
             <Divider color="white" />
             <Accordion
               sx={{ backgroundColor: '#262624', color: 'white', textAlign: 'left' }}
-              square="true"
-              disableGutters="true"
+              disableGutters={disable}
               expanded={expanded === 'panel4'}
               onChange={handleChange('panel4')}>
               <AccordionSummary
@@ -153,8 +152,6 @@ const MobileSideBarMenu = ({
             <Divider color="white" />
             <Accordion
               sx={{ backgroundColor: '#262624', color: 'white', textAlign: 'left' }}
-              square="true"
-              disableGutters="true"
               expanded={expanded === 'panel5'}
               onChange={handleChange('panel5')}>
               <Link href="/sale">
@@ -169,8 +166,6 @@ const MobileSideBarMenu = ({
             <Divider color="white" />
             <Accordion
               sx={{ backgroundColor: '#262624', color: 'white', textAlign: 'left' }}
-              square="true"
-              disableGutters="true"
               expanded={expanded === 'panel6'}
               onChange={handleChange('panel6')}>
               <Link href="/clerance">
