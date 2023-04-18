@@ -34,7 +34,7 @@ export default function Item({ item }) {
         </IconButton>
       </Box>
       <Divider />
-      <Link href={`/productpage/${item.id}`}>
+      <Link href={`/productpage/${item.attributes.slug}`}>
         <CardActionArea>
           <CardMedia
             component="img"

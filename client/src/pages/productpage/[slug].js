@@ -20,9 +20,9 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const ItemDetails = () => {
+const ItemDetails = ({ params }) => {
   const router = useRouter();
-  const [id] = useState(router.query.id);
+  const [slug] = useState(router.query.slug);
 
   const [data, setData] = useState(null);
   const [photos, setPhotos] = useState([]);
@@ -37,10 +37,10 @@ const ItemDetails = () => {
   }, []);
 
   async function getItems() {
-    const response = await fetch(`http://localhost:1337/api/products/${id}?populate=*`, {
-      method: 'GET',
-    });
+    const response = await fetch(`http://localhost:1337/api/products/${slug}?populate=*`);
     const item = await response.json();
+
+    console.log(item);
     item.data ? setData(item.data) : setData([]);
     createPhotoGallery(item?.data?.attributes?.image?.data);
   }
@@ -231,3 +231,16 @@ const ItemDetails = () => {
 };
 
 export default ItemDetails;
+
+// export async function getServerSideProps({ params }) {
+//   const { slug } = params;
+//   const response = await fetch(`http://127.0.0.1:1337/api/slugify/slugs/products/${slug}`);
+
+//   const data = await response.json();
+
+//   return {
+//     props: {
+//       product: data,
+//     },
+//   };
+// }
