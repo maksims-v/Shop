@@ -17,33 +17,20 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Gallery from 'react-photo-gallery-next';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import React from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const ItemDetails = ({ params }) => {
-  const router = useRouter();
-  const [slug] = useState(router.query.slug);
-
-  const [data, setData] = useState(null);
+const ItemDetails = ({ product }) => {
+  const [data, setData] = useState([]);
   const [photos, setPhotos] = useState([]);
   const [value, setValue] = useState('description');
   const [count, setCount] = useState(1);
-
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
   useEffect(() => {
-    getItems();
-  }, []);
-
-  async function getItems() {
-    const response = await fetch(`http://localhost:1337/api/products/${slug}?populate=*`);
-    const item = await response.json();
-
-    console.log(item);
-    item.data ? setData(item.data) : setData([]);
-    createPhotoGallery(item?.data?.attributes?.image?.data);
-  }
+    setData(product.data);
+    createPhotoGallery(data?.attributes?.image?.data);
+  }, [data]);
 
   function createPhotoGallery(data) {
     const gallery = data
@@ -232,15 +219,10 @@ const ItemDetails = ({ params }) => {
 
 export default ItemDetails;
 
-// export async function getServerSideProps({ params }) {
-//   const { slug } = params;
-//   const response = await fetch(`http://127.0.0.1:1337/api/slugify/slugs/products/${slug}`);
+export async function getServerSideProps({ params }) {
+  const { slug } = params;
+  const res = await fetch(`${process.env.API_URL}/api/products/${slug}?populate=*`);
+  const product = await res.json();
 
-//   const data = await response.json();
-
-//   return {
-//     props: {
-//       product: data,
-//     },
-//   };
-// }
+  return { props: { product } };
+}

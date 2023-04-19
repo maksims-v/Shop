@@ -1,11 +1,8 @@
 import { $authHost, $host } from '.';
 
-export const login = async (email, pass) => {
+export const login = async (data) => {
   try {
-    const response = await $host.post('/api/auth/local', {
-      identifier: email,
-      password: pass,
-    });
+    const response = await $host.post('/api/auth/local', data);
     return response;
   } catch (e) {
     return e;
