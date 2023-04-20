@@ -3,20 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isAuth: false,
   user: {
+    id: '',
     email: '',
-    name: '',
-    surname: '',
+    fullName: '',
+    lastName: '',
     country: '',
     city: '',
     adress: '',
     postCode: '',
     phone: '',
+    orders: [],
   },
-  orders: [
-    { id: 1, type: 'boots', brand: 'ecco', size: '42', color: 'white' },
-    { id: 2, type: 'clothing', brand: 'adidas', size: '50', color: 'yellow' },
-    { id: 3, type: 'accessories', brand: 'ecco', size: '48', color: 'white' },
-  ],
 };
 
 export const authSlice = createSlice({

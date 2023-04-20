@@ -33,6 +33,7 @@ const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
 
   const handleSubmit = async () => {
     const user = await login(data);
+    console.log(user);
     if (user?.response?.status === undefined) {
       dispatch(logIn(user.data.user));
       localStorage.setItem('token', user.data.jwt);

@@ -1,5 +1,5 @@
-import { useState, forwardRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, forwardRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, TextField, Button, Stack, Snackbar } from '@mui/material';
 import { changeUserData } from '@/http/userAPI';
 import MuiAlert from '@mui/material/Alert';
@@ -10,35 +10,25 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 const UserSettings = () => {
   const user = useSelector((state) => state.auth.user);
-  const orders = useSelector((state) => state.auth.orders);
-  const dispatch = useDispatch();
+
+  useEffect(() => {}, [user]);
 
   const [open, setOpen] = useState(false);
-  const [userId] = useState(user.id);
-  const [email, setEmail] = useState(user.email);
-  const [name, setName] = useState(user.fullName);
-  const [surname, setSurname] = useState(user.lastName);
-  const [country, setCountry] = useState(user.country);
-  const [city, setCity] = useState(user.city);
-  const [adress, setAdress] = useState(user.adress);
-  const [postCode, setPostcode] = useState(user.postCode);
-  const [phone, setPhone] = useState(user.phone);
+  const [userData, setUserData] = useState({
+    id: user.id,
+    email: user.email,
+    fullName: user.fullName,
+    lastName: user.lastName,
+    country: user.country,
+    city: user.city,
+    adress: user.adress,
+    postCode: user.postCode,
+    phone: user.phone,
+  });
 
   const saveData = async () => {
     try {
-      changeUserData(
-        {
-          email: email,
-          fullName: name,
-          lastName: surname,
-          country: country,
-          city: city,
-          adress: adress,
-          postCode: postCode,
-          phone: phone,
-        },
-        userId,
-      );
+      changeUserData(userData);
       setOpen(true);
     } catch (e) {
       console.log(e.message);
@@ -51,6 +41,10 @@ const UserSettings = () => {
     }
 
     setOpen(false);
+  };
+
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -70,58 +64,66 @@ const UserSettings = () => {
           gap: '8px',
         }}>
         <TextField
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={email || ''}
+          name="email"
+          value={userData.email || ''}
           label="Email"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setName(e.target.value)}
-          value={name || ''}
+          onChange={handleChange}
+          value={userData.fullName || ''}
+          name="fullName"
           id="standard-basic"
           label="First Name"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setSurname(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={surname || ''}
+          name="lastName"
+          value={userData.lastName || ''}
           label="Surname"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setCountry(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={country || ''}
+          name="country"
+          value={userData.country || ''}
           label="Country"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setCity(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={city || ''}
+          name="city"
+          value={userData.city || ''}
           label="City"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setAdress(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={adress || ''}
+          name="adress"
+          value={userData.adress || ''}
           label="Adress"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setPostcode(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={postCode || ''}
+          name="postCode"
+          value={userData.postCode || ''}
           label="Post Code"
           variant="outlined"
         />
         <TextField
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={handleChange}
           id="standard-basic"
-          value={phone || '+'}
+          name="phone"
+          value={userData.phone || '+'}
           label="Phone"
           variant="outlined"
         />

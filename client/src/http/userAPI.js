@@ -27,9 +27,9 @@ export const getUser = async () => {
   }
 };
 
-export const changeUserData = async (newData, id) => {
+export const changeUserData = async (userData) => {
   try {
-    const response = await $authHost.put(`/api/users/${id}`, newData);
+    const response = await $authHost.put(`/api/users/${userData.id}`, userData);
     return response;
   } catch (e) {
     return e;
