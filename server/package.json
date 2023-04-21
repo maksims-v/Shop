@@ -14,6 +14,7 @@
     "@strapi/plugin-users-permissions": "4.8.2",
     "@strapi/strapi": "4.8.2",
     "better-sqlite3": "8.0.1",
+    "lodash": "^4.17.21",
     "strapi-plugin-slugify": "^2.3.2"
   },
   "author": {

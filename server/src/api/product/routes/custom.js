@@ -8,5 +8,14 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "GET",
+      path: "/products/:slug/build",
+      handler: "product.build",
+      config: {
+        auth: false,
+        policies: [],
+      },
+    },
   ],
 };

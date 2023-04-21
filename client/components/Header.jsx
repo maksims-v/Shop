@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge, InputBase, Container } from '@mui/material';
+import { Box, IconButton, Badge, Container } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import MobileSideBarMenu from './MobileSideBarMenu';
 import AuthModal from './AuthModal';
-import { useSelector, useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
-import { logIn } from '@/state/authSlice.js';
+import { useSelector } from 'react-redux';
+import { unsetToken } from '@/http/authCookie';
 
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
@@ -41,8 +40,7 @@ const womensCategory = [
   { id: 7, title: 'TECHNOLOGY', path: '/womens/technology' },
 ];
 
-const Header = ({ user }) => {
-  const dispatch = useDispatch();
+const Header = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
 
   const [id, getId] = useState(null);
@@ -50,14 +48,6 @@ const Header = ({ user }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [badgeCount, setBadgeCount] = useState(1);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      dispatch(logIn(user));
-    }
-  }, [user]);
 
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
@@ -76,8 +66,7 @@ const Header = ({ user }) => {
   };
 
   const logout = () => {
-    localStorage.clear();
-    router.reload();
+    unsetToken();
   };
 
   return (

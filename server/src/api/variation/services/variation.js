@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 /**
  * variation service
  */
 
-const { createCoreService } = require('@strapi/strapi').factories;
+const { createCoreService } = require("@strapi/strapi").factories;
 
-module.exports = createCoreService('api::variation.variation');
+module.exports = createCoreService("api::variation.variation");

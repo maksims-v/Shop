@@ -63,16 +63,16 @@
       "type": "json",
       "required": false
     },
-    "product": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::variation.variation",
-      "inversedBy": "variation"
-    },
     "slug": {
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "variations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::variation.variation",
+      "mappedBy": "product"
     }
   }
 }

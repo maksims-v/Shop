@@ -13,6 +13,7 @@ import {
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { logIn } from '@/state/authSlice';
+import { setToken, unsetToken } from '@/http/authCookie';
 
 const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
   const [error, setError] = useState(null);
@@ -33,10 +34,9 @@ const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
 
   const handleSubmit = async () => {
     const user = await login(data);
-    console.log(user);
     if (user?.response?.status === undefined) {
       dispatch(logIn(user.data.user));
-      localStorage.setItem('token', user.data.jwt);
+      setToken(user.data);
       handleClose();
     } else {
       setError(user?.response?.data?.error?.message);
