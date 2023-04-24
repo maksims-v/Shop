@@ -5,8 +5,8 @@ import {
   Typography,
   Divider,
   Breadcrumbs,
-  List,
-  ListItem,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -18,19 +18,35 @@ import Gallery from 'react-photo-gallery-next';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import React from 'react';
 import Link from 'next/link';
+import { addToCart } from '@/state/shoppingCartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ItemDetails = ({ product }) => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [photos, setPhotos] = useState([]);
   const [value, setValue] = useState('description');
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
+  const [alignment, setAlignment] = useState('');
+
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.shoppingCart.cart);
+
+  const addToBag = () => {
+    dispatch(addToCart([...cart, { item: data.attributes.slug, qnty: count, size: alignment }]));
+  };
 
   useEffect(() => {
+    dispatch(addToCart(JSON.parse(localStorage.getItem('cart'))));
     setData(product.data);
     createPhotoGallery(data?.attributes?.image?.data);
   }, [data]);
+
+  const sizeHandleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
 
   function createPhotoGallery(data) {
     const gallery = data
@@ -136,26 +152,35 @@ const ItemDetails = ({ product }) => {
 
             <Typography sx={{ mt: '20px' }}>{data?.attributes?.description}</Typography>
           </Box>
-          <Box mb="10px">
-            <List sx={{ display: 'flex', gap: '10px', p: '0px' }}>
-              <ListItem
-                sx={{
-                  p: '0px',
-                  backgroundColor: data?.attributes?.color,
-                  height: '30px',
-                  width: '30px',
-                  border: '1px solid black',
-                  borderRadius: '50%',
-                }}></ListItem>
-            </List>
+          <Box mb="10px" maxWidth="300px">
+            <ToggleButtonGroup
+              color="primary"
+              value={alignment}
+              exclusive
+              onChange={sizeHandleChange}
+              aria-label="Platform"
+              fullWidth="true">
+              {data?.attributes?.attributes?.size.map((item) => {
+                return (
+                  <ToggleButton
+                    key={item.name}
+                    disabled={item.qnty === '0' && true}
+                    color="error"
+                    value={item.name}>
+                    {item.name}
+                  </ToggleButton>
+                );
+              })}
+            </ToggleButtonGroup>
           </Box>
 
-          <Divider />
+          <Divider sx={{ mb: '10px' }} />
           <Box display="flex" alignItems="center" minHeight="50px">
             <Box
               display="flex"
               alignItems="center"
               border="1.5px solid black"
+              borderRadius="3px"
               mr="20px"
               p="2px 5px">
               <IconButton onClick={() => setCount(Math.max(count - 1, 0))}>
@@ -167,14 +192,16 @@ const ItemDetails = ({ product }) => {
               </IconButton>
             </Box>
             <Button
+              onClick={addToBag}
+              color="error"
+              variant="outlined"
               sx={{
-                backgroundColor: '#222222',
-                color: 'white',
                 borderRadius: 0,
                 minWidth: '150px',
                 padding: '10px 40px',
+                borderRadius: '3px',
               }}>
-              ADD TO CART
+              PIRKT
             </Button>
           </Box>
           <Box>
