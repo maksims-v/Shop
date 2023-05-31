@@ -14,13 +14,16 @@ const FlexBox = styled(Box)`
 const Basket = () => {
   const [cart, setCart] = useState([]);
 
+  async function getCart() {
+    const res = await fetch(`${process.env.API_URL}/api/products/${slug}?populate=*`);
+    const product = await res.json();
+
+    return { props: { product } };
+  }
   const getShoppingList = async () => {
     const item = JSON.parse(localStorage.getItem('cart'));
-    console.log(item.item);
-    console.log(item);
-    const res = await fetch(`${process.env.API_URL}/api/products/${item.item}?populate=*`);
+    const res = await fetch(`${process.env.API_URL}/api/products/${item?.item}?populate=*`);
     const product = await res.json();
-    console.log(product);
   };
 
   useEffect(() => {

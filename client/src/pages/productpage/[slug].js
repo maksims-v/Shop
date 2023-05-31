@@ -32,16 +32,34 @@ const ItemDetails = ({ product }) => {
   const [alignment, setAlignment] = useState('');
 
   const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.shoppingCart.cart);
 
+  const [disabled, setDisabled] = useState(0);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+
   const addToBag = () => {
-    dispatch(addToCart([...cart, { item: data.attributes.slug, qnty: count, size: alignment }]));
+    setButtonDisabled(true);
+    dispatch(
+      addToCart([
+        ...cart,
+        { data: data, item: data.attributes.slug, qnty: count, size: alignment, id: data.id },
+      ]),
+    );
   };
 
   useEffect(() => {
-    dispatch(addToCart(JSON.parse(localStorage.getItem('cart'))));
     setData(product.data);
     createPhotoGallery(data?.attributes?.image?.data);
+
+    setDisabled(cart.filter((item) => item.id === data.id));
+
+    if (disabled.length !== 0) {
+      console.log('hai');
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+    }
   }, [data]);
 
   const sizeHandleChange = (event, newAlignment) => {
@@ -52,7 +70,7 @@ const ItemDetails = ({ product }) => {
     const gallery = data
       ? data &&
         data.map((item, i) => ({
-          src: `http://localhost:1337${item?.attributes.url}`,
+          src: `http://localhost:1337${item?.attributes?.url}`,
           width: 1,
           height: 1,
         }))
@@ -158,9 +176,8 @@ const ItemDetails = ({ product }) => {
               value={alignment}
               exclusive
               onChange={sizeHandleChange}
-              aria-label="Platform"
-              fullWidth="true">
-              {data?.attributes?.attributes?.size.map((item) => {
+              aria-label="Platform">
+              {data?.attributes?.attributes?.size?.map((item) => {
                 return (
                   <ToggleButton
                     key={item.name}
@@ -191,18 +208,33 @@ const ItemDetails = ({ product }) => {
                 <AddIcon />
               </IconButton>
             </Box>
-            <Button
-              onClick={addToBag}
-              color="error"
-              variant="outlined"
-              sx={{
-                borderRadius: 0,
-                minWidth: '150px',
-                padding: '10px 40px',
-                borderRadius: '3px',
-              }}>
-              PIRKT
-            </Button>
+            {!buttonDisabled ? (
+              <Button
+                onClick={addToBag}
+                color="error"
+                variant="outlined"
+                sx={{
+                  borderRadius: 0,
+                  minWidth: '150px',
+                  padding: '10px 40px',
+                  borderRadius: '3px',
+                }}>
+                PIRKT
+              </Button>
+            ) : (
+              <Button
+                disabled
+                color="error"
+                variant="outlined"
+                sx={{
+                  borderRadius: 0,
+                  minWidth: '150px',
+                  padding: '10px 40px',
+                  borderRadius: '3px',
+                }}>
+                PIRKT
+              </Button>
+            )}
           </Box>
           <Box>
             <Box m="20px 0 5px 0" display="flex">

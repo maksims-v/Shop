@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { mainSliderData, newArrivslsSliderData } from '@/state/slidersSlice';
 import Link from 'next/link';
 import NewArrivalsSlider from 'components/NewArrivalsSlider';
+import { addToCart } from '@/state/shoppingCartSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ const Home = () => {
   }
 
   useEffect(() => {
+    const basket = localStorage.getItem('cart');
+    if (basket) dispatch(addToCart(JSON.parse(basket)));
+
     getItems();
   }, []);
 

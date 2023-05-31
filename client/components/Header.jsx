@@ -42,6 +42,7 @@ const womensCategory = [
 
 const Header = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
+  const cartNumber = useSelector((state) => state.shoppingCart.cart);
 
   const [id, getId] = useState(null);
   const [openModalAuth, setOpenModalAuth] = useState(false);
@@ -121,8 +122,8 @@ const Header = () => {
               <Box>
                 <Link href="/basket">
                   <Badge
-                    badgeContent={badgeCount}
-                    color="secondary"
+                    badgeContent={cartNumber?.length}
+                    color="primary"
                     invisible={badgeCount === 0}
                     sx={{
                       '& .MuiBadge-badge': {
@@ -150,9 +151,23 @@ const Header = () => {
             ) : (
               <Box>
                 <Link href="/basket">
-                  <IconButton sx={{ color: 'white' }}>
-                    <ShoppingBagOutlined />
-                  </IconButton>
+                  <Badge
+                    badgeContent={cartNumber?.length}
+                    color="primary"
+                    invisible={badgeCount === 0}
+                    sx={{
+                      '& .MuiBadge-badge': {
+                        right: 5,
+                        top: 5,
+                        padding: '0 4px',
+                        height: '14px',
+                        minWidth: '13px',
+                      },
+                    }}>
+                    <IconButton sx={{ color: 'white' }}>
+                      <ShoppingBagOutlined />
+                    </IconButton>
+                  </Badge>
                 </Link>
                 <IconButton
                   onClick={() => setOpenModalAuth(!openModalAuth)}
