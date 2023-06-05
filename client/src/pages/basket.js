@@ -4,6 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import styled from '@emotion/styled';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -12,54 +14,53 @@ const FlexBox = styled(Box)`
 `;
 
 const Basket = () => {
-  const [cart, setCart] = useState([]);
+  const basket = useSelector((state) => state.shoppingCart.basket);
 
-  async function getCart() {
-    const res = await fetch(`${process.env.API_URL}/api/products/${slug}?populate=*`);
-    const product = await res.json();
-
-    return { props: { product } };
-  }
-  const getShoppingList = async () => {
-    const item = JSON.parse(localStorage.getItem('cart'));
-    const res = await fetch(`${process.env.API_URL}/api/products/${item?.item}?populate=*`);
-    const product = await res.json();
-  };
-
-  useEffect(() => {
-    setCart(JSON.parse(localStorage.getItem('id')));
-    getShoppingList();
-  }, []);
+  console.log(basket);
 
   return (
     <Box width="40%">
-      <FlexBox p="15px 0">
-        <Box flex="1 1 40%">
-          <img alt="alt" width="123px" height="164px" src="" />
-        </Box>
-        <Box flex="1 1 60%">
-          <FlexBox mb="5px">
-            <Typography fontWeight="bold">asdas</Typography>
-            <IconButton>
-              <CloseIcon />
-            </IconButton>
-          </FlexBox>
-          <Typography>agf</Typography>
-          <FlexBox m="15px 0">
-            <Box display="flex" alignItems="center" border={`1.5px solid black`}>
-              <IconButton>
-                <RemoveIcon />
-              </IconButton>
-              <Typography>1</Typography>
-              <IconButton>
-                <AddIcon />
-              </IconButton>
-            </Box>
-            <Typography fontWeight="bold">$ 15</Typography>
-          </FlexBox>
-        </Box>
-      </FlexBox>
-      <Divider />
+      {basket.map((item) => {
+        return (
+          <>
+            <FlexBox p="15px 0">
+              <Box flex="1 1 40%">
+                <img
+                  src={
+                    `http://localhost:1337` +
+                    item.item.attributes.image.data[0].attributes.formats.small.url
+                  }
+                  alt="alt"
+                  width="150px"
+                  height="164px"
+                />
+              </Box>
+              <Box flex="1 1 60%">
+                <FlexBox mb="5px">
+                  <Typography fontWeight="bold">{item.item.attributes.title}</Typography>
+                  <IconButton>
+                    <CloseIcon />
+                  </IconButton>
+                </FlexBox>
+                <Typography>agf</Typography>
+                <FlexBox m="15px 0">
+                  <Box display="flex" alignItems="center" border={`1.5px solid black`}>
+                    <IconButton>
+                      <RemoveIcon />
+                    </IconButton>
+                    <Typography>{item.qnty}</Typography>
+                    <IconButton>
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
+                  <Typography fontWeight="bold">$ 15</Typography>
+                </FlexBox>
+              </Box>
+            </FlexBox>
+            <Divider />
+          </>
+        );
+      })}
     </Box>
   );
 };

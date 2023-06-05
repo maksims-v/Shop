@@ -18,7 +18,7 @@ import Gallery from 'react-photo-gallery-next';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import React from 'react';
 import Link from 'next/link';
-import { addToCart } from '@/state/shoppingCartSlice';
+import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ItemDetails = ({ product }) => {
@@ -29,41 +29,40 @@ const ItemDetails = ({ product }) => {
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
-  const [alignment, setAlignment] = useState('');
+  const [size, setSize] = useState('uni');
 
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.shoppingCart.cart);
-
-  const [disabled, setDisabled] = useState(0);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const basket = useSelector((state) => state.shoppingCart.basket);
 
   const addToBag = () => {
-    setButtonDisabled(true);
-    dispatch(
-      addToCart([
-        ...cart,
-        { data: data, item: data.attributes.slug, qnty: count, size: alignment, id: data.id },
-      ]),
-    );
+    const item = {
+      item: data,
+      name: data.attributes.slug,
+      qnty: count,
+      productSize: size,
+      id: data.id,
+    };
+
+    const product = basket
+      .filter((item) => item.id === data.id)
+      .filter((item) => item.productSize === size);
+
+    if (product.length === 0) {
+      dispatch(addToBasket([...basket, item]));
+    }
   };
 
   useEffect(() => {
     setData(product.data);
     createPhotoGallery(data?.attributes?.image?.data);
 
-    setDisabled(cart.filter((item) => item.id === data.id));
-
-    if (disabled.length !== 0) {
-      console.log('hai');
-      setButtonDisabled(true);
-    } else {
-      setButtonDisabled(false);
-    }
+    const basket = localStorage.getItem('cart');
+    if (basket) dispatch(addToBasket(JSON.parse(basket)));
   }, [data]);
 
   const sizeHandleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+    setSize(newAlignment);
   };
 
   function createPhotoGallery(data) {
@@ -173,7 +172,7 @@ const ItemDetails = ({ product }) => {
           <Box mb="10px" maxWidth="300px">
             <ToggleButtonGroup
               color="primary"
-              value={alignment}
+              value={size}
               exclusive
               onChange={sizeHandleChange}
               aria-label="Platform">
@@ -208,33 +207,19 @@ const ItemDetails = ({ product }) => {
                 <AddIcon />
               </IconButton>
             </Box>
-            {!buttonDisabled ? (
-              <Button
-                onClick={addToBag}
-                color="error"
-                variant="outlined"
-                sx={{
-                  borderRadius: 0,
-                  minWidth: '150px',
-                  padding: '10px 40px',
-                  borderRadius: '3px',
-                }}>
-                PIRKT
-              </Button>
-            ) : (
-              <Button
-                disabled
-                color="error"
-                variant="outlined"
-                sx={{
-                  borderRadius: 0,
-                  minWidth: '150px',
-                  padding: '10px 40px',
-                  borderRadius: '3px',
-                }}>
-                PIRKT
-              </Button>
-            )}
+
+            <Button
+              onClick={addToBag}
+              color="error"
+              variant="outlined"
+              sx={{
+                borderRadius: 0,
+                minWidth: '150px',
+                padding: '10px 40px',
+                borderRadius: '3px',
+              }}>
+              PIRKT
+            </Button>
           </Box>
           <Box>
             <Box m="20px 0 5px 0" display="flex">
