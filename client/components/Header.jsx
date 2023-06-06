@@ -42,7 +42,7 @@ const womensCategory = [
 
 const Header = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
-  const cartNumber = useSelector((state) => state.shoppingCart.cart);
+  const basket = useSelector((state) => state.shoppingCart.basket);
 
   const [id, getId] = useState(null);
   const [openModalAuth, setOpenModalAuth] = useState(false);
@@ -122,7 +122,7 @@ const Header = () => {
               <Box>
                 <Link href="/basket">
                   <Badge
-                    badgeContent={cartNumber?.length}
+                    badgeContent={basket?.length}
                     color="primary"
                     invisible={badgeCount === 0}
                     sx={{
@@ -152,7 +152,7 @@ const Header = () => {
               <Box>
                 <Link href="/basket">
                   <Badge
-                    badgeContent={cartNumber?.length}
+                    badgeContent={basket?.length}
                     color="primary"
                     invisible={badgeCount === 0}
                     sx={{

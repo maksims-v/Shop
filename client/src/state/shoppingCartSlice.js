@@ -11,7 +11,9 @@ export const shoppingCartSlice = createSlice({
   reducers: {
     addToBasket(state, action) {
       state.basket = action.payload;
-      localStorage.setItem('cart', JSON.stringify(state.basket));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cart', JSON.stringify(state.basket));
+      }
     },
   },
 });
