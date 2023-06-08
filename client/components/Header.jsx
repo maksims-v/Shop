@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box, IconButton, Badge, Container } from '@mui/material';
@@ -8,8 +8,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import MobileSideBarMenu from './MobileSideBarMenu';
 import AuthModal from './AuthModal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
+import { addToBasket } from '@/state/shoppingCartSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
@@ -44,6 +45,8 @@ const Header = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const basket = useSelector((state) => state.shoppingCart.basket);
 
+  const dispatch = useDispatch();
+
   const [id, getId] = useState(null);
   const [openModalAuth, setOpenModalAuth] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -69,6 +72,11 @@ const Header = () => {
   const logout = () => {
     unsetToken();
   };
+
+  useEffect(() => {
+    const basket = localStorage.getItem('cart');
+    if (basket) dispatch(addToBasket(JSON.parse(basket)));
+  }, []);
 
   return (
     <>
