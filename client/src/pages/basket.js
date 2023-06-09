@@ -1,9 +1,10 @@
-import { Box, Button, Typography, Divider } from '@mui/material';
+import { Box, Button, Typography, Divider, IconButton } from '@mui/material';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import BasketItem from 'components/BasketItem';
-import { addToBasket } from '@/state/shoppingCartSlice';
+import { addToBasket, basketReset } from '@/state/shoppingCartSlice';
 import { Fragment } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Basket = () => {
   const basket = useSelector((state) => state.shoppingCart.basket);
@@ -48,8 +49,12 @@ const Basket = () => {
     );
   };
 
+  const cleanBasket = () => {
+    dispatch(basketReset());
+  };
+
   return (
-    <Box display="flex" justifyContent="space-around" pt="20px">
+    <Box display="flex" justifyContent="space-around" pt="20px" pb="20px">
       <Box width="40%">
         {basket.map((item, index) => (
           <BasketItem
@@ -91,7 +96,14 @@ const Basket = () => {
           </Box>
           {basket.map((item, index) => (
             <Fragment key={index}>
-              <Box display="flex" justifyContent="space-between" p="5px" alignItems="center">
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                p="5px 5px 5px 0px"
+                alignItems="center">
+                <IconButton sx={{ p: '0px 5px 0px 0px' }} onClick={() => deleteProduct(item)}>
+                  <CloseIcon />
+                </IconButton>
                 <Box
                   width="55%"
                   fontSize="11px"
@@ -107,7 +119,10 @@ const Basket = () => {
                   {item.productSize.toUpperCase()}
                 </Box>
                 <Box textAlign="center" width="15%" fontWeight="bold">
-                  €{item.item.attributes.price * item.qnty}
+                  €
+                  {item.item.attributes.salePrice
+                    ? item.item.attributes.salePrice * item.qnty
+                    : item.item.attributes.price * item.qnty}
                 </Box>
               </Box>
               <Divider />
@@ -118,10 +133,15 @@ const Basket = () => {
           <Typography fontSize="16px" fontWeight="bold">
             Kopā: €
             {basket.reduce(function (summ, item) {
-              const summItem = item.qnty * item.item.attributes.price;
+              const summItem = item.item.attributes.sale
+                ? item.qnty * item.item.attributes.salePrice
+                : item.qnty * item.item.attributes.price;
               return summ + summItem;
             }, 0)}
           </Typography>
+          <Button onClick={cleanBasket} variant="outlined" color="error" size="large">
+            Dzest grozu
+          </Button>
           <Button variant="outlined" size="large">
             Talak
           </Button>

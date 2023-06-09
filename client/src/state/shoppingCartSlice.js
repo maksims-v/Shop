@@ -15,9 +15,15 @@ export const shoppingCartSlice = createSlice({
         localStorage.setItem('cart', JSON.stringify(state.basket));
       }
     },
+    basketReset(state) {
+      state.basket = [];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('cart', JSON.stringify(state.basket));
+      }
+    },
   },
 });
 
-export const { addToBasket } = shoppingCartSlice.actions;
+export const { addToBasket, basketReset } = shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;

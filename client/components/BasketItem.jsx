@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -31,9 +30,17 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
         </Box>
         <Box flex="1 1 60%">
           <FlexBox mb="10px">
-            <Typography fontWeight="bold" color="#1976d2">
-              {item.item.attributes.title}
-            </Typography>
+            <Link href={`/productpage/${item.item.attributes.slug}`}>
+              <Typography
+                sx={{
+                  '&:hover': { cursor: 'pointer', color: 'black' },
+                  color: '#1976d2',
+                  fontWeight: 'bold',
+                }}>
+                {item.item.attributes.title}
+              </Typography>
+            </Link>
+
             <IconButton onClick={() => deleteProduct(item)}>
               <CloseIcon />
             </IconButton>
@@ -50,10 +57,25 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
               </IconButton>
             </Box>
             <Box pl="10px" pt="5px">
-              <Box pb="0px">
-                Cena par vienību:
-                <Box component="span" sx={{ fontWeight: 'bold' }}>
-                  {` €${item.item.attributes.price}`}
+              <Box pb="0px" display="flex" alignItems="center">
+                <Box>Cena par vienību: </Box>
+
+                <Box display="flex" flexDirection="column" pl="5px">
+                  {item.item.attributes.sale ? (
+                    <>
+                      <Box
+                        fontWeight="bold"
+                        color="red"
+                        lineHeight="13px">{` €${item.item.attributes.salePrice}`}</Box>
+                      <Box
+                        sx={{
+                          textDecorationLine: 'line-through',
+                          fontSize: '10px',
+                        }}>{` €${item.item.attributes.price}`}</Box>
+                    </>
+                  ) : (
+                    <Box fontWeight="bold">{` €${item.item.attributes.price}`}</Box>
+                  )}
                 </Box>
               </Box>
               <Box>

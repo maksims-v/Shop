@@ -7,21 +7,29 @@ import {
   Breadcrumbs,
   ToggleButton,
   ToggleButtonGroup,
+  Tabs,
+  Tab,
 } from '@mui/material';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { useState, useCallback, useEffect } from 'react';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { useState, useCallback, useEffect, forwardRef } from 'react';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Gallery from 'react-photo-gallery-next';
 import Carousel, { Modal, ModalGateway } from 'react-images';
-import React from 'react';
 import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const ItemDetails = ({ product }) => {
+  const [open, setOpen] = useState(false);
+
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [photos, setPhotos] = useState([]);
@@ -34,6 +42,18 @@ const ItemDetails = ({ product }) => {
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCart.basket);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const addToBag = () => {
     const item = {
@@ -51,6 +71,7 @@ const ItemDetails = ({ product }) => {
     if (product.length === 0) {
       dispatch(addToBasket([...basket, item]));
     }
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -257,6 +278,13 @@ const ItemDetails = ({ product }) => {
           ))} */}
         </Box>
       </Box>
+      <Stack>
+        <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            Produkts veiksmīgi pievienots iepirkumu grozam!
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Box>
   );
 };
