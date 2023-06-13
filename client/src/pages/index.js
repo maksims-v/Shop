@@ -1,5 +1,5 @@
+import NewProducts from 'components/NewProducts';
 import { Box } from '@mui/material';
-import MainSlider from 'components/MainSlider';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { mainSliderData, newArrivslsSliderData } from '@/state/slidersSlice';
@@ -31,8 +31,7 @@ const Home = () => {
 
   return (
     <Box mb="300px">
-      {/* <MainSlider /> */}
-
+      <NewProducts />
       <Box m="20px 0px 50px 0px" fontWeight="bold" fontSize="20px">
         <Link href="/newArrivals">
           <Box component="span">New Arrivals</Box>{' '}

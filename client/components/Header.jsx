@@ -15,7 +15,7 @@ import { addToBasket } from '@/state/shoppingCartSlice';
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
   { id: 2, title: "WOMEN'S", path: '/womens' },
-  { id: 3, title: 'KIDS', path: 'kids' },
+  { id: 3, title: 'KIDS', path: '/kids' },
   { id: 4, title: 'BRANDS', path: 'brands' },
   { id: 5, title: 'SALE', path: 'sale' },
   { id: 6, title: 'CLERANCE', path: 'clerance' },

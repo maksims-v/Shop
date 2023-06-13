@@ -1,15 +1,21 @@
 import { Box, Button, Typography, Divider, IconButton } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import BasketItem from 'components/BasketItem';
 import { addToBasket, basketReset } from '@/state/shoppingCartSlice';
 import { Fragment } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const Basket = () => {
   const basket = useSelector((state) => state.shoppingCart.basket);
 
   const dispatch = useDispatch();
+
+  const largeScreen = useMediaQuery('(min-width:1200px)');
+  const mediumScreen = useMediaQuery('(min-width:900px)');
 
   const deleteProduct = (item) => {
     dispatch(addToBasket(basket.filter((product) => product !== item)));
@@ -54,8 +60,12 @@ const Basket = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="space-around" pt="20px" pb="20px">
-      <Box width="40%">
+    <Box
+      display="flex"
+      justifyContent={largeScreen ? 'space-around' : mediumScreen ? 'space-between' : 'center'}
+      p={largeScreen ? '20px 0px' : '10px 20px'}
+      width="100%">
+      <Box width="40%" minWidth="415px" display={mediumScreen ? 'block' : 'none'}>
         {basket.map((item, index) => (
           <BasketItem
             item={item}
@@ -67,10 +77,11 @@ const Basket = () => {
         ))}
       </Box>
       <Box
-        width="30%"
-        height="500px"
+        width={mediumScreen ? '30%' : '60%'}
+        minWidth="350px"
+        minHeight="200px"
         bgcolor="#edf5fc"
-        p="10px 30px 30px 30px"
+        p="10px 10px 30px 10px"
         mt="10px"
         display="flex"
         flexDirection="column"
@@ -104,16 +115,36 @@ const Basket = () => {
                 <IconButton sx={{ p: '0px 5px 0px 0px' }} onClick={() => deleteProduct(item)}>
                   <CloseIcon />
                 </IconButton>
+                {mediumScreen ? null : (
+                  <Link href={`/productpage/${item.item.attributes.slug}`}>
+                    <img
+                      src={
+                        `http://localhost:1337` +
+                        item.item.attributes.image.data[0].attributes.formats.small.url
+                      }
+                      alt="alt"
+                      width="70px"
+                      height="84px"
+                    />
+                  </Link>
+                )}
                 <Box
                   width="55%"
                   fontSize="11px"
+                  ml={mediumScreen ? '0px' : '10px'}
                   sx={{ '&:hover': { cursor: 'pointer', color: 'black' }, color: '#1976d2' }}>
                   <Link href={`/productpage/${item.item.attributes.slug}`}>
                     {item.item.attributes.title}
                   </Link>
                 </Box>
-                <Box pl="3px" width="15%" textAlign="center" fontWeight="bold">
+                <Box pl="3px" width="15%" textAlign="center" fontWeight="bold" display="flex">
+                  <IconButton sx={{ p: '0px 5px 0px 0px' }} onClick={() => decrease(item)}>
+                    <RemoveIcon fontSize="small" />
+                  </IconButton>
                   {item.qnty}
+                  <IconButton sx={{ p: '0px 0px 0px 5px' }} onClick={() => increase(item)}>
+                    <AddIcon fontSize="small" />
+                  </IconButton>
                 </Box>
                 <Box width="15%" textAlign="center" height="100%" fontWeight="bold">
                   {item.productSize.toUpperCase()}

@@ -28,6 +28,32 @@
     },
     "href": {
       "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "featured",
+        "collections",
+        "clothing",
+        "footwear",
+        "accessories",
+        "activity",
+        "technology"
+      ],
+      "required": true
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "mens",
+        "womens",
+        "kids",
+        "brands",
+        "sale",
+        "clearance"
+      ],
+      "required": true
     }
   }
 }
