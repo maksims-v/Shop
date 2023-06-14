@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
       </Head>
       <CssBaseline />
       <Header />
-      <Container disableGutters={true} maxWidth="xl" sx={{ mt: '60px' }}>
+      <Container disableGutters={true} maxWidth="lg" sx={{ mt: '60px' }}>
         {children}
       </Container>
       <Footer />

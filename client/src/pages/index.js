@@ -1,16 +1,15 @@
-import NewProducts from 'components/NewProducts';
+import HeadBanner from 'components/HeadBanner';
 import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { mainSliderData, newArrivslsSliderData } from '@/state/slidersSlice';
-import Link from 'next/link';
 import NewArrivalsSlider from 'components/NewArrivalsSlider';
 
 const Home = () => {
   const dispatch = useDispatch();
 
   async function getItems() {
-    const getMainSliderData = await fetch('http://localhost:1337/api/sliders?populate=*', {
+    const getBanner = await fetch('http://localhost:1337/api/head-banners?populate=*', {
       method: 'GET',
     });
 
@@ -18,7 +17,7 @@ const Home = () => {
       method: 'GET',
     });
 
-    const mainSliderDataJson = await getMainSliderData.json();
+    const mainSliderDataJson = await getBanner.json();
     const newArrivalsDataJson = await newArrivalsData.json();
 
     dispatch(mainSliderData(mainSliderDataJson?.data));
@@ -31,12 +30,7 @@ const Home = () => {
 
   return (
     <Box mb="300px">
-      <NewProducts />
-      <Box m="20px 0px 50px 0px" fontWeight="bold" fontSize="20px">
-        <Link href="/newArrivals">
-          <Box component="span">New Arrivals</Box>{' '}
-        </Link>
-      </Box>
+      <HeadBanner />
       <NewArrivalsSlider />
     </Box>
   );

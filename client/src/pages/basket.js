@@ -91,17 +91,36 @@ const Basket = () => {
           Groza saturs:
         </Typography>
         <Box flexGrow="1" mb="10px">
-          <Box display="flex" justifyContent="space-between" p="5px" borderBottom="1px solid black">
-            <Box width="55%" fontWeight="bold">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            pb="5px"
+            borderBottom="1px solid black">
+            <Box width={mediumScreen ? '55%' : '80%'} fontWeight="bold">
               Nosaukums
             </Box>
-            <Box pl="3px" width="15%" textAlign="center" fontWeight="bold">
+            <Box
+              pl="3px"
+              width="15%"
+              textAlign="center"
+              fontWeight="bold"
+              fontSize={!mediumScreen && '10px'}>
               Skaits:
             </Box>
-            <Box width="15%" textAlign="center" fontWeight="bold">
+            <Box
+              pl={!mediumScreen && '3px'}
+              width="15%"
+              textAlign="center"
+              fontWeight="bold"
+              fontSize={!mediumScreen && '10px'}>
               Izmērs:
             </Box>
-            <Box width="15%" textAlign="center" fontWeight="bold">
+            <Box
+              pl={!mediumScreen && '3px'}
+              width="15%"
+              textAlign="center"
+              fontWeight="bold"
+              fontSize={!mediumScreen && '10px'}>
               Summa:
             </Box>
           </Box>
@@ -137,24 +156,49 @@ const Basket = () => {
                     {item.item.attributes.title}
                   </Link>
                 </Box>
-                <Box pl="3px" width="15%" textAlign="center" fontWeight="bold" display="flex">
+                <Box
+                  pl="3px"
+                  textAlign="center"
+                  fontWeight="bold"
+                  display="flex"
+                  fontSize={!mediumScreen && '14px'}>
                   <IconButton sx={{ p: '0px 5px 0px 0px' }} onClick={() => decrease(item)}>
-                    <RemoveIcon fontSize="small" />
+                    <RemoveIcon fontSize={mediumScreen ? 'small' : 'medium'} />
                   </IconButton>
                   {item.qnty}
                   <IconButton sx={{ p: '0px 0px 0px 5px' }} onClick={() => increase(item)}>
-                    <AddIcon fontSize="small" />
+                    <AddIcon fontSize={mediumScreen ? 'small' : 'medium'} />
                   </IconButton>
                 </Box>
-                <Box width="15%" textAlign="center" height="100%" fontWeight="bold">
-                  {item.productSize.toUpperCase()}
-                </Box>
-                <Box textAlign="center" width="15%" fontWeight="bold">
-                  €
-                  {item.item.attributes.salePrice
-                    ? item.item.attributes.salePrice * item.qnty
-                    : item.item.attributes.price * item.qnty}
-                </Box>
+                {mediumScreen ? (
+                  <>
+                    <Box
+                      width="15%"
+                      textAlign="center"
+                      height="100%"
+                      fontWeight={mediumScreen && 'bold'}>
+                      {item.productSize.toUpperCase()}
+                    </Box>
+                    <Box textAlign="center" width="15%" fontWeight="bold">
+                      €
+                      {item.item.attributes.salePrice
+                        ? item.item.attributes.salePrice * item.qnty
+                        : item.item.attributes.price * item.qnty}
+                    </Box>
+                  </>
+                ) : (
+                  <Box display="flex" flexDirection="column" width="30%">
+                    <Box textAlign="center" height="100%" fontWeight={mediumScreen && 'bold'}>
+                      {item.productSize.toUpperCase()}
+                    </Box>
+                    <Box textAlign="center" fontWeight="bold">
+                      €
+                      {item.item.attributes.salePrice
+                        ? item.item.attributes.salePrice * item.qnty
+                        : item.item.attributes.price * item.qnty}
+                    </Box>
+                  </Box>
+                )}
               </Box>
               <Divider />
             </Fragment>

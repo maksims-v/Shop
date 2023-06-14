@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "head_banners",
+  "info": {
+    "singularName": "head-banner",
+    "pluralName": "head-banners",
+    "displayName": "Head Banner",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "gendre": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "mens",
+        "womens",
+        "kids",
+        "brands",
+        "sale",
+        "clearance"
+      ],
+      "required": true,
+      "default": "all"
+    },
+    "cattegory": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "featured",
+        "collections",
+        "clothing",
+        "footwear",
+        "accessories",
+        "activity",
+        "technology"
+      ],
+      "required": true,
+      "default": "all"
+    }
+  }
+}
