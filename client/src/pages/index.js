@@ -1,5 +1,5 @@
 import HeadBanner from 'components/HeadBanner';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { mainSliderData, newArrivslsSliderData } from '@/state/slidersSlice';
@@ -24,6 +24,17 @@ const Home = () => {
     dispatch(newArrivslsSliderData(newArrivalsDataJson?.data));
   }
 
+  async function searchFilterItems() {
+    const getFilterItems = await fetch('http://localhost:1337/api/products/hoddie?populate=*');
+
+    // const getFilterItemsJson = await getFilterItems.json();
+    // const response = await getFilterItemsJson.json();
+  }
+
+  const search = () => {
+    searchFilterItems();
+  };
+
   useEffect(() => {
     getItems();
   }, []);
@@ -31,6 +42,7 @@ const Home = () => {
   return (
     <Box mb="300px">
       <HeadBanner />
+      <Button onClick={search}> Жми</Button>
       <NewArrivalsSlider />
     </Box>
   );
