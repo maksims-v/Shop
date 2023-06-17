@@ -9,32 +9,40 @@ const { createCoreController } = require("@strapi/strapi").factories;
 module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   async findOne(ctx) {
     const { slug } = ctx.params;
-    // const { query } = ctx;
 
-    // const entity = await strapi.db.query("api::product.product").findOne({
-    //   where: { slug },
-    //   populate: {
-    //     image: "*",
-    //   },
-    // });
-
-    const entity = await strapi.db.query("api::product.product").findMany({
+    const entity = await strapi.db.query("api::product.product").findOne({
       where: { slug },
-      populate: true,
+      populate: {
+        image: true,
+      },
     });
-
-    console.log(entity);
 
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
     return this.transformResponse(sanitizedEntity);
   },
 
   async filterSearch(ctx) {
-    try {
-      ctx.body = "ok";
-    } catch (error) {
-      ctx.body = error;
-    }
+    const { slug } = ctx.params;
+    const { sale } = ctx.query;
+    const { newProduct } = ctx.query;
+    const { search } = ctx.query;
+    console.log(search);
+
+    const entity = await strapi.entityService.findMany("api::product.product", {
+      filters: {
+        title: {
+          $startsWith: search,
+        },
+      },
+      populate: { image: true },
+    });
+
+    // const entity = await strapi.db.query("api::product.product").findMany({
+    //   where: { sale: true },
+    // });
+
+    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+    return this.transformResponse(sanitizedEntity);
   },
 
   build: async (ctx) => {

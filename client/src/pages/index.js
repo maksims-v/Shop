@@ -24,13 +24,6 @@ const Home = () => {
     dispatch(newArrivslsSliderData(newArrivalsDataJson?.data));
   }
 
-  async function searchFilterItems() {
-    const getFilterItems = await fetch('http://localhost:1337/api/products/hoddie?populate=*');
-
-    // const getFilterItemsJson = await getFilterItems.json();
-    // const response = await getFilterItemsJson.json();
-  }
-
   const search = () => {
     searchFilterItems();
   };
@@ -42,7 +35,6 @@ const Home = () => {
   return (
     <Box mb="300px">
       <HeadBanner />
-      <Button onClick={search}> Жми</Button>
       <NewArrivalsSlider />
     </Box>
   );

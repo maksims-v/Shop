@@ -43,10 +43,6 @@ const ItemDetails = ({ product }) => {
 
   const basket = useSelector((state) => state.shoppingCart.basket);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;

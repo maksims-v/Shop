@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge, Container } from '@mui/material';
+import { Box, IconButton, Badge, Container, TextField, Input } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -55,7 +55,14 @@ const Header = () => {
 
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
-  const search = () => {};
+  async function searchFilterItems() {
+    const getFilterItems = await fetch(
+      `http://localhost:1337/api/products/filter?search=${searchValue}`,
+    );
+
+    const response = await getFilterItems.json();
+    console.log(response);
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -72,6 +79,14 @@ const Header = () => {
   const logout = () => {
     unsetToken();
   };
+
+  useEffect(() => {
+    if (searchValue !== 0) {
+      setTimeout(() => {
+        searchFilterItems();
+      }, 1000);
+    }
+  }, [searchValue]);
 
   useEffect(() => {
     const basket = localStorage.getItem('cart');
@@ -122,10 +137,30 @@ const Header = () => {
               );
             })}
           </Box>
-          <Box display="flex" justifyContent="space-between" zIndex="2">
-            <IconButton onClick={search}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            zIndex="2"
+            sx={{ position: 'relative' }}>
+            <IconButton onClick={() => searchFilterItems()}>
               <SearchOutlined sx={{ color: 'white' }} />
             </IconButton>
+
+            <TextField
+              id="outlined-basic"
+              label="Meklet"
+              variant="outlined"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              sx={{
+                position: 'absolute',
+                top: '-8px',
+                right: '100%',
+                width: '200px',
+                zIndex: 150,
+                backgroundColor: '#edf5fc',
+              }}
+            />
             {isAuth ? (
               <Box>
                 <Link href="/basket">
