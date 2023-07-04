@@ -1,0 +1,29 @@
+import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Item from 'components/Item';
+
+const Search = () => {
+  const [searchData, setSearchData] = useState([]);
+
+  const productSearch = useSelector((state) => state.search.searchProduct);
+
+  useEffect(() => {
+    search();
+    console.log(productSearch);
+  }, [productSearch]);
+
+  async function search() {
+    const getFilterItems = await fetch(
+      `http://localhost:1337/api/products/filter?search=${productSearch}`,
+    );
+
+    const response = await getFilterItems.json();
+    setSearchData(response.data);
+    console.log(searchData);
+  }
+
+  return <Box> {searchData && searchData.map((item) => <Item key={item.id} item={item} />)} </Box>;
+};
+
+export default Search;

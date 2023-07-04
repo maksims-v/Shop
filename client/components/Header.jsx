@@ -11,6 +11,7 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
+import { searchItem } from '@/state/searchSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: '/mens' },
@@ -55,14 +56,9 @@ const Header = () => {
 
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
-  async function searchFilterItems() {
-    const getFilterItems = await fetch(
-      `http://localhost:1337/api/products/filter?search=${searchValue}`,
-    );
-
-    const response = await getFilterItems.json();
-    console.log(response);
-  }
+  const search = () => {
+    dispatch(searchItem(searchValue));
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -79,14 +75,6 @@ const Header = () => {
   const logout = () => {
     unsetToken();
   };
-
-  useEffect(() => {
-    if (searchValue !== 0) {
-      setTimeout(() => {
-        searchFilterItems();
-      }, 1000);
-    }
-  }, [searchValue]);
 
   useEffect(() => {
     const basket = localStorage.getItem('cart');
@@ -142,15 +130,18 @@ const Header = () => {
             justifyContent="space-between"
             zIndex="2"
             sx={{ position: 'relative' }}>
-            <IconButton onClick={() => searchFilterItems()}>
-              <SearchOutlined sx={{ color: 'white' }} />
-            </IconButton>
+            <Link href="/search">
+              <IconButton onClick={() => search()}>
+                <SearchOutlined sx={{ color: 'white' }} />
+              </IconButton>
+            </Link>
 
             <TextField
               id="outlined-basic"
               label="Meklet"
               variant="outlined"
-              value={searchValue}
+              // value={searchValue}
+              defaultValue=""
               onChange={(e) => setSearchValue(e.target.value)}
               sx={{
                 position: 'absolute',

@@ -7,12 +7,14 @@ import { ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import Layout from 'components/Layout.jsx';
+import searchSlice from '@/state/searchSlice.js';
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     sliders: slidersSlice,
     shoppingCart: shoppingCartSlice,
+    search: searchSlice,
   },
 });
 
