@@ -23,7 +23,18 @@ const Search = () => {
     console.log(searchData);
   }
 
-  return <Box> {searchData && searchData.map((item) => <Item key={item.id} item={item} />)} </Box>;
+  return (
+    <Box
+      margin="0 auto"
+      display="grid"
+      justifyContent="space-around"
+      columnGap="1.33"
+      rowGap="20px"
+      gridTemplateColumns="repeat(auto-fill, 300px)">
+      {' '}
+      {searchData && searchData.map((item) => <Item key={item.id} item={item} />)}{' '}
+    </Box>
+  );
 };
 
 export default Search;

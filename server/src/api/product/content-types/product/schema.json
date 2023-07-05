@@ -59,20 +59,17 @@
     "salePrice": {
       "type": "integer"
     },
-    "attributes": {
-      "type": "json",
-      "required": false
-    },
     "slug": {
       "type": "string",
       "required": true,
       "unique": true
     },
-    "variations": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::variation.variation",
-      "mappedBy": "product"
+    "brand": {
+      "type": "string",
+      "required": false
+    },
+    "attributes": {
+      "type": "json"
     }
   }
 }

@@ -137,10 +137,11 @@ const Header = () => {
             </Link>
 
             <TextField
+              value={searchValue}
               id="outlined-basic"
               label="Meklet"
               variant="outlined"
-              // value={searchValue}
+              name="identifier"
               defaultValue=""
               onChange={(e) => setSearchValue(e.target.value)}
               sx={{
