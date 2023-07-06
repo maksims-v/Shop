@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_ui_socials",
+  "info": {
+    "displayName": "social"
+  },
+  "options": {},
+  "attributes": {
+    "social": {
+      "type": "string"
+    }
+  }
+}

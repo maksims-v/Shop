@@ -14,8 +14,11 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       where: { slug },
       populate: {
         image: true,
+        Size: true,
       },
     });
+
+    console.log(entity);
 
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
     return this.transformResponse(sanitizedEntity);

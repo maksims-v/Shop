@@ -142,7 +142,6 @@ const Header = () => {
               label="Meklet"
               variant="outlined"
               name="identifier"
-              defaultValue=""
               onChange={(e) => setSearchValue(e.target.value)}
               sx={{
                 position: 'absolute',

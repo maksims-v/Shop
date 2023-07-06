@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_layout_links",
+  "info": {
+    "displayName": "link"
+  },
+  "options": {},
+  "attributes": {
+    "link": {
+      "type": "string"
+    }
+  }
+}
