@@ -54,7 +54,8 @@
         "tshirt",
         "mug",
         "hoodie",
-        "heat"
+        "heat",
+        "shoes"
       ],
       "required": true,
       "pluginOptions": {
@@ -127,23 +128,15 @@
         }
       }
     },
-    "attributes": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "show": {
+    "color": {
+      "type": "component",
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "boolean",
-      "default": true,
-      "required": true
+      "component": "color.color"
     }
   }
 }

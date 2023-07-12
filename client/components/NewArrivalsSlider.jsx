@@ -10,6 +10,8 @@ import Link from 'next/link';
 const NewArrivalsSlider = () => {
   const sliderData = useSelector((state) => state.sliders.newArrivalsData);
 
+  console.log(sliderData);
+
   return (
     <Box width="100%" m="20px 0px 50px 0px" fontWeight="bold" fontSize="20px">
       <Link href="/newArrivals">

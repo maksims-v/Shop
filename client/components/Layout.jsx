@@ -1,4 +1,4 @@
-import { Container, CssBaseline } from '@mui/material';
+import { Container, CssBaseline, Box } from '@mui/material';
 import Header from './Header';
 import Footer from './Footer';
 import Head from 'next/head';
@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
       </Head>
       <CssBaseline />
       <Header />
-      <Container disableGutters={true} maxWidth="lg" sx={{ mt: '60px' }}>
+      <Container disableGutters={true} maxWidth="lg" sx={{ mt: '60px', flex: '1 0 auto' }}>
         {children}
       </Container>
       <Footer />

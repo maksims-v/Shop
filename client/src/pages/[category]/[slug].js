@@ -28,7 +28,6 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 const ItemDetails = ({ product }) => {
-  console.log(product);
   const [open, setOpen] = useState(false);
 
   const [data, setData] = useState([]);
@@ -52,6 +51,8 @@ const ItemDetails = ({ product }) => {
     setOpen(false);
   };
 
+  console.log(product);
+
   const addToBag = () => {
     const item = {
       item: data,
@@ -72,7 +73,7 @@ const ItemDetails = ({ product }) => {
   };
 
   useEffect(() => {
-    setData(product.data);
+    setData(product.data[0]);
     createPhotoGallery(data?.attributes?.image?.data);
 
     const basket = localStorage.getItem('cart');
@@ -155,13 +156,9 @@ const ItemDetails = ({ product }) => {
             <Link underline="hover" color="inherit" href="/">
               HOME
             </Link>
-            <Link
-              underline="hover"
-              color="inherit"
-              href="/material-ui/getting-started/installation/">
-              Core
+            <Link underline="hover" color="inherit" href={`/${data?.attributes?.category}`}>
+              {data?.attributes?.category}
             </Link>
-            <Typography color="text.primary">{data?.attributes?.category}</Typography>
           </Breadcrumbs>
 
           <Box m="65px 0 25px 0">
@@ -288,9 +285,11 @@ const ItemDetails = ({ product }) => {
 
 export default ItemDetails;
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, query }) {
   const { slug } = params;
-  const res = await fetch(`${process.env.API_URL}/api/products/${slug}?populate=*`);
+  const { title } = query;
+
+  const res = await fetch(`${process.env.API_URL}/api/products/${slug}?title=${title}`);
   const product = await res.json();
 
   return { props: { product } };

@@ -95,7 +95,8 @@ const Header = () => {
         top="0"
         left="0"
         zIndex="50"
-        flexDirection="column">
+        flexDirection="column"
+        flex="0 0 auto">
         <Container
           maxWidth="xl"
           sx={{

@@ -1,16 +1,15 @@
 import Link from 'next/link';
+
 import {
   Card,
   CardMedia,
   CardContent,
   CardActions,
-  IconButton,
   Typography,
   CardActionArea,
   Box,
   Divider,
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function Item({ item }) {
   return (
@@ -22,19 +21,16 @@ export default function Item({ item }) {
         p="0px 10px 0px 10px"
         height="54px">
         <Box fontSize="14px" fontWeight="bold">
-          {item?.attributes?.new && <Box color="#0085ca">NEW</Box>}
           {item?.attributes?.sale && (
             <Box fontWeight="bold" fontSize="14px" color="red" textAlign="left">
               SALE
             </Box>
           )}
+          {item?.attributes?.new && <Box color="#0085ca">NEW</Box>}
         </Box>
-        <IconButton aria-label="settings" sx={{ p: '0px' }}>
-          <FavoriteIcon fontSize="large" sx={{ color: '#e65f5f' }} />
-        </IconButton>
       </Box>
-      <Divider />
-      <Link href={`/productpage/${item.attributes.slug}`}>
+      <Link
+        href={`/${item.attributes.category}/${item.attributes.slug}?title=${item.attributes.title}`}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -50,7 +46,7 @@ export default function Item({ item }) {
           {item?.attributes?.title}
         </Typography>
         <Typography sx={{ textAlign: 'left', pt: '10px' }} variant="body2" color="text.secondary">
-          {item?.attributes?.color}
+          red
         </Typography>
       </CardContent>
 
