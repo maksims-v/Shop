@@ -11,18 +11,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const { slug } = ctx.params;
     const { title } = ctx.query;
 
-    // const entity = await strapi.db.query("api::product.product").findOne({
-    //   where: { slug },
-    //   populate: {
-    //     image: true,
-    //     Size: true,
-    //     color: true,
-    //   },
-    // });
-
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: { slug: slug },
-      populate: { image: true },
+      populate: { image: true, size: true },
     });
 
     const entity2 = await strapi.entityService.findMany(
@@ -30,8 +21,11 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       {
         filters: {
           $and: [{ title: title }, { slug: { $ne: slug } }],
+          publishedAt: {
+            $ne: null,
+          },
         },
-        populate: { image: true },
+        populate: { image: true, size: true },
       }
     );
 
@@ -47,6 +41,24 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {
         title: {
+          $startsWith: search,
+        },
+        publishedAt: {
+          $ne: null,
+        },
+      },
+      populate: { image: true },
+    });
+
+    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+    return this.transformResponse(sanitizedEntity);
+  },
+
+  async categorySearch(ctx) {
+    const { search } = ctx.query;
+    const entity = await strapi.entityService.findMany("api::product.product", {
+      filters: {
+        category: {
           $startsWith: search,
         },
         publishedAt: {

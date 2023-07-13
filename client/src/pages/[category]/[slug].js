@@ -9,6 +9,8 @@ import {
   ToggleButtonGroup,
   Tabs,
   Tab,
+  CardActionArea,
+  CardMedia,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
@@ -51,8 +53,6 @@ const ItemDetails = ({ product }) => {
     setOpen(false);
   };
 
-  console.log(product);
-
   const addToBag = () => {
     const item = {
       item: data,
@@ -78,7 +78,7 @@ const ItemDetails = ({ product }) => {
 
     const basket = localStorage.getItem('cart');
     if (basket) dispatch(addToBasket(JSON.parse(basket)));
-  }, [data]);
+  }, [data, product]);
 
   const sizeHandleChange = (event, newAlignment) => {
     setSize(newAlignment);
@@ -191,18 +191,37 @@ const ItemDetails = ({ product }) => {
               exclusive
               onChange={sizeHandleChange}
               aria-label="Platform">
-              {data?.attributes?.attributes?.size?.map((item) => {
+              {data?.attributes?.size?.map((item, index) => {
                 return (
                   <ToggleButton
-                    key={item.name}
-                    disabled={item.qnty === '0' && true}
+                    key={index}
+                    disabled={item.qnty === 0 && true}
                     color="error"
-                    value={item.name}>
-                    {item.name}
+                    value={item.size}>
+                    {item.size}
                   </ToggleButton>
                 );
               })}
             </ToggleButtonGroup>
+          </Box>
+          <Box display="flex">
+            {product.meta.length !== 0 &&
+              product.meta.map((item, index) => (
+                <Link
+                  key={index}
+                  underline="hover"
+                  color="inherit"
+                  href={`/${item.category}/${item.slug}?title=${item.title}`}>
+                  <CardActionArea sx={{ p: '0 15px' }}>
+                    <CardMedia
+                      component="img"
+                      height="100"
+                      image={`http://localhost:1337${item.image[0].url}`}
+                      alt="Paella dish"
+                    />
+                  </CardActionArea>
+                </Link>
+              ))}
           </Box>
 
           <Divider sx={{ mb: '10px' }} />

@@ -177,7 +177,7 @@ const Basket = () => {
                       textAlign="center"
                       height="100%"
                       fontWeight={mediumScreen && 'bold'}>
-                      {item.productSize.toUpperCase()}
+                      {item?.productSize?.toUpperCase()}
                     </Box>
                     <Box textAlign="center" width="15%" fontWeight="bold">
                       €

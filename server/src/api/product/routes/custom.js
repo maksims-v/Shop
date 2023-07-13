@@ -19,5 +19,14 @@ module.exports = {
         policies: [],
       },
     },
+    {
+      method: "GET",
+      path: "/products/categorysearch",
+      handler: "product.categorySearch",
+      config: {
+        auth: false,
+        policies: [],
+      },
+    },
   ],
 };
