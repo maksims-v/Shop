@@ -10,7 +10,6 @@ const Search = () => {
 
   useEffect(() => {
     search();
-    console.log(productSearch);
   }, [productSearch]);
 
   async function search() {
@@ -20,7 +19,6 @@ const Search = () => {
 
     const response = await getFilterItems.json();
     setSearchData(response.data);
-    console.log(searchData);
   }
 
   return (

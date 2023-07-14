@@ -48,7 +48,7 @@
         }
       }
     },
-    "category": {
+    "productcategory": {
       "type": "enumeration",
       "enum": [
         "tshirt",
@@ -65,7 +65,7 @@
       }
     },
     "price": {
-      "type": "integer",
+      "type": "decimal",
       "required": true,
       "pluginOptions": {
         "i18n": {
@@ -102,7 +102,7 @@
       }
     },
     "salePrice": {
-      "type": "integer",
+      "type": "decimal",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -147,6 +147,24 @@
         }
       },
       "component": "size.size"
+    },
+    "category": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "men's",
+        "women's",
+        "brands",
+        "sale",
+        "clearance"
+      ],
+      "required": true,
+      "default": "all"
     }
   }
 }

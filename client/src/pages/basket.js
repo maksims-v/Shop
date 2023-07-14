@@ -135,7 +135,8 @@ const Basket = () => {
                   <CloseIcon />
                 </IconButton>
                 {mediumScreen ? null : (
-                  <Link href={`/productpage/${item.item.attributes.slug}`}>
+                  <Link
+                    href={`/${item.item.attributes.category}/${item.item.attributes.productcategory}/${item.item.attributes.slug}?title=${item.item.attributes.title}`}>
                     <img
                       src={
                         `http://localhost:1337` +
@@ -152,7 +153,8 @@ const Basket = () => {
                   fontSize="11px"
                   ml={mediumScreen ? '0px' : '10px'}
                   sx={{ '&:hover': { cursor: 'pointer', color: 'black' }, color: '#1976d2' }}>
-                  <Link href={`/productpage/${item.item.attributes.slug}`}>
+                  <Link
+                    href={`/${item.item.attributes.category}/${item.item.attributes.productcategory}/${item.item.attributes.slug}?title=${item.item.attributes.title}`}>
                     {item.item.attributes.title}
                   </Link>
                 </Box>

@@ -16,7 +16,8 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
     <Box>
       <FlexBox p="15px 0 15px 0">
         <Box flex="1 1 40%">
-          <Link href={`/productpage/${item.item.attributes.slug}`}>
+          <Link
+            href={`/${item.item.attributes.category}/${item.item.attributes.productcategory}/${item.item.attributes.slug}?title=${item.item.attributes.title}`}>
             <img
               src={
                 `http://localhost:1337` +
@@ -30,7 +31,8 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
         </Box>
         <Box flex="1 1 60%">
           <FlexBox mb="10px">
-            <Link href={`/productpage/${item.item.attributes.slug}`}>
+            <Link
+              href={`/${item.item.attributes.category}/${item.item.attributes.productcategory}/${item.item.attributes.slug}?title=${item.item.attributes.title}`}>
               <Typography
                 sx={{
                   '&:hover': { cursor: 'pointer', color: 'black' },

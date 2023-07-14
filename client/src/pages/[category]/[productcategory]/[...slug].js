@@ -43,6 +43,8 @@ const ItemDetails = ({ product }) => {
 
   const dispatch = useDispatch();
 
+  console.log(data?.attributes?.category);
+
   const basket = useSelector((state) => state.shoppingCart.basket);
 
   const handleClose = (event, reason) => {
@@ -157,7 +159,13 @@ const ItemDetails = ({ product }) => {
               HOME
             </Link>
             <Link underline="hover" color="inherit" href={`/${data?.attributes?.category}`}>
-              {data?.attributes?.category}
+              {data?.attributes?.category.toUpperCase()}
+            </Link>
+            <Link
+              underline="hover"
+              color="inherit"
+              href={`/${data?.attributes?.category}/${data?.attributes?.productcategory}`}>
+              {data?.attributes?.productcategory.toUpperCase()}
             </Link>
           </Breadcrumbs>
 
@@ -211,7 +219,7 @@ const ItemDetails = ({ product }) => {
                   key={index}
                   underline="hover"
                   color="inherit"
-                  href={`/${item.category}/${item.slug}?title=${item.title}`}>
+                  href={`/${item.category}/${item.productcategory}/${item.slug}?title=${item.title}`}>
                   <CardActionArea sx={{ p: '0 15px' }}>
                     <CardMedia
                       component="img"
@@ -305,10 +313,13 @@ const ItemDetails = ({ product }) => {
 export default ItemDetails;
 
 export async function getServerSideProps({ params, query }) {
-  const { slug } = params;
+  const { slug, category, productcategory } = params;
+
   const { title } = query;
 
-  const res = await fetch(`${process.env.API_URL}/api/products/${slug}?title=${title}`);
+  const res = await fetch(
+    `${process.env.API_URL}/api/products/${category}/${productcategory}/${slug}?title=${title}`,
+  );
   const product = await res.json();
 
   return { props: { product } };
