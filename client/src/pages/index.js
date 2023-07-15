@@ -24,10 +24,6 @@ const Home = () => {
     dispatch(newArrivslsSliderData(newArrivalsDataJson?.data));
   }
 
-  const search = () => {
-    searchFilterItems();
-  };
-
   useEffect(() => {
     getItems();
   }, []);

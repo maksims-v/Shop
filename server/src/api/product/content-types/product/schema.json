@@ -158,13 +158,19 @@
       "enum": [
         "all",
         "men's",
-        "women's",
-        "brands",
-        "sale",
-        "clearance"
+        "women's"
       ],
       "required": true,
       "default": "all"
+    },
+    "clearance": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -14,32 +14,25 @@ import { addToBasket } from '@/state/shoppingCartSlice';
 import { searchItem } from '@/state/searchSlice';
 
 const pages = [
-  { id: 1, title: "MEN'S", path: '/mens' },
-  { id: 2, title: "WOMEN'S", path: '/womens' },
-  { id: 3, title: 'KIDS', path: '/kids' },
-  { id: 4, title: 'BRANDS', path: 'brands' },
+  { id: 1, title: "MEN'S", path: 'mens' },
+  { id: 2, title: "WOMEN'S", path: 'womens' },
+  { id: 4, title: 'NEW ARRIVALS', path: 'newArrivals' },
   { id: 5, title: 'SALE', path: 'sale' },
   { id: 6, title: 'CLERANCE', path: 'clerance' },
 ];
 
 const mensCategory = [
-  { id: 1, title: 'FEATURED', path: '/mens/featured' },
-  { id: 2, title: 'COLLECTIONS', path: '/mens/collections' },
   { id: 3, title: 'CLOTHING', path: '/mens/clothing' },
   { id: 4, title: 'FOOTWEAR', path: '/mens/footwear' },
   { id: 5, title: 'ACCESSORIES', path: '/mens/accessories' },
   { id: 6, title: 'ACTIVITY', path: '/mens/activity' },
-  { id: 7, title: 'TECHNOLOGY', path: '/mens/technology' },
 ];
 
 const womensCategory = [
-  { id: 1, title: 'FEATURED', path: '/womens/featured' },
-  { id: 2, title: 'COLLECTIONS', path: '/womens/collections' },
   { id: 3, title: 'CLOTHING', path: '/womens/clothing' },
   { id: 4, title: 'FOOTWEAR', path: '/womens/footwear' },
   { id: 5, title: 'ACCESSORIES', path: '/womens/accessories' },
   { id: 6, title: 'ACTIVITY', path: '/womens/activity' },
-  { id: 7, title: 'TECHNOLOGY', path: '/womens/technology' },
 ];
 
 const Header = () => {
@@ -117,12 +110,13 @@ const Header = () => {
           <Box display={secondBreakPoint ? 'flex' : 'none'} color="white" gap="20px">
             {pages.map((item) => {
               return (
-                <Box
-                  key={item.id}
-                  sx={{ '&:hover': { cursor: 'pointer', color: 'red' } }}
-                  onMouseEnter={() => openMenu(item.id)}>
-                  {item.title}
-                </Box>
+                <Link href={`/${item.path}`} key={item.path}>
+                  <Box
+                    sx={{ '&:hover': { cursor: 'pointer', color: '#ffde00' } }}
+                    onMouseEnter={() => openMenu(item.id)}>
+                    {item.title}
+                  </Box>
+                </Link>
               );
             })}
           </Box>
@@ -218,6 +212,7 @@ const Header = () => {
 
         <Box
           position="absolute"
+          pr="25px"
           top="60px"
           height="50px"
           width="100%"
