@@ -19,12 +19,12 @@ const NewArrivalsSlider = () => {
       </Link>
       <Carousel
         infiniteLoop={true}
-        autoPlay={true}
+        autoPlay={false}
         showThumbs={false}
         showIndicators={false}
         showStatus={false}
         centerMode
-        centerSlidePercentage={20}
+        centerSlidePercentage={24}
         renderArrowPrev={(onClickHandler, hasPrev, label) => (
           <IconButton
             onClick={onClickHandler}

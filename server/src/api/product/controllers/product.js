@@ -57,8 +57,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   async categorySearch(ctx) {
     const { category } = ctx.params;
 
-    console.log(category);
-
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {
         category: category,
@@ -75,8 +73,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
   async productCategorySearch(ctx) {
     const { category, productcategory } = ctx.params;
-
-    console.log(ctx.params);
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {

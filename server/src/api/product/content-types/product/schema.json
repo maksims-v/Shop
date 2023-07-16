@@ -27,14 +27,6 @@
         }
       }
     },
-    "description": {
-      "type": "text",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "image": {
       "type": "media",
       "multiple": true,
@@ -171,6 +163,34 @@
       },
       "type": "boolean",
       "default": false
+    },
+    "longDescription": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext"
+    },
+    "subproductcategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Hiking Shoes & Boots"
+      ],
+      "required": false
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext"
     }
   }
 }

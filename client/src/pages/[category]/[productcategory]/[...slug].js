@@ -16,7 +16,6 @@ import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { useState, useCallback, useEffect, forwardRef } from 'react';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Gallery from 'react-photo-gallery-next';
@@ -24,6 +23,7 @@ import Carousel, { Modal, ModalGateway } from 'react-images';
 import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -31,7 +31,6 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 const ItemDetails = ({ product }) => {
   const [open, setOpen] = useState(false);
-
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [photos, setPhotos] = useState([]);
@@ -42,8 +41,6 @@ const ItemDetails = ({ product }) => {
   const [size, setSize] = useState('uni');
 
   const dispatch = useDispatch();
-
-  console.log(data?.attributes?.category);
 
   const basket = useSelector((state) => state.shoppingCart.basket);
 
@@ -169,18 +166,19 @@ const ItemDetails = ({ product }) => {
             </Link>
           </Breadcrumbs>
 
-          <Box m="65px 0 25px 0">
-            <Typography sx={{ mb: '8px' }} variant="h3">
+          <Box m="20px 0 25px 0">
+            <Typography sx={{ mb: '8px', fontSize: '26px' }} variant="h3">
               {data?.attributes?.title}
             </Typography>
 
-            <Divider />
+            <Divider sx={{ mb: '10px' }} color="yellow" />
 
-            <Typography sx={{ fontSize: '18px' }}>
+            <Typography sx={{ fontSize: '18px', pl: '5px', fontWeight: 'bold' }}>
               ${data?.attributes?.salePrice ? data?.attributes?.salePrice : data?.attributes?.price}
             </Typography>
 
-            <Typography sx={{ fontSize: '12px', color: data?.attributes?.salePrice && 'red' }}>
+            <Typography
+              sx={{ fontSize: '12px', pl: '5px', color: data?.attributes?.salePrice && 'red' }}>
               {data?.attributes?.salePrice &&
                 `Save:
               ${
@@ -189,8 +187,8 @@ const ItemDetails = ({ product }) => {
               }
               $`}
             </Typography>
-
-            <Typography sx={{ mt: '20px' }}>{data?.attributes?.description}</Typography>
+            <Divider sx={{ mb: '10px', mt: '10px' }} color="yellow" />
+            <ReactMarkdown>{data?.attributes?.description}</ReactMarkdown>
           </Box>
           <Box mb="10px" maxWidth="300px">
             <ToggleButtonGroup
@@ -212,6 +210,7 @@ const ItemDetails = ({ product }) => {
               })}
             </ToggleButtonGroup>
           </Box>
+          {product.meta.length !== 0 && <Box>Available colours</Box>}
           <Box display="flex">
             {product.meta.length !== 0 &&
               product.meta.map((item, index) => (
@@ -232,7 +231,7 @@ const ItemDetails = ({ product }) => {
               ))}
           </Box>
 
-          <Divider sx={{ mb: '10px' }} />
+          <Divider sx={{ mb: '10px' }} color="yellow" />
           <Box display="flex" alignItems="center" minHeight="50px">
             <Box
               display="flex"
@@ -260,15 +259,8 @@ const ItemDetails = ({ product }) => {
                 padding: '10px 40px',
                 borderRadius: '3px',
               }}>
-              PIRKT
+              ADD TO CART
             </Button>
-          </Box>
-          <Box>
-            <Box m="20px 0 5px 0" display="flex">
-              <FavoriteBorderOutlinedIcon />
-              <Typography sx={{ ml: '5px' }}>ADD TO WISHLIST</Typography>
-            </Box>
-            <Typography>CATEGORIES: asdasdass</Typography>
           </Box>
         </Box>
       </Box>
@@ -276,12 +268,10 @@ const ItemDetails = ({ product }) => {
       <Box m="20px 0">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="DESCRIPTION" value="description" />
-          <Tab label="REVIEWS" value="reviews" />
         </Tabs>
       </Box>
       <Box display="flex" flexWrap="wrap" gap="15px">
-        {value === 'description' && <div>{data?.attributes?.longDescription}</div>}
-        {value === 'reviews' && <div>reviews</div>}
+        <ReactMarkdown>{data?.attributes?.longDescription}</ReactMarkdown>
       </Box>
 
       <Box mt="50px" width="100%">

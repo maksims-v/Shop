@@ -56,22 +56,31 @@ export default function Item({ item }) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          p: '0px 0px 5px 10px',
+          p: '0px 0px 0px 10px',
           textAlign: 'left',
           height: '50px',
+          justifyContent: 'center',
         }}>
-        <Typography sx={{ fontWeight: 'bold', fontSize: '20px', width: '100%', pl: '7px' }}>
-          {' '}
-          ${!item?.attributes?.salePrice ? item?.attributes?.price : item?.attributes?.salePrice}
-        </Typography>
         {item?.attributes?.sale && (
-          <Typography sx={{ fontSize: '14px', color: '#e65f5f', width: '100%' }}>
-            save:{' '}
-            {item?.attributes?.salePrice &&
-              (item?.attributes?.price - item.attributes?.salePrice).toFixed(2)}{' '}
-            $
+          <Typography
+            sx={{
+              fontSize: item?.attributes?.sale ? '20px' : '14px',
+              fontWeight: item?.attributes?.sale ? 'bold' : 'none',
+              color: '#e65f5f',
+              width: '100%',
+              pl: '5px',
+            }}>
+            {item?.attributes?.salePrice}$
           </Typography>
         )}
+        <Typography
+          sx={{
+            fontWeight: item?.attributes?.sale ? 'none' : 'bold',
+            fontSize: item?.attributes?.sale ? '12px' : '20px',
+            width: '100%',
+          }}>
+          ${item?.attributes?.sale ? item?.attributes?.price : item?.attributes?.price}
+        </Typography>
       </CardActions>
     </Card>
   );
