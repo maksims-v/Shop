@@ -3,14 +3,25 @@ import { Carousel } from 'react-responsive-carousel';
 import Item from './Item';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { useSelector } from 'react-redux';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 const NewArrivalsSlider = () => {
-  const sliderData = useSelector((state) => state.sliders.newArrivalsData);
+  const [sliderData, setSliderData] = useState(false);
 
-  console.log(sliderData);
+  async function getSliderData() {
+    const res = await fetch(`${process.env.API_URL}/api/products?populate=*`);
+    const data = await res.json();
+
+    if (data) {
+      setSliderData(data?.data);
+    }
+  }
+
+  useEffect(() => {
+    getSliderData();
+  }, []);
 
   return (
     <Box width="100%" m="20px 0px 50px 0px" fontWeight="bold" fontSize="20px">

@@ -113,7 +113,21 @@ const ItemDetails = ({ product }) => {
   };
 
   return (
-    <Box width="100%" m="80px auto">
+    <Box width="100%" m="10px auto">
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" href="/">
+          HOME
+        </Link>
+        <Link underline="hover" color="inherit" href={`/${data?.attributes?.category}`}>
+          {data?.attributes?.category.toUpperCase()}
+        </Link>
+        <Link
+          underline="hover"
+          color="inherit"
+          href={`/${data?.attributes?.category}/${data?.attributes?.productcategory}`}>
+          {data?.attributes?.productcategory.toUpperCase()}
+        </Link>
+      </Breadcrumbs>
       <Box display="flex" flexWrap="wrap" columnGap="40px">
         <Box flex="1 1 50%">
           <Box
@@ -151,21 +165,6 @@ const ItemDetails = ({ product }) => {
         </Box>
 
         <Box flex="1 1 45%" mb="40px">
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/">
-              HOME
-            </Link>
-            <Link underline="hover" color="inherit" href={`/${data?.attributes?.category}`}>
-              {data?.attributes?.category.toUpperCase()}
-            </Link>
-            <Link
-              underline="hover"
-              color="inherit"
-              href={`/${data?.attributes?.category}/${data?.attributes?.productcategory}`}>
-              {data?.attributes?.productcategory.toUpperCase()}
-            </Link>
-          </Breadcrumbs>
-
           <Box m="20px 0 25px 0">
             <Typography sx={{ mb: '8px', fontSize: '26px' }} variant="h3">
               {data?.attributes?.title}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge, Container, TextField, Input } from '@mui/material';
+import { Box, IconButton, Badge, Container, TextField } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -11,7 +11,6 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
-import { searchItem } from '@/state/searchSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: 'mens' },
@@ -49,10 +48,6 @@ const Header = () => {
 
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
-  const search = () => {
-    dispatch(searchItem(searchValue));
-  };
-
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -76,7 +71,6 @@ const Header = () => {
 
   return (
     <>
-      {' '}
       <Box
         display="flex"
         alignItems="center"
@@ -125,19 +119,16 @@ const Header = () => {
             justifyContent="space-between"
             zIndex="2"
             sx={{ position: 'relative' }}>
-            <Link href="/search">
-              <IconButton onClick={() => search()}>
+            <Link href={`/search?search=${searchValue}`}>
+              <IconButton>
                 <SearchOutlined sx={{ color: 'white' }} />
               </IconButton>
             </Link>
-
             <TextField
-              value={searchValue}
-              id="outlined-basic"
-              label="Meklet"
-              variant="outlined"
-              name="identifier"
               onChange={(e) => setSearchValue(e.target.value)}
+              id="outlined-search"
+              label="Search field"
+              type="search"
               sx={{
                 position: 'absolute',
                 top: '-8px',
@@ -147,6 +138,7 @@ const Header = () => {
                 backgroundColor: '#edf5fc',
               }}
             />
+
             {isAuth ? (
               <Box>
                 <Link href="/basket">

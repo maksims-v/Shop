@@ -35,7 +35,7 @@ export default function Item({ item }) {
           <CardMedia
             component="img"
             height="300"
-            image={`http://localhost:1337${item?.attributes?.image?.data[0]?.attributes?.url}`}
+            image={`${process.env.API_URL}${item?.attributes?.image?.data[0]?.attributes?.url}`}
             alt="Paella dish"
           />
         </CardActionArea>
