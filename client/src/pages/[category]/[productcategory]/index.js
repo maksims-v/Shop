@@ -3,7 +3,7 @@ import Item from 'components/Item';
 import Link from 'next/link';
 
 const Category = ({ product }) => {
-  console.log(product.data[0].attributes.category);
+  console.log(product);
 
   return (
     <Box mt="10px">

@@ -20,34 +20,25 @@
         "images"
       ]
     },
-    "gendre": {
+    "category": {
       "type": "enumeration",
       "enum": [
         "all",
-        "mens",
-        "womens",
-        "kids",
-        "brands",
-        "sale",
-        "clearance"
+        "men's",
+        "women's"
       ],
       "required": true,
       "default": "all"
     },
-    "cattegory": {
+    "productcategory": {
       "type": "enumeration",
       "enum": [
-        "all",
-        "featured",
-        "collections",
-        "clothing",
-        "footwear",
-        "accessories",
-        "activity",
-        "technology"
-      ],
-      "required": true,
-      "default": "all"
+        "mug",
+        "tshirt",
+        "hoodie",
+        "heat",
+        "shoes"
+      ]
     }
   }
 }

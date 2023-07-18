@@ -119,7 +119,7 @@ const Header = () => {
             justifyContent="space-between"
             zIndex="2"
             sx={{ position: 'relative' }}>
-            <Link href={`/search?search=${searchValue}`}>
+            <Link href={`/search?search=${searchValue}&pmin=1&pmax=100000`}>
               <IconButton>
                 <SearchOutlined sx={{ color: 'white' }} />
               </IconButton>

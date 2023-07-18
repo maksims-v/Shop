@@ -17,6 +17,8 @@ const HeadBanner = () => {
     }
   }
 
+  console.log(bannerData);
+
   useEffect(() => {
     getBannerData();
   }, []);
@@ -27,10 +29,11 @@ const HeadBanner = () => {
       width="100%"
       display="flex"
       flexWrap="wrap"
+      maxHeight="630px"
       p={!largeScreen && '0px 10px'}>
-      <Link href={`${bannerData?.gendre}/${bannerData?.cattegory}`}>
+      <Link href={`/${bannerData?.category}/${bannerData?.productcategory}`}>
         <img
-          width="100%"
+          style={{ maxHeight: '630px' }}
           src={`http://localhost:1337${bannerData?.image?.data?.attributes?.url}`}
         />
       </Link>

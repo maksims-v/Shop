@@ -36,16 +36,27 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async filterSearch(ctx) {
-    const { search } = ctx.query;
+    const { search, pmin, pmax } = ctx.query;
+    console.log(pmin, pmax);
+
+    let priceMin = pmin ? pmin : 0;
+    let priceMax = pmax ? pmax : 10000;
+
+    console.log(priceMin, priceMax);
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {
-        title: {
-          $startsWith: search,
-        },
-        publishedAt: {
-          $ne: null,
-        },
+        $and: [
+          {
+            title: { $startsWith: search },
+          },
+          {
+            price: { $between: [priceMin, priceMax] },
+          },
+        ],
+      },
+      publishedAt: {
+        $ne: null,
       },
       populate: { image: true },
     });

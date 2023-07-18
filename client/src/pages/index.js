@@ -4,7 +4,7 @@ import NewArrivalsSlider from 'components/NewArrivalsSlider';
 
 const Home = () => {
   return (
-    <Box mb="300px">
+    <Box>
       <HeadBanner />
       <NewArrivalsSlider />
     </Box>
