@@ -11,6 +11,7 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
+import { inputValue } from '@/state/searchPageSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: 'mens' },
@@ -119,8 +120,8 @@ const Header = () => {
             justifyContent="space-between"
             zIndex="2"
             sx={{ position: 'relative' }}>
-            <Link href={`/search?search=${searchValue}&pmin=1&pmax=100000`}>
-              <IconButton>
+            <Link href={`/search`}>
+              <IconButton onClick={() => dispatch(inputValue(searchValue))}>
                 <SearchOutlined sx={{ color: 'white' }} />
               </IconButton>
             </Link>

@@ -37,12 +37,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
   async filterSearch(ctx) {
     const { search, pmin, pmax } = ctx.query;
-    console.log(pmin, pmax);
 
     let priceMin = pmin ? pmin : 0;
     let priceMax = pmax ? pmax : 10000;
-
-    console.log(priceMin, priceMax);
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {
@@ -61,8 +58,25 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       populate: { image: true },
     });
 
+    if (entity.length !== 0) {
+      const minMaxPriceArr = entity?.map((item) => {
+        if (item.sale) {
+          return item.salePrice;
+        }
+        return item.price;
+      });
+
+      priceMin = Math.min.apply(null, minMaxPriceArr);
+      priceMax = Math.max.apply(null, minMaxPriceArr);
+    }
+
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-    return this.transformResponse(sanitizedEntity);
+    const sanitizedEntity2 = await this.sanitizeOutput(
+      { priceMin, priceMax },
+      ctx
+    );
+
+    return this.transformResponse(sanitizedEntity, sanitizedEntity2);
   },
 
   async categorySearch(ctx) {

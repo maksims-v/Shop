@@ -17,8 +17,6 @@ const HeadBanner = () => {
     }
   }
 
-  console.log(bannerData);
-
   useEffect(() => {
     getBannerData();
   }, []);

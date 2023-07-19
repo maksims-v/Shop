@@ -1,64 +1,86 @@
+import PriceSlider from 'components/PriceSlider';
 import { Box, Container, Typography } from '@mui/material';
 import Item from 'components/Item';
-import Slider from '@mui/material/Slider';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from 'use-debounce';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setMinPrice,
+  setMaxPrice,
+  setChangeMinPrice,
+  setChangeMaxPrice,
+} from '@/state/searchPageSlice';
 
-const Search = ({ searchData, search }) => {
-  const [data, setData] = useState(searchData);
-  const [minMaxPriceArr, setMinMaxPriceArr] = useState(
-    data?.data?.map((item) => {
-      if (item.attributes.sale) {
-        return item.attributes.salePrice;
-      }
-      return item.attributes.price;
-    }),
-  );
+const Search = () => {
+  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const minPrice = useSelector((state) => state.search.minPrice);
+  const maxPrice = useSelector((state) => state.search.maxPrice);
+  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+  const changeMinPrice = useSelector((state) => state.search.changeMinPrice);
+  const changeMaxPrice = useSelector((state) => state.search.changeMaxPrice);
+  const price = useSelector((state) => state.search.price);
+  const [inputValue, setInputValue] = useState();
 
-  const [value, setValue] = useState([
-    Math.min.apply(null, minMaxPriceArr),
-    Math.max.apply(null, minMaxPriceArr),
-  ]);
-  const [debouncedValue] = useDebounce(value, 500);
+  // console.log(changeMinPrice, changeMaxPrice);
+
+  // setValue([changeMinPrice, changeMaxPrice]);
 
   useEffect(() => {
-    setData(searchData);
-  }, [searchData, data]);
+    filterSearch(inputSearchValue);
+    setInputValue(inputSearchValue);
+    console.log('hai');
+  }, [price, inputSearchValue]);
 
   async function filterSearch(search, value) {
-    const res = await fetch(
-      `${process.env.API_URL}/api/products/filter?search=${search}&pmin=${value[0]}&pmax=${value[1]}`,
-    );
-    const products = await res.json();
-    setData(products);
+    if (inputValue !== inputSearchValue) {
+      console.log('1');
+      if (minPrice !== maxPrice) {
+        console.log('1.2');
+        const res = await fetch(
+          `${process.env.API_URL}/api/products/filter?search=${search}&pmin=1&pmax=10000`,
+        );
+        const products = await res.json();
+        setData(products);
+
+        dispatch(setMinPrice(products.meta.priceMin));
+        dispatch(setMaxPrice(products.meta.priceMax));
+        dispatch(setChangeMinPrice(1));
+        dispatch(setChangeMaxPrice(10000));
+        setInputValue(inputSearchValue);
+      }
+    } else {
+      console.log('2');
+      if (minPrice !== maxPrice) {
+        console.log('2.1');
+        const res = await fetch(
+          `${process.env.API_URL}/api/products/filter?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}`,
+        );
+        const products = await res.json();
+        setData(products);
+
+        if (inputValue !== inputSearchValue) {
+          dispatch(setMinPrice(products.meta.priceMin));
+          dispatch(setMaxPrice(products.meta.priceMax));
+          setInputValue(inputSearchValue);
+        } else {
+          setInputValue(inputSearchValue);
+        }
+      }
+    }
   }
-
-  useEffect(() => {
-    filterSearch(search, value);
-  }, [debouncedValue]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   return (
     <Box>
       <Box pl="2px" m="10px 0px" fontSize="24px">
-        SEARCH "{search}"
+        SEARCH "{inputSearchValue}"
       </Box>
       <Box display="flex">
         <Box flex="1 1 20%">
           <Box>FILTERS</Box>
           <Box width="80%">
             <Typography>PRICE</Typography>
-            <Slider
-              getAriaLabel={() => 'Temperature range'}
-              value={value}
-              onChange={handleChange}
-              valueLabelDisplay="auto"
-              min={value[0]}
-              max={value[1]}
-            />
+            <PriceSlider />
           </Box>
         </Box>
         <Box
@@ -78,11 +100,23 @@ const Search = ({ searchData, search }) => {
 
 export default Search;
 
-export async function getServerSideProps({ query }) {
-  const { search } = query;
+// export async function getServerSideProps({ query }) {
+//   const { search } = query;
+//   console.log('hai');
+//   const res = await fetch(`${process.env.API_URL}/api/products/filter?search=${search}`);
+//   const searchData = await res.json();
 
-  const res = await fetch(`${process.env.API_URL}/api/products/filter?search=${search}`);
-  const searchData = await res.json();
+//   return { props: { searchData, search } };
+// }
 
-  return { props: { searchData, search } };
-}
+// const [minPrice, setMinPrice] = useState(Number(price.meta.priceMin));
+// const [maxPrice, setMaxPrice] = useState(Number(price.meta.priceMax));
+// const [value, setValue] = useState([Number(price.meta.priceMin), Number(price.meta.priceMax)]);
+// const [debouncedValue] = useDebounce(value, 500);
+
+// async function filterSearch(search, value) {
+//   const res = await fetch(
+//     `${process.env.API_URL}/api/products/filter?search=${search}&pmin=${value[0]}&pmax=${value[1]}`,
+//   );
+//   const products = await res.json();
+// }
