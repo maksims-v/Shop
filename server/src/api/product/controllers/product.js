@@ -48,7 +48,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             title: { $startsWith: search },
           },
           {
-            price: { $between: [priceMin, priceMax] },
+            $or: [
+              { price: { $between: [priceMin, priceMax] } },
+              { salePrice: { $between: [priceMin, priceMax] } },
+            ],
           },
         ],
       },
@@ -70,7 +73,18 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       priceMax = Math.max.apply(null, minMaxPriceArr);
     }
 
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+    console.log(entity);
+
+    const priceFilter = entity.filter((item) => {
+      if (!item.sale) {
+        return item;
+      } else {
+        console.log(pmin, pmax);
+        if (item.salePrice >= pmin) return item;
+      }
+    });
+
+    const sanitizedEntity = await this.sanitizeOutput(priceFilter, ctx);
     const sanitizedEntity2 = await this.sanitizeOutput(
       { priceMin, priceMax },
       ctx

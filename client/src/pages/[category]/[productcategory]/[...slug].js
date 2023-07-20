@@ -173,15 +173,15 @@ const ItemDetails = ({ product }) => {
             <Divider sx={{ mb: '10px' }} color="yellow" />
 
             <Typography sx={{ fontSize: '18px', pl: '5px', fontWeight: 'bold' }}>
-              ${data?.attributes?.salePrice ? data?.attributes?.salePrice : data?.attributes?.price}
+              ${data?.attributes?.sale ? data?.attributes?.salePrice : data?.attributes?.price}
             </Typography>
 
             <Typography
               sx={{ fontSize: '12px', pl: '5px', color: data?.attributes?.salePrice && 'red' }}>
-              {data?.attributes?.salePrice &&
+              {data?.attributes?.sale &&
                 `Save:
               ${
-                data?.attributes?.salePrice &&
+                data?.attributes?.sale &&
                 (data?.attributes?.price - data?.attributes?.salePrice).toFixed(2)
               }
               $`}

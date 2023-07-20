@@ -6,7 +6,6 @@ const initialState = {
   maxPrice: 10000,
   changeMinPrice: 1,
   changeMaxPrice: 10000,
-  price: false,
 };
 
 export const searchPageSlice = createSlice({
@@ -17,30 +16,21 @@ export const searchPageSlice = createSlice({
       state.inputSearchValue = action.payload;
     },
     setMinPrice(state, action) {
-      state.minPrice = action.payload;
+      state.minPrice = Number(action.payload);
     },
     setMaxPrice(state, action) {
-      state.maxPrice = action.payload;
+      state.maxPrice = Number(action.payload);
     },
     setChangeMinPrice(state, action) {
-      state.changeMinPrice = action.payload;
+      state.changeMinPrice = Number(action.payload);
     },
     setChangeMaxPrice(state, action) {
-      state.changeMaxPrice = action.payload;
-    },
-    setPrice(state) {
-      state.price = !state.price;
+      state.changeMaxPrice = Number(action.payload);
     },
   },
 });
 
-export const {
-  inputValue,
-  setMinPrice,
-  setMaxPrice,
-  setChangeMinPrice,
-  setChangeMaxPrice,
-  setPrice,
-} = searchPageSlice.actions;
+export const { inputValue, setMinPrice, setMaxPrice, setChangeMinPrice, setChangeMaxPrice } =
+  searchPageSlice.actions;
 
 export default searchPageSlice.reducer;
