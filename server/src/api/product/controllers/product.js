@@ -36,7 +36,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async filterSearch(ctx) {
-    const { search, pmin, pmax } = ctx.query;
+    const { search, pmin, pmax, brands } = ctx.query;
+
+    const brandsSplitToArr = brands ? brands.split(",") : [];
 
     let priceMin = pmin ? pmin : 0;
     let priceMax = pmax ? pmax : 10000;
@@ -52,6 +54,11 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               { price: { $between: [priceMin, priceMax] } },
               { salePrice: { $between: [priceMin, priceMax] } },
             ],
+          },
+          {
+            brand: {
+              $eqi: brandsSplitToArr,
+            },
           },
         ],
       },
@@ -73,13 +80,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       priceMax = Math.max.apply(null, minMaxPriceArr);
     }
 
-    console.log(entity);
-
     const priceFilter = entity.filter((item) => {
       if (!item.sale) {
         return item;
       } else {
-        console.log(pmin, pmax);
         if (item.salePrice >= pmin) return item;
       }
     });
