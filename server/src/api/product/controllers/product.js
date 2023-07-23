@@ -7,20 +7,21 @@ const _ = require("lodash");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::product.product", ({ strapi }) => ({
-  async findOne(ctx) {
+  async slug(ctx) {
     const { slug } = ctx.params;
-    const { title } = ctx.query;
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: { slug: slug },
       populate: { image: true, size: true },
     });
 
+    const title = entity[0].title ? entity[0].title : "";
+
     const entity2 = await strapi.entityService.findMany(
       "api::product.product",
       {
         filters: {
-          $and: [{ title: title }, { slug: { $ne: slug } }],
+          $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
           publishedAt: {
             $ne: null,
           },
@@ -97,12 +98,14 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     return this.transformResponse(sanitizedEntity, sanitizedEntity2);
   },
 
-  async categorySearch(ctx) {
-    const { category } = ctx.params;
+  async genderSearch(ctx) {
+    const { gender } = ctx.params;
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {
-        category: category,
+        gender: {
+          $eqi: ["all", gender],
+        },
         publishedAt: {
           $ne: null,
         },
@@ -114,17 +117,44 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     return this.transformResponse(sanitizedEntity);
   },
 
-  async productCategorySearch(ctx) {
-    const { category, productcategory } = ctx.params;
+  async categorySearch(ctx) {
+    const { gender, category } = ctx.params;
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: {
         $and: [
           {
-            productcategory: productcategory,
+            gender: gender,
           },
           {
             category: category,
+          },
+        ],
+        publishedAt: {
+          $ne: null,
+        },
+      },
+      populate: { image: true },
+    });
+
+    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+    return this.transformResponse(sanitizedEntity);
+  },
+
+  async subCategorySearch(ctx) {
+    const { gender, category, subcategory } = ctx.params;
+
+    const entity = await strapi.entityService.findMany("api::product.product", {
+      filters: {
+        $and: [
+          {
+            gender: gender,
+          },
+          {
+            category: category,
+          },
+          {
+            subcategory: subcategory,
           },
         ],
         publishedAt: {

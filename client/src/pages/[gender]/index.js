@@ -2,7 +2,7 @@ import { Box, Breadcrumbs } from '@mui/material';
 import Item from 'components/Item';
 import Link from 'next/link';
 
-const Category = ({ product }) => {
+const PageCategory = ({ product }) => {
   console.log(product);
 
   return (
@@ -10,9 +10,6 @@ const Category = ({ product }) => {
       <Breadcrumbs aria-label="breadcrumb">
         <Link underline="hover" color="inherit" href="/">
           HOME
-        </Link>
-        <Link underline="hover" color="inherit" href={`/${product?.data[0]?.attributes?.category}`}>
-          {product?.data[0]?.attributes?.category.toUpperCase()}
         </Link>
       </Breadcrumbs>
       <Box
@@ -28,12 +25,12 @@ const Category = ({ product }) => {
   );
 };
 
-export default Category;
+export default PageCategory;
 
-export async function getServerSideProps({ params, query }) {
-  const { productcategory, category } = params;
+export async function getServerSideProps({ params }) {
+  const { gender } = params;
 
-  const res = await fetch(`${process.env.API_URL}/api/products/${category}/${productcategory}`);
+  const res = await fetch(`${process.env.API_URL}/api/products/${gender}`);
   const product = await res.json();
 
   return { props: { product } };

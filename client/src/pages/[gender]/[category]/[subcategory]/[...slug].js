@@ -118,14 +118,20 @@ const ItemDetails = ({ product }) => {
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${data?.attributes?.category}`}>
+        <Link underline="hover" color="inherit" href={`/${data?.attributes?.gender}`}>
+          {data?.attributes?.gender.toUpperCase()}
+        </Link>
+        <Link
+          underline="hover"
+          color="inherit"
+          href={`/${data?.attributes?.gender}/${data?.attributes?.category}`}>
           {data?.attributes?.category.toUpperCase()}
         </Link>
         <Link
           underline="hover"
           color="inherit"
-          href={`/${data?.attributes?.category}/${data?.attributes?.productcategory}`}>
-          {data?.attributes?.productcategory.toUpperCase()}
+          href={`/${data?.attributes?.gender}/${data?.attributes?.category}/${data?.attributes?.subcategory}`}>
+          {data?.attributes?.subcategory.toUpperCase()}
         </Link>
       </Breadcrumbs>
       <Box display="flex" flexWrap="wrap" columnGap="40px">
@@ -209,15 +215,15 @@ const ItemDetails = ({ product }) => {
               })}
             </ToggleButtonGroup>
           </Box>
-          {product.meta.length !== 0 && <Box>Available colours</Box>}
+          {product?.meta?.length !== 0 && <Box>Available colours</Box>}
           <Box display="flex">
-            {product.meta.length !== 0 &&
+            {product?.meta?.length !== 0 &&
               product.meta.map((item, index) => (
                 <Link
                   key={index}
                   underline="hover"
                   color="inherit"
-                  href={`/${item.category}/${item.productcategory}/${item.slug}?title=${item.title}`}>
+                  href={`/${item.gender}/${item.category}/${item.subcategory}/${item.slug}`}>
                   <CardActionArea sx={{ p: '0 15px' }}>
                     <CardMedia
                       component="img"
@@ -301,13 +307,11 @@ const ItemDetails = ({ product }) => {
 
 export default ItemDetails;
 
-export async function getServerSideProps({ params, query }) {
-  const { slug, category, productcategory } = params;
-
-  const { title } = query;
+export async function getServerSideProps({ params }) {
+  const { slug, gender, category, subcategory } = params;
 
   const res = await fetch(
-    `${process.env.API_URL}/api/products/${category}/${productcategory}/${slug}?title=${title}`,
+    `${process.env.API_URL}/api/products/${gender}/${category}/${subcategory}/${slug}`,
   );
   const product = await res.json();
 

@@ -22,16 +22,15 @@ const Search = () => {
 
   const [inputValue, setInputValue] = useState();
 
-  const brandsFilter = Object.entries(brandsChecked);
+  // const brandsFilter = Object.entries(brandsChecked);
 
-  const getBrandsFilter = brandsFilter
-    .filter((item, index) => {
-      if (item[1]) return item;
-    })
-    .map((item) => {
-      if (item[1]) return item[0];
-    });
-  console.log(getBrandsFilter);
+  // const getBrandsFilter = brandsFilter
+  //   .filter((item, index) => {
+  //     if (item[1]) return item;
+  //   })
+  //   .map((item) => {
+  //     if (item[1]) return item[0];
+  //   });
 
   useEffect(() => {
     filterSearch(inputSearchValue);
@@ -56,7 +55,7 @@ const Search = () => {
       setInputValue(inputSearchValue);
     } else {
       const res = await fetch(
-        `${process.env.API_URL}/api/products/filter?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}&brands=${getBrandsFilter}`,
+        `${process.env.API_URL}/api/products/filter?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}&brands=${brandsChecked}`,
       );
       const products = await res.json();
 

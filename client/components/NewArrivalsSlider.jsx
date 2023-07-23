@@ -30,7 +30,7 @@ const NewArrivalsSlider = () => {
       </Link>
       <Carousel
         infiniteLoop={true}
-        autoPlay={false}
+        autoPlay={true}
         showThumbs={false}
         showIndicators={false}
         showStatus={false}

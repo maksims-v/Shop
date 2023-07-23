@@ -40,14 +40,13 @@
         }
       }
     },
-    "productcategory": {
+    "category": {
       "type": "enumeration",
       "enum": [
-        "tshirt",
-        "mug",
-        "hoodie",
-        "heat",
-        "shoes"
+        "clothing",
+        "footwear",
+        "accessories",
+        "activities"
       ],
       "required": true,
       "pluginOptions": {
@@ -59,16 +58,6 @@
     "price": {
       "type": "decimal",
       "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "availableQty": {
-      "type": "integer",
-      "required": true,
-      "default": 0,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -130,7 +119,7 @@
       },
       "component": "size.size"
     },
-    "category": {
+    "gender": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -154,25 +143,13 @@
       "type": "boolean",
       "default": false
     },
-    "longDescription": {
+    "techDescription": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
       "type": "richtext"
-    },
-    "subproductcategory": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "Hiking Shoes & Boots"
-      ],
-      "required": false
     },
     "description": {
       "pluginOptions": {
@@ -190,6 +167,35 @@
       },
       "type": "uid",
       "targetField": "title",
+      "required": true
+    },
+    "subproductcategory": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "subproductcategory.subproductcategory"
+    },
+    "subcategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "shoes",
+        "socks",
+        "sandals",
+        "jackets",
+        "shirts",
+        "hats & Headwear",
+        "backpacks & Bags"
+      ],
       "required": true
     }
   }

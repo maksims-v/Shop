@@ -2,14 +2,15 @@ import { Box, Breadcrumbs } from '@mui/material';
 import Item from 'components/Item';
 import Link from 'next/link';
 
-const PageCategory = ({ product }) => {
-  console.log(product);
-
+const Category = ({ product }) => {
   return (
     <Box mt="10px">
       <Breadcrumbs aria-label="breadcrumb">
         <Link underline="hover" color="inherit" href="/">
           HOME
+        </Link>
+        <Link underline="hover" color="inherit" href={`/${product?.data[0]?.attributes?.gender}`}>
+          {product?.data[0]?.attributes?.gender.toUpperCase()}
         </Link>
       </Breadcrumbs>
       <Box
@@ -25,12 +26,12 @@ const PageCategory = ({ product }) => {
   );
 };
 
-export default PageCategory;
+export default Category;
 
 export async function getServerSideProps({ params }) {
-  const { category } = params;
+  const { gender, category } = params;
 
-  const res = await fetch(`${process.env.API_URL}/api/products/${category}`);
+  const res = await fetch(`${process.env.API_URL}/api/products/${gender}/${category}`);
   const product = await res.json();
 
   return { props: { product } };

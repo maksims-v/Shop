@@ -7,7 +7,16 @@ module.exports = {
     },
     {
       method: "GET",
-      path: "/products/:category",
+      path: "/products/:gender",
+      handler: "product.genderSearch",
+      config: {
+        auth: false,
+        policies: [],
+      },
+    },
+    {
+      method: "GET",
+      path: "/products/:gender/:category",
       handler: "product.categorySearch",
       config: {
         auth: false,
@@ -16,8 +25,8 @@ module.exports = {
     },
     {
       method: "GET",
-      path: "/products/:category/:productcategory",
-      handler: "product.productCategorySearch",
+      path: "/products/:gender/:category/:subcategory",
+      handler: "product.subCategorySearch",
       config: {
         auth: false,
         policies: [],
@@ -25,8 +34,8 @@ module.exports = {
     },
     {
       method: "GET",
-      path: "/products/:category/:productcategory/:slug",
-      handler: "product.findOne",
+      path: "/products/:gender/:category/:subcategory/:slug",
+      handler: "product.slug",
     },
     // {
     //   method: "GET",

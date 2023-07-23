@@ -11,10 +11,21 @@ const BrandFilter = () => {
     obj[key] = false;
     return obj;
   }, {});
+
   const [state, setState] = useState(brandsObj);
 
   useEffect(() => {
-    dispatch(setBrandsChecked(state));
+    const brandsFilter = Object.entries(state);
+
+    const getBrandsFilter = brandsFilter
+      .filter((item, index) => {
+        if (item[1]) return item;
+      })
+      .map((item) => {
+        if (item[1]) return item[0];
+      });
+
+    dispatch(setBrandsChecked(getBrandsFilter));
   }, [state]);
 
   const handleChange = (event) => {

@@ -30,7 +30,7 @@ export default function Item({ item }) {
         </Box>
       </Box>
       <Link
-        href={`/${item.attributes.category}/${item.attributes.productcategory}/${item.attributes.slug}?title=${item.attributes.title}`}>
+        href={`/${item.attributes.gender}/${item.attributes.category}/${item.attributes.subcategory}/${item.attributes.slug}`}>
         <CardActionArea>
           <CardMedia
             component="img"
