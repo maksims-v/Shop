@@ -8,6 +8,13 @@ const initialState = {
   changeMaxPrice: 10000,
   brands: [],
   brandsChecked: [],
+  category: [],
+  categoryChecked: [],
+  gender: [],
+  genderChecked: [],
+  subCategory: [],
+  subCategoryChecked: [],
+  discounts: [],
 };
 
 export const searchPageSlice = createSlice({
@@ -35,6 +42,27 @@ export const searchPageSlice = createSlice({
     setBrandsChecked(state, action) {
       state.brandsChecked = action.payload;
     },
+    setCategory(state, action) {
+      state.category = action.payload;
+    },
+    setCategoryChecked(state, action) {
+      state.categoryChecked = action.payload;
+    },
+    setGender(state, action) {
+      state.gender = action.payload;
+    },
+    setGenderChecked(state, action) {
+      state.genderChecked = action.payload;
+    },
+    setSubCategory(state, action) {
+      state.subCategory = action.payload;
+    },
+    setSubCategoryChecked(state, action) {
+      state.subCategoryChecked = action.payload;
+    },
+    setDiscounts(state, action) {
+      state.discounts = action.payload;
+    },
   },
 });
 
@@ -46,6 +74,13 @@ export const {
   setChangeMaxPrice,
   setBrands,
   setBrandsChecked,
+  setCategory,
+  setCategoryChecked,
+  setGender,
+  setGenderChecked,
+  setSubCategory,
+  setSubCategoryChecked,
+  setDiscounts,
 } = searchPageSlice.actions;
 
 export default searchPageSlice.reducer;

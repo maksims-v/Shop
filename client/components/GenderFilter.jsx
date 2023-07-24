@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBrandsChecked } from '@/state/searchPageSlice';
+import { setGenderChecked } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
-const BrandFilter = () => {
+const GenderFilter = () => {
   const dispatch = useDispatch();
-  const brands = useSelector((state) => state.search.brands);
+  const gender = useSelector((state) => state.search.gender);
 
-  const brandsObj = brands.reduce((obj, key) => {
+  const genderObj = gender.reduce((obj, key) => {
     obj[key] = false;
     return obj;
   }, {});
 
-  const [state, setState] = useState(brandsObj);
+  const [state, setState] = useState(genderObj);
 
   useEffect(() => {
-    const brandsFilter = Object.entries(state);
+    const genderFilter = Object.entries(state);
 
-    const getBrandsFilter = brandsFilter
+    const getGenderFilter = genderFilter
       .filter((item, index) => {
         if (item[1]) return item;
       })
@@ -25,7 +25,7 @@ const BrandFilter = () => {
         if (item[1]) return item[0];
       });
 
-    dispatch(setBrandsChecked(getBrandsFilter));
+    dispatch(setGenderChecked(getGenderFilter));
   }, [state]);
 
   const handleChange = (event) => {
@@ -38,11 +38,11 @@ const BrandFilter = () => {
   return (
     <Box mb="10px">
       <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        BRAND
+        CATEGORY
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {brands.map((item, index) => (
+          {gender.map((item, index) => (
             <FormControlLabel
               control={
                 <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
@@ -57,4 +57,4 @@ const BrandFilter = () => {
   );
 };
 
-export default BrandFilter;
+export default GenderFilter;

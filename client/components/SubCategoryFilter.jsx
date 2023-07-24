@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBrandsChecked } from '@/state/searchPageSlice';
+import { setSubCategoryChecked } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
-const BrandFilter = () => {
+const SubCategoryFilter = () => {
   const dispatch = useDispatch();
-  const brands = useSelector((state) => state.search.brands);
 
-  const brandsObj = brands.reduce((obj, key) => {
+  const subCategory = useSelector((state) => state.search.subCategory);
+
+  const subCategoryObj = subCategory.reduce((obj, key) => {
     obj[key] = false;
     return obj;
   }, {});
 
-  const [state, setState] = useState(brandsObj);
+  const [state, setState] = useState(subCategoryObj);
 
   useEffect(() => {
-    const brandsFilter = Object.entries(state);
+    const subCategoryFilter = Object.entries(state);
 
-    const getBrandsFilter = brandsFilter
+    const getSubCategoryFilter = subCategoryFilter
       .filter((item, index) => {
         if (item[1]) return item;
       })
@@ -25,7 +26,7 @@ const BrandFilter = () => {
         if (item[1]) return item[0];
       });
 
-    dispatch(setBrandsChecked(getBrandsFilter));
+    dispatch(setSubCategoryChecked(getSubCategoryFilter));
   }, [state]);
 
   const handleChange = (event) => {
@@ -38,11 +39,11 @@ const BrandFilter = () => {
   return (
     <Box mb="10px">
       <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        BRAND
+        CATEGORIES
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {brands.map((item, index) => (
+          {subCategory.map((item, index) => (
             <FormControlLabel
               control={
                 <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
@@ -57,4 +58,4 @@ const BrandFilter = () => {
   );
 };
 
-export default BrandFilter;
+export default SubCategoryFilter;

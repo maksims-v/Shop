@@ -37,14 +37,32 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async filterSearch(ctx) {
-    const { search, pmin, pmax, brands } = ctx.query;
+    const { search, pmin, pmax, brands, sale, category, gender, subcat } =
+      ctx.query;
 
+    const salesSplitToArr = sale ? sale.split(",") : [];
     const brandsSplitToArr = brands ? brands.split(",") : [];
+    const categorySplitToArr = category ? category.split(",") : [];
+    const genderSplitArr = gender ? gender.split(",") : [];
+    const subCategoryArr = subcat ? subcat.split(",") : [];
+
+    genderSplitArr.includes("all") && genderSplitArr.push("men's", "women's");
+
+    console.log(genderSplitArr);
+
+    let saleItem = false;
+
+    salesSplitToArr.map((item) => {
+      if (item == "Sale") {
+        saleItem = !saleItem;
+      }
+    });
 
     let priceMin = pmin ? pmin : 0;
     let priceMax = pmax ? pmax : 10000;
 
     const entity = await strapi.entityService.findMany("api::product.product", {
+      orderBy: "id",
       filters: {
         $and: [
           {
@@ -61,12 +79,35 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               $eqi: brandsSplitToArr,
             },
           },
+          {
+            gender: {
+              $eqi: genderSplitArr,
+            },
+          },
+          {
+            category: {
+              $eqi: categorySplitToArr,
+            },
+          },
+          {
+            subcategory: {
+              $eqi: subCategoryArr,
+            },
+          },
+          {
+            $or: [
+              { sale: saleItem ? true : true },
+              { sale: saleItem ? true : false },
+            ],
+          },
         ],
       },
       publishedAt: {
         $ne: null,
       },
       populate: { image: true },
+      // start: 0,
+      // limit: 16,
     });
 
     if (entity.length !== 0) {
@@ -124,7 +165,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       filters: {
         $and: [
           {
-            gender: gender,
+            gender: {
+              $eqi: [gender, "all"],
+            },
           },
           {
             category: category,

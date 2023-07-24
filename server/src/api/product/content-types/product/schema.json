@@ -193,8 +193,9 @@
         "sandals",
         "jackets",
         "shirts",
-        "hats & Headwear",
-        "backpacks & Bags"
+        "headwear",
+        "bags",
+        "gloves"
       ],
       "required": true
     }

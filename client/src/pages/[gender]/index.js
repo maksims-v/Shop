@@ -3,8 +3,6 @@ import Item from 'components/Item';
 import Link from 'next/link';
 
 const PageCategory = ({ product }) => {
-  console.log(product);
-
   return (
     <Box mt="10px">
       <Breadcrumbs aria-label="breadcrumb">
