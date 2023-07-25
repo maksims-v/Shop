@@ -4,6 +4,7 @@ import SaleClearanceFilter from 'components/SaleClearanceFilter';
 import CategoryFilter from 'components/CategoryFilter';
 import GenderFilter from 'components/GenderFilter';
 import SubCategoryFilter from 'components/SubCategoryFilter';
+import PaginationComponent from 'components/PaginationComponent';
 import { Box, Typography, TextField, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
@@ -21,6 +22,12 @@ import {
 
 const Search = () => {
   const [data, setData] = useState([]);
+
+  const [startpage, setStartpage] = useState(0);
+  const [limitpage, setLimitpage] = useState(16);
+  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const dispatch = useDispatch();
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const changeMinPrice = useSelector((state) => state.search.changeMinPrice);
@@ -36,6 +43,7 @@ const Search = () => {
 
   useEffect(() => {
     filterSearch(inputSearchValue);
+    console.log(currentPage);
   }, [
     inputSearchValue,
     changeMinPrice,
@@ -45,16 +53,17 @@ const Search = () => {
     categoryChecked,
     genderChecked,
     subCategoryChecked,
+    currentPage,
   ]);
 
   async function filterSearch(search) {
     if (inputSearchValue !== inputValue) {
       const res = await fetch(
-        `${process.env.API_URL}/api/products/filter?search=${search}&pmin=1&pmax=10000`,
+        `${process.env.API_URL}/api/products?search=${search}&pmin=1&pmax=10000&pagination[startpage]=${startpage}&pagination[limitpage]=${limitpage}&currentPage=1`,
       );
       const products = await res.json();
 
-      // http://127.0.0.1:1337/api/products?pagination[page]=1&pagination[pageSize]=16
+      console.log(products);
 
       setData(products);
 
@@ -74,21 +83,28 @@ const Search = () => {
       dispatch(setChangeMaxPrice(products.meta.priceMax));
 
       setInputValue(inputSearchValue);
+      setPage(products?.meta?.pages);
     } else {
       const res = await fetch(
-        `${process.env.API_URL}/api/products/filter?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${genderChecked}&subcat=${subCategoryChecked}`,
+        `${process.env.API_URL}/api/products?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${genderChecked}&subcat=${subCategoryChecked}&currentPage=${currentPage}`,
       );
       const products = await res.json();
-
+      console.log(products);
       setData(products);
+      setPage(products?.meta?.pages);
     }
   }
+
+  const handleChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   return (
     <Box>
       <Box pl="2px" m="10px 0px" fontSize="24px">
         SEARCH "{inputSearchValue}"
       </Box>
+      <PaginationComponent page={page} handleChange={handleChange} currentPage={currentPage} />
       <Box display="flex">
         <Box flex="1 1 10%">
           <Box fontSize="18px">FILTERS</Box>

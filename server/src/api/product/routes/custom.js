@@ -2,7 +2,7 @@ module.exports = {
   routes: [
     {
       method: "GET",
-      path: "/products/filter",
+      path: "/products",
       handler: "product.filterSearch",
     },
     {

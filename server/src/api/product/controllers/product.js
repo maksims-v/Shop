@@ -37,8 +37,38 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async filterSearch(ctx) {
-    const { search, pmin, pmax, brands, sale, category, gender, subcat } =
-      ctx.query;
+    const {
+      search,
+      pmin,
+      pmax,
+      brands,
+      sale,
+      category,
+      gender,
+      subcat,
+      currentPage,
+    } = ctx.query;
+
+    console.log(currentPage);
+    let startPage = 0;
+    let limitPage = 16 * currentPage;
+
+    if (currentPage > 1) {
+      startPage = limitPage - 16;
+    } else {
+      startPage = 0;
+    }
+
+    console.log(startPage);
+    console.log(limitPage);
+
+    // let { startpage, limitpage } = ctx.query?.pagination || {
+    //   start: null,
+    //   limit: null,
+    // };
+    // console.log(startpage);
+    // startpage = startpage * currentPage;
+    // limitpage = limitpage * currentPage;
 
     const salesSplitToArr = sale ? sale.split(",") : [];
     const brandsSplitToArr = brands ? brands.split(",") : [];
@@ -47,8 +77,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const subCategoryArr = subcat ? subcat.split(",") : [];
 
     genderSplitArr.includes("all") && genderSplitArr.push("men's", "women's");
-
-    console.log(genderSplitArr);
 
     let saleItem = false;
 
@@ -61,57 +89,109 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     let priceMin = pmin ? pmin : 0;
     let priceMax = pmax ? pmax : 10000;
 
-    const entity = await strapi.entityService.findMany("api::product.product", {
-      orderBy: "id",
-      filters: {
-        $and: [
-          {
-            title: { $startsWith: search },
-          },
-          {
-            $or: [
-              { price: { $between: [priceMin, priceMax] } },
-              { salePrice: { $between: [priceMin, priceMax] } },
-            ],
-          },
-          {
-            brand: {
-              $eqi: brandsSplitToArr,
+    const results = await strapi.entityService.findMany(
+      "api::product.product",
+      {
+        orderBy: "id",
+        start: startPage,
+        limit: 16,
+        filters: {
+          $and: [
+            {
+              title: { $startsWith: search },
             },
-          },
-          {
-            gender: {
-              $eqi: genderSplitArr,
+            {
+              $or: [
+                { price: { $between: [priceMin, priceMax] } },
+                { salePrice: { $between: [priceMin, priceMax] } },
+              ],
             },
-          },
-          {
-            category: {
-              $eqi: categorySplitToArr,
+            {
+              brand: {
+                $eqi: brandsSplitToArr,
+              },
             },
-          },
-          {
-            subcategory: {
-              $eqi: subCategoryArr,
+            {
+              gender: {
+                $eqi: genderSplitArr,
+              },
             },
-          },
-          {
-            $or: [
-              { sale: saleItem ? true : true },
-              { sale: saleItem ? true : false },
-            ],
-          },
-        ],
-      },
-      publishedAt: {
-        $ne: null,
-      },
-      populate: { image: true },
-      // start: 0,
-      // limit: 16,
-    });
+            {
+              category: {
+                $eqi: categorySplitToArr,
+              },
+            },
+            {
+              subcategory: {
+                $eqi: subCategoryArr,
+              },
+            },
+            {
+              $or: [
+                { sale: saleItem ? true : true },
+                { sale: saleItem ? true : false },
+              ],
+            },
+          ],
+        },
+        publishedAt: {
+          $ne: null,
+        },
+        populate: { image: true },
+      }
+    );
 
-    if (entity.length !== 0) {
-      const minMaxPriceArr = entity?.map((item) => {
+    const pagination = await strapi.entityService.findMany(
+      "api::product.product",
+      {
+        orderBy: "id",
+        filters: {
+          $and: [
+            {
+              title: { $startsWith: search },
+            },
+            {
+              $or: [
+                { price: { $between: [priceMin, priceMax] } },
+                { salePrice: { $between: [priceMin, priceMax] } },
+              ],
+            },
+            {
+              brand: {
+                $eqi: brandsSplitToArr,
+              },
+            },
+            {
+              gender: {
+                $eqi: genderSplitArr,
+              },
+            },
+            {
+              category: {
+                $eqi: categorySplitToArr,
+              },
+            },
+            {
+              subcategory: {
+                $eqi: subCategoryArr,
+              },
+            },
+            {
+              $or: [
+                { sale: saleItem ? true : true },
+                { sale: saleItem ? true : false },
+              ],
+            },
+          ],
+        },
+        publishedAt: {
+          $ne: null,
+        },
+      }
+    );
+
+    if (results.length !== 0) {
+      const minMaxPriceArr = pagination?.map((item) => {
         if (item.sale) {
           return item.salePrice;
         }
@@ -122,7 +202,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       priceMax = Math.max.apply(null, minMaxPriceArr);
     }
 
-    const priceFilter = entity.filter((item) => {
+    const priceFilter = results.filter((item) => {
       if (!item.sale) {
         return item;
       } else {
@@ -130,9 +210,20 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       }
     });
 
+    const paginationPriceFilter = pagination.filter((item) => {
+      if (!item.sale) {
+        return item;
+      } else {
+        if (item.salePrice >= pmin) return item;
+      }
+    });
+
+    const paginationLength = paginationPriceFilter.length;
+    const pages = Math.ceil(paginationLength / 16);
+
     const sanitizedEntity = await this.sanitizeOutput(priceFilter, ctx);
     const sanitizedEntity2 = await this.sanitizeOutput(
-      { priceMin, priceMax },
+      { priceMin, priceMax, total: paginationLength, pages },
       ctx
     );
 
