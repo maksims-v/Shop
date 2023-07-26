@@ -14,6 +14,8 @@ const initialState = {
   genderChecked: [],
   subCategory: [],
   subCategoryChecked: [],
+  sizes: [],
+  sizesChecked: [],
   discounts: [],
 };
 
@@ -60,6 +62,12 @@ export const searchPageSlice = createSlice({
     setSubCategoryChecked(state, action) {
       state.subCategoryChecked = action.payload;
     },
+    setSizes(state, action) {
+      state.sizes = action.payload;
+    },
+    setSizesChecked(state, action) {
+      state.sizesChecked = action.payload;
+    },
     setDiscounts(state, action) {
       state.discounts = action.payload;
     },
@@ -81,6 +89,8 @@ export const {
   setSubCategory,
   setSubCategoryChecked,
   setDiscounts,
+  setSizes,
+  setSizesChecked,
 } = searchPageSlice.actions;
 
 export default searchPageSlice.reducer;

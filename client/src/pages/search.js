@@ -5,6 +5,7 @@ import CategoryFilter from 'components/CategoryFilter';
 import GenderFilter from 'components/GenderFilter';
 import SubCategoryFilter from 'components/SubCategoryFilter';
 import PaginationComponent from 'components/PaginationComponent';
+import Sizes from 'components/Sizes';
 import { Box, Typography, TextField, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
@@ -18,13 +19,12 @@ import {
   setCategory,
   setGender,
   setSubCategory,
+  setSizes,
 } from '@/state/searchPageSlice';
 
 const Search = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
 
-  const [startpage, setStartpage] = useState(0);
-  const [limitpage, setLimitpage] = useState(16);
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -36,6 +36,7 @@ const Search = () => {
   const categoryChecked = useSelector((state) => state.search.categoryChecked);
   const genderChecked = useSelector((state) => state.search.genderChecked);
   const subCategoryChecked = useSelector((state) => state.search.subCategoryChecked);
+  const sizesChecked = useSelector((state) => state.search.sizesChecked);
 
   const discounts = useSelector((state) => state.search.discounts);
 
@@ -43,7 +44,7 @@ const Search = () => {
 
   useEffect(() => {
     filterSearch(inputSearchValue);
-    console.log(currentPage);
+    console.log(data);
   }, [
     inputSearchValue,
     changeMinPrice,
@@ -54,44 +55,46 @@ const Search = () => {
     genderChecked,
     subCategoryChecked,
     currentPage,
+    sizesChecked,
   ]);
 
   async function filterSearch(search) {
     if (inputSearchValue !== inputValue) {
-      const res = await fetch(
-        `${process.env.API_URL}/api/products?search=${search}&pmin=1&pmax=10000&pagination[startpage]=${startpage}&pagination[limitpage]=${limitpage}&currentPage=1`,
-      );
-      const products = await res.json();
+      try {
+        const res = await fetch(
+          `${process.env.API_URL}/api/products?search=${search}&pmin=1&pmax=10000&currentPage=1`,
+        );
+        const products = await res.json();
 
-      console.log(products);
-
-      setData(products);
-
-      const brands = products ? getBrandsArr(products) : [];
-      const category = getCategoryArr(products);
-      const gender = getGenderArr(products);
-      const suCategory = getSubCategoryArr(products);
-
-      dispatch(setBrands(brands));
-      category ? dispatch(setCategory(category)) : dispatch(setCategory([]));
-      gender ? dispatch(setGender(gender)) : dispatch(setGender([]));
-      suCategory ? dispatch(setSubCategory(suCategory)) : dispatch(setSubCategory([]));
-
-      dispatch(setMinPrice(products.meta.priceMin));
-      dispatch(setMaxPrice(products.meta.priceMax));
-      dispatch(setChangeMinPrice(products.meta.priceMin));
-      dispatch(setChangeMaxPrice(products.meta.priceMax));
-
-      setInputValue(inputSearchValue);
-      setPage(products?.meta?.pages);
+        if (products?.data && Object.keys(products.meta).length !== 0) {
+          setData(products);
+          dispatch(setGender(products.meta.genders));
+          dispatch(setCategory(products.meta.category));
+          dispatch(setSubCategory(products.meta.subCategory));
+          dispatch(setBrands(products.meta.brands));
+          dispatch(setSizes(products.meta.sizes));
+          dispatch(setMinPrice(products.meta.priceMin));
+          dispatch(setMaxPrice(products.meta.priceMax));
+          dispatch(setChangeMinPrice(products.meta.priceMin));
+          dispatch(setChangeMaxPrice(products.meta.priceMax));
+          setInputValue(inputSearchValue);
+          setPage(products.meta.pages);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
-      const res = await fetch(
-        `${process.env.API_URL}/api/products?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${genderChecked}&subcat=${subCategoryChecked}&currentPage=${currentPage}`,
-      );
-      const products = await res.json();
-      console.log(products);
-      setData(products);
-      setPage(products?.meta?.pages);
+      try {
+        const res = await fetch(
+          `${process.env.API_URL}/api/products?search=${search}&pmin=${changeMinPrice}&pmax=${changeMaxPrice}&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${genderChecked}&subcat=${subCategoryChecked}&currentPage=${currentPage}&size=${sizesChecked}`,
+        );
+        const products = await res.json();
+
+        setData(products);
+        setPage(products?.meta?.pages);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -115,6 +118,7 @@ const Search = () => {
           <SubCategoryFilter />
           <BrandFilter />
           <PriceSlider />
+          <Sizes />
         </Box>
         <Box
           flex="1 1 80%"
@@ -132,83 +136,3 @@ const Search = () => {
 };
 
 export default Search;
-
-function getBrandsArr(arr) {
-  const getAllBrandsArr = arr.data.map((item) => {
-    return item.attributes.brand;
-  });
-  const filterGetBrandsArr = getAllBrandsArr
-    .filter((item) => {
-      if (item !== null) {
-        return item;
-      }
-    })
-    .map((item) => {
-      return item.toLowerCase();
-    });
-
-  const brands = filterGetBrandsArr.filter((item, id) => filterGetBrandsArr.indexOf(item) === id);
-
-  return brands;
-}
-
-function getCategoryArr(arr) {
-  const getAllCategoryArr = arr.data.map((item) => {
-    return item.attributes.category;
-  });
-  const filterGetCategoryArr = getAllCategoryArr
-    .filter((item) => {
-      if (item !== null) {
-        return item;
-      }
-    })
-    .map((item) => {
-      return item.toLowerCase();
-    });
-
-  const category = filterGetCategoryArr.filter(
-    (item, id) => filterGetCategoryArr.indexOf(item) === id,
-  );
-
-  return category;
-}
-
-function getGenderArr(arr) {
-  const getAllGenderArr = arr.data.map((item) => {
-    return item.attributes.gender;
-  });
-  const filterGetGenderArr = getAllGenderArr
-    .filter((item) => {
-      if (item !== null) {
-        return item;
-      }
-    })
-    .map((item) => {
-      return item.toLowerCase();
-    });
-
-  const gender = filterGetGenderArr.filter((item, id) => filterGetGenderArr.indexOf(item) === id);
-
-  return gender;
-}
-
-function getSubCategoryArr(arr) {
-  const getAllSubCategoryArr = arr.data.map((item) => {
-    return item.attributes.subcategory;
-  });
-  const filterGetSebCategoryArr = getAllSubCategoryArr
-    .filter((item) => {
-      if (item !== null) {
-        return item;
-      }
-    })
-    .map((item) => {
-      return item.toLowerCase();
-    });
-
-  const subCategory = filterGetSebCategoryArr.filter(
-    (item, id) => filterGetSebCategoryArr.indexOf(item) === id,
-  );
-
-  return subCategory;
-}

@@ -47,47 +47,54 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       gender,
       subcat,
       currentPage,
+      size,
     } = ctx.query;
 
-    console.log(currentPage);
+    console.log(size);
+
+    // pagination logic
     let startPage = 0;
     let limitPage = 16 * currentPage;
-
     if (currentPage > 1) {
       startPage = limitPage - 16;
     } else {
       startPage = 0;
     }
-
-    console.log(startPage);
-    console.log(limitPage);
-
-    // let { startpage, limitpage } = ctx.query?.pagination || {
-    //   start: null,
-    //   limit: null,
-    // };
-    // console.log(startpage);
-    // startpage = startpage * currentPage;
-    // limitpage = limitpage * currentPage;
+    //---------------
 
     const salesSplitToArr = sale ? sale.split(",") : [];
     const brandsSplitToArr = brands ? brands.split(",") : [];
     const categorySplitToArr = category ? category.split(",") : [];
     const genderSplitArr = gender ? gender.split(",") : [];
     const subCategoryArr = subcat ? subcat.split(",") : [];
+    let sizeArr = [];
+    if (
+      size === "false" ||
+      size === "undefined" ||
+      size == undefined ||
+      size === ""
+    ) {
+      sizeArr = [];
+    } else {
+      sizeArr = size.split(",");
+    }
+    // sizeArr = size ? size.split(",") : [];
+
+    console.log(sizeArr);
+
+    let priceMin = pmin ? pmin : 0;
+    let priceMax = pmax ? pmax : 10000;
 
     genderSplitArr.includes("all") && genderSplitArr.push("men's", "women's");
 
+    // "sale" on/off
     let saleItem = false;
-
     salesSplitToArr.map((item) => {
       if (item == "Sale") {
         saleItem = !saleItem;
       }
     });
-
-    let priceMin = pmin ? pmin : 0;
-    let priceMax = pmax ? pmax : 10000;
+    //---------------
 
     const results = await strapi.entityService.findMany(
       "api::product.product",
@@ -96,6 +103,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         start: startPage,
         limit: 16,
         filters: {
+          publishedAt: {
+            $null: null,
+          },
           $and: [
             {
               title: { $startsWith: search },
@@ -132,12 +142,16 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                 { sale: saleItem ? true : false },
               ],
             },
+            {
+              size: {
+                size: {
+                  $eqi: sizeArr,
+                },
+              },
+            },
           ],
         },
-        publishedAt: {
-          $ne: null,
-        },
-        populate: { image: true },
+        populate: { image: true, size: true },
       }
     );
 
@@ -146,6 +160,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       {
         orderBy: "id",
         filters: {
+          publishedAt: {
+            $null: null,
+          },
           $and: [
             {
               title: { $startsWith: search },
@@ -182,14 +199,20 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                 { sale: saleItem ? true : false },
               ],
             },
+            {
+              size: {
+                size: {
+                  $eqi: sizeArr,
+                },
+              },
+            },
           ],
         },
-        publishedAt: {
-          $ne: null,
-        },
+        populate: { size: true },
       }
     );
 
+    // get Min, Max price
     if (results.length !== 0) {
       const minMaxPriceArr = pagination?.map((item) => {
         if (item.sale) {
@@ -201,7 +224,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       priceMin = Math.min.apply(null, minMaxPriceArr);
       priceMax = Math.max.apply(null, minMaxPriceArr);
     }
+    //---------------
 
+    // fixed "sale" in priceSlider
     const priceFilter = results.filter((item) => {
       if (!item.sale) {
         return item;
@@ -209,7 +234,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         if (item.salePrice >= pmin) return item;
       }
     });
+    //---------------
 
+    // remove "sale" from filtering
     const paginationPriceFilter = pagination.filter((item) => {
       if (!item.sale) {
         return item;
@@ -217,17 +244,92 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         if (item.salePrice >= pmin) return item;
       }
     });
+    //---------------
 
+    // get all products count
     const paginationLength = paginationPriceFilter.length;
+    //---------------
+
+    // get pages count
     const pages = Math.ceil(paginationLength / 16);
+    //---------------
+
+    // get gendre
+    const allGender = pagination.map((item) => {
+      return item.gender.toLowerCase();
+    });
+    const getUniqGendre = allGender.filter(
+      (item, id) => allGender.indexOf(item) === id
+    );
+    //---------------
+
+    // get category
+    const allCategory = pagination.map((item) => {
+      return item.category.toLowerCase();
+    });
+    const getUniqCategory = allCategory.filter(
+      (item, id) => allCategory.indexOf(item) === id
+    );
+    //---------------
+
+    // get subCategory
+    const allSubCategory = pagination.map((item) => {
+      return item.subcategory.toLowerCase();
+    });
+    const getUniqSubCategory = allSubCategory.filter(
+      (item, id) => allSubCategory.indexOf(item) === id
+    );
+    //---------------
+
+    // get brands
+    const allBrands = pagination.map((item) => {
+      return item.brand.toLowerCase();
+    });
+
+    const getUniqBrands = allBrands.filter(
+      (item, id) => allBrands.indexOf(item) === id
+    );
+    //---------------
+
+    // get sizes
+    const allSizes = pagination.map((item) => {
+      return item.size;
+    });
+    const sortSizes = allSizes.filter(
+      (item, id) => allSizes.indexOf(item) === id
+    );
+
+    const filterSizes = sortSizes.map((item) => {
+      const sort = item.map((items) => {
+        return items.size;
+      });
+      return sort;
+    });
+
+    const filterSizesConcCat = filterSizes.flat(2);
+    const getUniqSize = filterSizesConcCat.filter(
+      (item, id) => filterSizesConcCat.indexOf(item) === id
+    );
+
+    //---------------
 
     const sanitizedEntity = await this.sanitizeOutput(priceFilter, ctx);
-    const sanitizedEntity2 = await this.sanitizeOutput(
-      { priceMin, priceMax, total: paginationLength, pages },
+    const sanitizedPagination = await this.sanitizeOutput(
+      {
+        priceMin,
+        priceMax,
+        total: paginationLength,
+        pages,
+        category: getUniqCategory,
+        genders: getUniqGendre,
+        subCategory: getUniqSubCategory,
+        brands: getUniqBrands,
+        sizes: getUniqSize,
+      },
       ctx
     );
 
-    return this.transformResponse(sanitizedEntity, sanitizedEntity2);
+    return this.transformResponse(sanitizedEntity, sanitizedPagination);
   },
 
   async genderSearch(ctx) {
