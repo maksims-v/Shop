@@ -5,14 +5,17 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const CategoryFilter = () => {
   const dispatch = useDispatch();
-  const category = useSelector((state) => state.search.category);
+  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+  const category = useSelector((state) => state.search.metaData.category);
 
-  const categoryObj = category.reduce((obj, key) => {
-    obj[key] = false;
-    return obj;
-  }, {});
-
-  const [state, setState] = useState(categoryObj);
+  const [state, setState] = useState(
+    category
+      ? category.reduce((obj, key) => {
+          obj[key] = false;
+          return obj;
+        }, {})
+      : [],
+  );
 
   useEffect(() => {
     const categoryFilter = Object.entries(state);
@@ -26,7 +29,7 @@ const CategoryFilter = () => {
       });
 
     dispatch(setCategoryChecked(getCategoryFilter));
-  }, [state]);
+  }, [state, inputSearchValue]);
 
   const handleChange = (event) => {
     setState({
@@ -42,15 +45,16 @@ const CategoryFilter = () => {
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {category.map((item, index) => (
-            <FormControlLabel
-              control={
-                <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
-              }
-              label={item.charAt(0).toUpperCase() + item.slice(1)}
-              key={item}
-            />
-          ))}
+          {category &&
+            category.map((item, index) => (
+              <FormControlLabel
+                control={
+                  <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
+                }
+                label={item.charAt(0).toUpperCase() + item.slice(1)}
+                key={item}
+              />
+            ))}
         </FormGroup>
       </FormControl>
     </Box>

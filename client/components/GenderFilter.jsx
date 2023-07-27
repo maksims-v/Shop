@@ -5,14 +5,16 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const GenderFilter = () => {
   const dispatch = useDispatch();
-  const gender = useSelector((state) => state.search.gender);
+  const genders = useSelector((state) => state.search.metaData.genders);
 
-  const genderObj = gender.reduce((obj, key) => {
-    obj[key] = false;
-    return obj;
-  }, {});
-
-  const [state, setState] = useState(genderObj);
+  const [state, setState] = useState(
+    genders
+      ? genders.reduce((obj, key) => {
+          obj[key] = false;
+          return obj;
+        }, {})
+      : [],
+  );
 
   useEffect(() => {
     const genderFilter = Object.entries(state);
@@ -42,15 +44,16 @@ const GenderFilter = () => {
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {gender.map((item, index) => (
-            <FormControlLabel
-              control={
-                <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
-              }
-              label={item.charAt(0).toUpperCase() + item.slice(1)}
-              key={item}
-            />
-          ))}
+          {genders &&
+            genders.map((item, index) => (
+              <FormControlLabel
+                control={
+                  <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
+                }
+                label={item.charAt(0).toUpperCase() + item.slice(1)}
+                key={item}
+              />
+            ))}
         </FormGroup>
       </FormControl>
     </Box>

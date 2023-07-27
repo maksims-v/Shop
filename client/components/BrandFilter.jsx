@@ -5,14 +5,16 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const BrandFilter = () => {
   const dispatch = useDispatch();
-  const brands = useSelector((state) => state.search.brands);
+  const brands = useSelector((state) => state.search.metaData.brands);
 
-  const brandsObj = brands.reduce((obj, key) => {
-    obj[key] = false;
-    return obj;
-  }, {});
-
-  const [state, setState] = useState(brandsObj);
+  const [state, setState] = useState(
+    brands
+      ? brands.reduce((obj, key) => {
+          obj[key] = false;
+          return obj;
+        }, {})
+      : [],
+  );
 
   useEffect(() => {
     const brandsFilter = Object.entries(state);
@@ -42,15 +44,16 @@ const BrandFilter = () => {
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {brands.map((item, index) => (
-            <FormControlLabel
-              control={
-                <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
-              }
-              label={item.charAt(0).toUpperCase() + item.slice(1)}
-              key={item}
-            />
-          ))}
+          {brands &&
+            brands.map((item, index) => (
+              <FormControlLabel
+                control={
+                  <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
+                }
+                label={item.charAt(0).toUpperCase() + item.slice(1)}
+                key={item}
+              />
+            ))}
         </FormGroup>
       </FormControl>
     </Box>

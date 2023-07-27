@@ -6,14 +6,16 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 const SubCategoryFilter = () => {
   const dispatch = useDispatch();
 
-  const subCategory = useSelector((state) => state.search.subCategory);
+  const subCategory = useSelector((state) => state.search.metaData.subCategory);
 
-  const subCategoryObj = subCategory.reduce((obj, key) => {
-    obj[key] = false;
-    return obj;
-  }, {});
-
-  const [state, setState] = useState(subCategoryObj);
+  const [state, setState] = useState(
+    subCategory
+      ? subCategory.reduce((obj, key) => {
+          obj[key] = false;
+          return obj;
+        }, {})
+      : [],
+  );
 
   useEffect(() => {
     const subCategoryFilter = Object.entries(state);
@@ -43,15 +45,16 @@ const SubCategoryFilter = () => {
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {subCategory.map((item, index) => (
-            <FormControlLabel
-              control={
-                <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
-              }
-              label={item.charAt(0).toUpperCase() + item.slice(1)}
-              key={item}
-            />
-          ))}
+          {subCategory &&
+            subCategory.map((item, index) => (
+              <FormControlLabel
+                control={
+                  <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
+                }
+                label={item.charAt(0).toUpperCase() + item.slice(1)}
+                key={item}
+              />
+            ))}
         </FormGroup>
       </FormControl>
     </Box>

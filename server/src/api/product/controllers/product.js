@@ -50,8 +50,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       size,
     } = ctx.query;
 
-    console.log(size);
-
     // pagination logic
     let startPage = 0;
     let limitPage = 16 * currentPage;
@@ -79,9 +77,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       sizeArr = size.split(",");
     }
     // sizeArr = size ? size.split(",") : [];
-
-    console.log(sizeArr);
-
+    console.log(pmin);
+    console.log(pmax);
     let priceMin = pmin ? pmin : 0;
     let priceMax = pmax ? pmax : 10000;
 

@@ -1,96 +1,87 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  data: [],
+  metaData: [],
   inputSearchValue: '',
-  minPrice: 1,
-  maxPrice: 10000,
-  changeMinPrice: 1,
-  changeMaxPrice: 10000,
-  brands: [],
+  newInputSearchValue: false,
+  changePrice: [1, 10000],
   brandsChecked: [],
-  category: [],
   categoryChecked: [],
-  gender: [],
   genderChecked: [],
-  subCategory: [],
   subCategoryChecked: [],
-  sizes: [],
   sizesChecked: [],
   discounts: [],
+  searchFlag: false,
 };
 
 export const searchPageSlice = createSlice({
   name: 'shoppingCart',
   initialState,
   reducers: {
+    setData(state, action) {
+      state.data = action.payload;
+    },
+    setMetaData(state, action) {
+      state.metaData = action.payload;
+    },
     inputValue(state, action) {
       state.inputSearchValue = action.payload;
+      state.searchFlag = !state.searchFlag;
     },
-    setMinPrice(state, action) {
-      state.minPrice = Number(action.payload);
+    setNewInputSearchValue(state, action) {
+      state.newInputSearchValue = action.payload;
     },
-    setMaxPrice(state, action) {
-      state.maxPrice = Number(action.payload);
-    },
-    setChangeMinPrice(state, action) {
-      state.changeMinPrice = Number(action.payload);
-    },
-    setChangeMaxPrice(state, action) {
-      state.changeMaxPrice = Number(action.payload);
-    },
-    setBrands(state, action) {
-      state.brands = action.payload;
+    setChangePrice(state, action) {
+      state.changePrice = action.payload;
     },
     setBrandsChecked(state, action) {
       state.brandsChecked = action.payload;
-    },
-    setCategory(state, action) {
-      state.category = action.payload;
+      state.searchFlag = !state.searchFlag;
     },
     setCategoryChecked(state, action) {
       state.categoryChecked = action.payload;
-    },
-    setGender(state, action) {
-      state.gender = action.payload;
+      state.searchFlag = !state.searchFlag;
     },
     setGenderChecked(state, action) {
       state.genderChecked = action.payload;
-    },
-    setSubCategory(state, action) {
-      state.subCategory = action.payload;
+      state.searchFlag = !state.searchFlag;
     },
     setSubCategoryChecked(state, action) {
       state.subCategoryChecked = action.payload;
-    },
-    setSizes(state, action) {
-      state.sizes = action.payload;
+      state.searchFlag = !state.searchFlag;
     },
     setSizesChecked(state, action) {
       state.sizesChecked = action.payload;
+      state.searchFlag = !state.searchFlag;
     },
     setDiscounts(state, action) {
       state.discounts = action.payload;
+      state.searchFlag = !state.searchFlag;
+    },
+    clearFilters(state) {
+      state.brandsChecked = [];
+      state.categoryChecked = [];
+      state.genderChecked = [];
+      state.subCategoryChecked = [];
+      state.sizesChecked = [];
     },
   },
 });
 
 export const {
+  setData,
+  setMetaData,
   inputValue,
-  setMinPrice,
-  setMaxPrice,
-  setChangeMinPrice,
-  setChangeMaxPrice,
-  setBrands,
+  setNewInputSearchValue,
   setBrandsChecked,
-  setCategory,
   setCategoryChecked,
-  setGender,
   setGenderChecked,
-  setSubCategory,
   setSubCategoryChecked,
   setDiscounts,
-  setSizes,
   setSizesChecked,
+  clearFilters,
+  setChangePrice,
 } = searchPageSlice.actions;
 
 export default searchPageSlice.reducer;
