@@ -4,7 +4,6 @@ const initialState = {
   data: [],
   metaData: [],
   inputSearchValue: '',
-  newInputSearchValue: false,
   changePrice: [1, 10000],
   brandsChecked: [],
   categoryChecked: [],
@@ -27,37 +26,27 @@ export const searchPageSlice = createSlice({
     },
     inputValue(state, action) {
       state.inputSearchValue = action.payload;
-      state.searchFlag = !state.searchFlag;
-    },
-    setNewInputSearchValue(state, action) {
-      state.newInputSearchValue = action.payload;
     },
     setChangePrice(state, action) {
       state.changePrice = action.payload;
     },
     setBrandsChecked(state, action) {
       state.brandsChecked = action.payload;
-      state.searchFlag = !state.searchFlag;
     },
     setCategoryChecked(state, action) {
       state.categoryChecked = action.payload;
-      state.searchFlag = !state.searchFlag;
     },
     setGenderChecked(state, action) {
       state.genderChecked = action.payload;
-      state.searchFlag = !state.searchFlag;
     },
     setSubCategoryChecked(state, action) {
       state.subCategoryChecked = action.payload;
-      state.searchFlag = !state.searchFlag;
     },
     setSizesChecked(state, action) {
       state.sizesChecked = action.payload;
-      state.searchFlag = !state.searchFlag;
     },
     setDiscounts(state, action) {
       state.discounts = action.payload;
-      state.searchFlag = !state.searchFlag;
     },
     clearFilters(state) {
       state.brandsChecked = [];
@@ -65,6 +54,7 @@ export const searchPageSlice = createSlice({
       state.genderChecked = [];
       state.subCategoryChecked = [];
       state.sizesChecked = [];
+      // state.changePrice = [1, 9999];
     },
   },
 });
@@ -73,7 +63,6 @@ export const {
   setData,
   setMetaData,
   inputValue,
-  setNewInputSearchValue,
   setBrandsChecked,
   setCategoryChecked,
   setGenderChecked,

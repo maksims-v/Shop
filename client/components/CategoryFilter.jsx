@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryChecked } from '@/state/searchPageSlice';
+import { setCategoryChecked, setChangePrice } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const CategoryFilter = () => {
@@ -28,7 +28,9 @@ const CategoryFilter = () => {
         if (item[1]) return item[0];
       });
 
-    dispatch(setCategoryChecked(getCategoryFilter));
+    if (state.length !== 0) {
+      dispatch(setCategoryChecked(getCategoryFilter));
+    }
   }, [state, inputSearchValue]);
 
   const handleChange = (event) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSubCategoryChecked } from '@/state/searchPageSlice';
+import { setSubCategoryChecked, setChangePrice } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const SubCategoryFilter = () => {
@@ -28,7 +28,9 @@ const SubCategoryFilter = () => {
         if (item[1]) return item[0];
       });
 
-    dispatch(setSubCategoryChecked(getSubCategoryFilter));
+    if (state.length !== 0 && state.length !== undefined) {
+      dispatch(setSubCategoryChecked(getSubCategoryFilter));
+    }
   }, [state]);
 
   const handleChange = (event) => {

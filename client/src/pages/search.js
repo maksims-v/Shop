@@ -10,20 +10,16 @@ import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setData,
-  setMetaData,
-  setNewInputSearchValue,
-  clearFilters,
-} from '@/state/searchPageSlice';
+import { setData, setMetaData, clearFilters } from '@/state/searchPageSlice';
+import { useDebounce } from 'use-debounce';
 
 const Search = () => {
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+
   const dispatch = useDispatch();
   const data = useSelector((state) => state.search.data);
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
-  const newInputSearchValue = useSelector((state) => state.search.newInputSearchValue);
   const changePrice = useSelector((state) => state.search.changePrice);
   const brandsChecked = useSelector((state) => state.search.brandsChecked);
   const categoryChecked = useSelector((state) => state.search.categoryChecked);
@@ -32,16 +28,25 @@ const Search = () => {
   const sizesChecked = useSelector((state) => state.search.sizesChecked);
   const discounts = useSelector((state) => state.search.discounts);
   const searchFlag = useSelector((state) => state.search.searchFlag);
+  const [currentSearchValue, setCurrentSearchValue] = useState(null);
 
   useEffect(() => {
-    if (inputSearchValue !== newInputSearchValue) {
+    if (inputSearchValue !== currentSearchValue) {
       newSearch(inputSearchValue);
     } else {
       searchWithFilters(inputSearchValue);
     }
-  }, [searchFlag, changePrice]);
-
-  // }, [searchFlag, currentPage]);
+  }, [
+    currentPage,
+    changePrice,
+    discounts,
+    sizesChecked,
+    subCategoryChecked,
+    genderChecked,
+    categoryChecked,
+    inputSearchValue,
+    brandsChecked,
+  ]);
 
   async function newSearch(search) {
     console.log('1');
@@ -53,10 +58,9 @@ const Search = () => {
 
       if (products?.data && Object.keys(products.meta).length !== 0) {
         dispatch(setData(products?.data));
-        dispatch(setNewInputSearchValue(inputSearchValue));
+        setCurrentSearchValue(inputSearchValue);
         dispatch(setMetaData(products.meta));
         setPage(products.meta.pages);
-        dispatch(clearFilters());
       }
     } catch (error) {
       console.log(error);
@@ -77,7 +81,7 @@ const Search = () => {
     }
   }
 
-  const handleChange = (event, value) => {
+  const changePage = (event, value) => {
     setCurrentPage(value);
   };
 
@@ -86,7 +90,7 @@ const Search = () => {
       <Box pl="2px" m="10px 0px" fontSize="24px">
         SEARCH "{inputSearchValue}"
       </Box>
-      <PaginationComponent page={page} handleChange={handleChange} currentPage={currentPage} />
+      <PaginationComponent page={page} changePage={changePage} currentPage={currentPage} />
       <Box display="flex">
         <Box flex="1 1 10%">
           <Box fontSize="18px">FILTERS</Box>

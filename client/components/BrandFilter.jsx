@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBrandsChecked } from '@/state/searchPageSlice';
+import { setBrandsChecked, setChangePrice } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const BrandFilter = () => {
@@ -27,7 +27,9 @@ const BrandFilter = () => {
         if (item[1]) return item[0];
       });
 
-    dispatch(setBrandsChecked(getBrandsFilter));
+    if (getBrandsFilter.length !== 0) {
+      dispatch(setBrandsChecked(getBrandsFilter));
+    }
   }, [state]);
 
   const handleChange = (event) => {

@@ -3,7 +3,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography } from '@mui/material';
-import { setSizesChecked } from '@/state/searchPageSlice';
+import { setSizesChecked, setChangePrice } from '@/state/searchPageSlice';
 
 const SizesFilter = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,9 @@ const SizesFilter = () => {
   }, [inputSearchValue]);
 
   useEffect(() => {
-    dispatch(setSizesChecked(formats));
+    if (formats) {
+      dispatch(setSizesChecked(formats));
+    }
   }, [formats]);
 
   const handleFormat = (event, newFormats) => {

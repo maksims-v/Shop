@@ -22,7 +22,9 @@ const SaleClearanceFilter = () => {
         if (item[1]) return item[0];
       });
 
-    dispatch(setDiscounts(getSalesFilter));
+    if (getSalesFilter.length !== 0) {
+      dispatch(setDiscounts(getSalesFilter));
+    }
   }, [state]);
 
   const handleChange = (event) => {
