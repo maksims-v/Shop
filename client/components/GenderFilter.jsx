@@ -17,34 +17,32 @@ const GenderFilter = () => {
       : [],
   );
 
-  // useEffect(() => {
-  //   const genderFilter = Object.entries(state);
+  useEffect(() => {
+    const genderFilter = Object.entries(state);
 
-  //   const getGenderFilter = genderFilter
-  //     .filter((item, index) => {
-  //       if (item[1]) return item;
-  //     })
-  //     .map((item) => {
-  //       if (item[1]) return item[0];
-  //     });
+    const getGenderFilter = genderFilter
+      .filter((item, index) => {
+        if (item[1]) return item;
+      })
+      .map((item) => {
+        if (item[1]) return item[0];
+      });
 
-  //   dispatch(setGenderChecked(getGenderFilter));
-  // }, [state]);
+    console.log(getGenderFilter);
+    dispatch(setGenderChecked(getGenderFilter));
+  }, [state]);
 
   const handleChange = (event) => {
     setState({
       ...state,
       [event.target.name]: event.target.checked,
     });
-    const genderFilter = Object.entries(state);
-
-    dispatch(setGenderChecked(state));
   };
 
   return (
     <Box mb="10px">
       <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        CATEGORY
+        Gender
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

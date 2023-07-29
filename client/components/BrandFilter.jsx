@@ -6,6 +6,7 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 const BrandFilter = () => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.search.metaData.brands);
+  const status = useSelector((state) => state.search.status);
 
   const [state, setState] = useState(
     brands
@@ -27,9 +28,7 @@ const BrandFilter = () => {
         if (item[1]) return item[0];
       });
 
-    if (getBrandsFilter.length !== 0) {
-      dispatch(setBrandsChecked(getBrandsFilter));
-    }
+    dispatch(setBrandsChecked(getBrandsFilter));
   }, [state]);
 
   const handleChange = (event) => {

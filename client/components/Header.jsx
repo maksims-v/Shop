@@ -11,7 +11,7 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
-import { inputValue } from '@/state/searchPageSlice';
+import { inputValue, clearFilters } from '@/state/searchPageSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: 'mens' },
@@ -100,7 +100,11 @@ const Header = () => {
           )}
           <Link href="/">
             {' '}
-            <Box sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>ADVENTURE</Box>
+            <Box
+              onClick={() => dispatch(clearFilters())}
+              sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>
+              ADVENTURE
+            </Box>
           </Link>
           <Box display={secondBreakPoint ? 'flex' : 'none'} color="white" gap="20px">
             {pages.map((item) => {

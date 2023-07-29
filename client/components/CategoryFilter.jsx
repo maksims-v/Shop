@@ -28,10 +28,8 @@ const CategoryFilter = () => {
         if (item[1]) return item[0];
       });
 
-    if (state.length !== 0) {
-      dispatch(setCategoryChecked(getCategoryFilter));
-    }
-  }, [state, inputSearchValue]);
+    dispatch(setCategoryChecked(getCategoryFilter));
+  }, [state]);
 
   const handleChange = (event) => {
     setState({

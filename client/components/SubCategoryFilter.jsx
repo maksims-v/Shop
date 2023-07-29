@@ -28,9 +28,7 @@ const SubCategoryFilter = () => {
         if (item[1]) return item[0];
       });
 
-    if (state.length !== 0 && state.length !== undefined) {
-      dispatch(setSubCategoryChecked(getSubCategoryFilter));
-    }
+    dispatch(setSubCategoryChecked(getSubCategoryFilter));
   }, [state]);
 
   const handleChange = (event) => {

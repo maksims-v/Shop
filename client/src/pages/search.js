@@ -10,8 +10,7 @@ import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setData, setMetaData, clearFilters } from '@/state/searchPageSlice';
-import { useDebounce } from 'use-debounce';
+import { newInputSearch, filtersSearch } from '@/state/searchPageSlice';
 
 const Search = () => {
   const [page, setPage] = useState(1);
@@ -19,6 +18,7 @@ const Search = () => {
 
   const dispatch = useDispatch();
   const data = useSelector((state) => state.search.data);
+  const status = useSelector((state) => state.search.status);
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const changePrice = useSelector((state) => state.search.changePrice);
   const brandsChecked = useSelector((state) => state.search.brandsChecked);
@@ -27,59 +27,24 @@ const Search = () => {
   const subCategoryChecked = useSelector((state) => state.search.subCategoryChecked);
   const sizesChecked = useSelector((state) => state.search.sizesChecked);
   const discounts = useSelector((state) => state.search.discounts);
-  const searchFlag = useSelector((state) => state.search.searchFlag);
   const [currentSearchValue, setCurrentSearchValue] = useState(null);
 
   useEffect(() => {
     if (inputSearchValue !== currentSearchValue) {
-      newSearch(inputSearchValue);
+      dispatch(newInputSearch());
+      setCurrentSearchValue(inputSearchValue);
     } else {
-      searchWithFilters(inputSearchValue);
+      dispatch(filtersSearch());
     }
   }, [
-    currentPage,
-    changePrice,
-    discounts,
-    sizesChecked,
-    subCategoryChecked,
-    genderChecked,
-    categoryChecked,
     inputSearchValue,
+    genderChecked,
+    discounts,
+    categoryChecked,
+    subCategoryChecked,
     brandsChecked,
+    changePrice,
   ]);
-
-  async function newSearch(search) {
-    console.log('1');
-    try {
-      const res = await fetch(
-        `${process.env.API_URL}/api/products?search=${search}&pmin=1&pmax=10000&currentPage=1`,
-      );
-      const products = await res.json();
-
-      if (products?.data && Object.keys(products.meta).length !== 0) {
-        dispatch(setData(products?.data));
-        setCurrentSearchValue(inputSearchValue);
-        dispatch(setMetaData(products.meta));
-        setPage(products.meta.pages);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function searchWithFilters(search) {
-    console.log('2');
-    try {
-      const res = await fetch(
-        `${process.env.API_URL}/api/products?search=${search}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${genderChecked}&subcat=${subCategoryChecked}&currentPage=${currentPage}&size=${sizesChecked}`,
-      );
-      const products = await res.json();
-      dispatch(setData(products?.data));
-      setPage(products?.meta?.pages);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const changePage = (event, value) => {
     setCurrentPage(value);

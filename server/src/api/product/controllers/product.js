@@ -77,10 +77,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       sizeArr = size.split(",");
     }
     // sizeArr = size ? size.split(",") : [];
-    console.log(pmin);
-    console.log(pmax);
+
     let priceMin = pmin ? pmin : 0;
-    let priceMax = pmax ? pmax : 10000;
+    let priceMax = pmax ? pmax : 9999;
 
     genderSplitArr.includes("all") && genderSplitArr.push("men's", "women's");
 
