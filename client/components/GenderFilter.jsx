@@ -1,42 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGenderChecked, setChangePrice } from '@/state/searchPageSlice';
+import { setGenderChecked, filtersSearch } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const GenderFilter = () => {
   const dispatch = useDispatch();
-  const genders = useSelector((state) => state.search.metaData.genders);
-  const genderChecked = useSelector((state) => state.search.genderChecked);
-
-  const [state, setState] = useState(
-    genders
-      ? genders.reduce((obj, key) => {
-          obj[key] = false;
-          return obj;
-        }, {})
-      : [],
-  );
-
-  useEffect(() => {
-    const genderFilter = Object.entries(state);
-
-    const getGenderFilter = genderFilter
-      .filter((item, index) => {
-        if (item[1]) return item;
-      })
-      .map((item) => {
-        if (item[1]) return item[0];
-      });
-
-    console.log(getGenderFilter);
-    dispatch(setGenderChecked(getGenderFilter));
-  }, [state]);
+  const { genders } = useSelector((state) => state.search.metaData);
 
   const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+    dispatch(setGenderChecked(event.target.name));
+    dispatch(filtersSearch());
   };
 
   return (

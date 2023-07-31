@@ -11,7 +11,7 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
-import { inputValue, clearFilters } from '@/state/searchPageSlice';
+import { inputValue, clearFilters, filtersSearch } from '@/state/searchPageSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: 'mens' },
@@ -63,6 +63,10 @@ const Header = () => {
 
   const logout = () => {
     unsetToken();
+  };
+
+  const searchProduct = () => {
+    dispatch(inputValue(searchValue));
   };
 
   useEffect(() => {
@@ -124,8 +128,8 @@ const Header = () => {
             justifyContent="space-between"
             zIndex="2"
             sx={{ position: 'relative' }}>
-            <Link href={`/search`}>
-              <IconButton onClick={() => dispatch(inputValue(searchValue))}>
+            <Link href={`/search/${searchValue}`}>
+              <IconButton onClick={searchProduct}>
                 <SearchOutlined sx={{ color: 'white' }} />
               </IconButton>
             </Link>

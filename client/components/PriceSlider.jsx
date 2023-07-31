@@ -1,17 +1,18 @@
 import Slider from '@mui/material/Slider';
 import { Box, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setChangePrice } from '@/state/searchPageSlice';
 import { useDebounce } from 'use-debounce';
 
-const PriceSlider = ({ price }) => {
+const PriceSlider = () => {
   const dispatch = useDispatch();
 
   const priceMin = useSelector((state) => state.search.metaData.priceMin);
   const priceMax = useSelector((state) => state.search.metaData.priceMax);
 
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+  const changePrice = useSelector((state) => state.search.changePrice);
 
   const [value, setValue] = useState([1, 9999]);
   const [debouncedValue] = useDebounce(value, 800);
@@ -25,7 +26,9 @@ const PriceSlider = ({ price }) => {
   }, [inputSearchValue]);
 
   useEffect(() => {
-    dispatch(setChangePrice(debouncedValue));
+    if (debouncedValue[1] !== 9999) {
+      dispatch(setChangePrice(debouncedValue));
+    }
   }, [debouncedValue]);
 
   return (

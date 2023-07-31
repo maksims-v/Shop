@@ -21,30 +21,9 @@ const Search = () => {
   const status = useSelector((state) => state.search.status);
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const changePrice = useSelector((state) => state.search.changePrice);
-  const brandsChecked = useSelector((state) => state.search.brandsChecked);
-  const categoryChecked = useSelector((state) => state.search.categoryChecked);
-  const genderChecked = useSelector((state) => state.search.genderChecked);
-  const subCategoryChecked = useSelector((state) => state.search.subCategoryChecked);
-  const sizesChecked = useSelector((state) => state.search.sizesChecked);
-  const discounts = useSelector((state) => state.search.discounts);
-  const [currentSearchValue, setCurrentSearchValue] = useState(null);
+  const searchFlag = useSelector((state) => state.search.searchFlag);
 
-  useEffect(() => {
-    if (inputSearchValue !== currentSearchValue) {
-      dispatch(newInputSearch());
-      setCurrentSearchValue(inputSearchValue);
-    } else {
-      dispatch(filtersSearch());
-    }
-  }, [
-    inputSearchValue,
-    genderChecked,
-    discounts,
-    categoryChecked,
-    subCategoryChecked,
-    brandsChecked,
-    changePrice,
-  ]);
+  const [currentSearchValue, setCurrentSearchValue] = useState(null);
 
   const changePage = (event, value) => {
     setCurrentPage(value);

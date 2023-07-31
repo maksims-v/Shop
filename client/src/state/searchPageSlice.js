@@ -35,7 +35,7 @@ export const filtersSearch = createAsyncThunk(
     const { genderChecked } = getState().search;
     const { subCategoryChecked } = getState().search;
     const { sizesChecked } = getState().search;
-    console.log('4');
+    console.log('2');
     try {
       const response = await fetch(
         `${process.env.API_URL}/api/products?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${genderChecked}&subcat=${subCategoryChecked}&size=${sizesChecked}`,
@@ -88,29 +88,40 @@ export const searchPageSlice = createSlice({
       state.inputSearchValue = action.payload;
     },
     setGenderChecked(state, action) {
-      console.log('2');
-      if (state.genderChecked.length !== action.payload.length) {
-        state.genderChecked = action.payload;
-      }
+      const itemSearch = state.genderChecked.includes(action.payload);
+
+      !itemSearch
+        ? state.genderChecked.push(action.payload)
+        : (state.genderChecked = state.genderChecked.filter((item) => {
+            return item !== action.payload;
+          }));
+
+      state.searchFlag = !state.searchFlag;
     },
     setDiscounts(state, action) {
       if (state.discounts.length !== action.payload.length) {
         state.discounts = action.payload;
+        state.searchFlag = !state.searchFlag;
       }
     },
     setCategoryChecked(state, action) {
       if (state.categoryChecked.length !== action.payload.length) {
         state.categoryChecked = action.payload;
+        state.searchFlag = !state.searchFlag;
       }
     },
     setSubCategoryChecked(state, action) {
-      if (state.subCategoryChecked.length !== action.payload.length) {
-        state.subCategoryChecked = action.payload;
-      }
+      state.subCategoryChecked = action.payload;
+      state.searchFlag = !state.searchFlag;
+      // if (state.subCategoryChecked.length !== action.payload.length) {
+      //   state.subCategoryChecked = action.payload;
+      //   state.searchFlag = !state.searchFlag;
+      // }
     },
     setBrandsChecked(state, action) {
       if (state.brandsChecked.length !== action.payload.length) {
         state.brandsChecked = action.payload;
+        state.searchFlag = !state.searchFlag;
       }
     },
     setChangePrice(state, action) {
@@ -132,7 +143,8 @@ export const searchPageSlice = createSlice({
       state.genderChecked = [];
       state.subCategoryChecked = [];
       state.sizesChecked = [];
-      // state.changePrice = [1, 9999];
+      state.discounts = [];
+      state.changePrice = [1, 9999];
     },
   },
   extraReducers: {
@@ -141,10 +153,15 @@ export const searchPageSlice = createSlice({
       state.error = null;
     },
     [newInputSearch.fulfilled]: (state, action) => {
-      console.log('3');
-      state.status = 'resolved';
       state.data = action.payload.data;
       state.metaData = action.payload.meta;
+      state.brandsChecked = [];
+      state.categoryChecked = [];
+      state.genderChecked = [];
+      state.subCategoryChecked = [];
+      state.sizesChecked = [];
+      state.discounts = [];
+      state.status = 'resolved';
     },
     [newInputSearch.rejected]: setError,
 
@@ -153,7 +170,6 @@ export const searchPageSlice = createSlice({
       state.error = null;
     },
     [filtersSearch.fulfilled]: (state, action) => {
-      console.log('5');
       state.status = 'resolved';
       state.data = action.payload.data;
     },

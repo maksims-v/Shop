@@ -5,37 +5,10 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const SubCategoryFilter = () => {
   const dispatch = useDispatch();
-
   const subCategory = useSelector((state) => state.search.metaData.subCategory);
 
-  const [state, setState] = useState(
-    subCategory
-      ? subCategory.reduce((obj, key) => {
-          obj[key] = false;
-          return obj;
-        }, {})
-      : [],
-  );
-
-  useEffect(() => {
-    const subCategoryFilter = Object.entries(state);
-
-    const getSubCategoryFilter = subCategoryFilter
-      .filter((item, index) => {
-        if (item[1]) return item;
-      })
-      .map((item) => {
-        if (item[1]) return item[0];
-      });
-
-    dispatch(setSubCategoryChecked(getSubCategoryFilter));
-  }, [state]);
-
   const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+    dispatch(setSubCategoryChecked(event.target.name));
   };
 
   return (
