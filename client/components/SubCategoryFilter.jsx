@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSubCategoryChecked, setChangePrice } from '@/state/searchPageSlice';
+import { setSubCategoryChecked } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const SubCategoryFilter = () => {
   const dispatch = useDispatch();
-  const subCategory = useSelector((state) => state.search.metaData.subCategory);
+  const subCategory = useSelector((state) => state.search.subCategory);
+  const status = useSelector((state) => state.search.status);
 
   const handleChange = (event) => {
     dispatch(setSubCategoryChecked(event.target.name));
@@ -22,7 +22,12 @@ const SubCategoryFilter = () => {
             subCategory.map((item, index) => (
               <FormControlLabel
                 control={
-                  <Checkbox sx={{ p: '4px' }} onChange={handleChange} name={item.toLowerCase()} />
+                  <Checkbox
+                    sx={{ p: '4px' }}
+                    disabled={status === 'resolved' ? false : true}
+                    onChange={handleChange}
+                    name={item.toLowerCase()}
+                  />
                 }
                 label={item.charAt(0).toUpperCase() + item.slice(1)}
                 key={item}

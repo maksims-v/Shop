@@ -1,6 +1,6 @@
 import PriceSlider from 'components/PriceSlider';
 import BrandFilter from 'components/BrandFilter';
-import SaleClearanceFilter from 'components/SaleClearanceFilter';
+import SaleClearanceFilter from 'components/SaleFilter';
 import CategoryFilter from 'components/CategoryFilter';
 import GenderFilter from 'components/GenderFilter';
 import SubCategoryFilter from 'components/SubCategoryFilter';
@@ -10,7 +10,8 @@ import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { newInputSearch, filtersSearch } from '@/state/searchPageSlice';
+import { newInputSearch, search, clearFilters, setPathname } from '@/state/searchPageSlice';
+import { useRouter } from 'next/router';
 
 const index = () => {
   const [page, setPage] = useState(1);
@@ -18,18 +19,16 @@ const index = () => {
 
   const dispatch = useDispatch();
   const data = useSelector((state) => state.search.data);
-  const status = useSelector((state) => state.search.status);
-  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const changePrice = useSelector((state) => state.search.changePrice);
   const searchFlag = useSelector((state) => state.search.searchFlag);
 
-  const [currentSearchValue, setCurrentSearchValue] = useState(null);
+  useEffect(() => {
+    dispatch(clearFilters());
+  }, []);
 
   useEffect(() => {
-    if (inputSearchValue !== currentSearchValue) {
-      dispatch(newInputSearch());
-    }
-  }, []);
+    dispatch(search());
+  }, [searchFlag]);
 
   const changePage = (event, value) => {
     setCurrentPage(value);
@@ -37,9 +36,6 @@ const index = () => {
 
   return (
     <Box>
-      <Box pl="2px" m="10px 0px" fontSize="24px">
-        SEARCH "{inputSearchValue}"
-      </Box>
       <PaginationComponent page={page} changePage={changePage} currentPage={currentPage} />
       <Box display="flex">
         <Box flex="1 1 10%">

@@ -67,6 +67,7 @@ const Header = () => {
 
   const searchProduct = () => {
     dispatch(inputValue(searchValue));
+    setSearchValue('');
   };
 
   useEffect(() => {
@@ -135,6 +136,7 @@ const Header = () => {
             </Link>
             <TextField
               onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
               id="outlined-search"
               label="Search field"
               type="search"

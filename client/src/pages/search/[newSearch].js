@@ -1,6 +1,6 @@
 import PriceSlider from 'components/PriceSlider';
 import BrandFilter from 'components/BrandFilter';
-import SaleClearanceFilter from 'components/SaleClearanceFilter';
+import SaleFilter from 'components/SaleFilter';
 import CategoryFilter from 'components/CategoryFilter';
 import GenderFilter from 'components/GenderFilter';
 import SubCategoryFilter from 'components/SubCategoryFilter';
@@ -10,7 +10,7 @@ import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { newInputSearch, filtersSearch } from '@/state/searchPageSlice';
+import { newInputSearch, search, clearFilters, inputValue } from '@/state/searchPageSlice';
 
 const Search = () => {
   const [page, setPage] = useState(1);
@@ -24,6 +24,15 @@ const Search = () => {
   const searchFlag = useSelector((state) => state.search.searchFlag);
 
   const [currentSearchValue, setCurrentSearchValue] = useState(null);
+
+  useEffect(() => {
+    dispatch(clearFilters());
+  }, []);
+
+  useEffect(() => {
+    dispatch(search());
+    // dispatch(inputValue(''));
+  }, [searchFlag]);
 
   const changePage = (event, value) => {
     setCurrentPage(value);
@@ -40,7 +49,7 @@ const Search = () => {
           <Box fontSize="18px">FILTERS</Box>
           <Divider sx={{ width: '90%', mb: '10px' }} />
           <GenderFilter />
-          <SaleClearanceFilter />
+          <SaleFilter />
           <CategoryFilter />
           <SubCategoryFilter />
           <BrandFilter />

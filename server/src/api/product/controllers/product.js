@@ -58,13 +58,17 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     } else {
       startPage = 0;
     }
-    //---------------
 
+    //---------------
     const salesSplitToArr = sale ? sale.split(",") : [];
     const brandsSplitToArr = brands ? brands.split(",") : [];
     const categorySplitToArr = category ? category.split(",") : [];
     const genderSplitArr = gender ? gender.split(",") : [];
     const subCategoryArr = subcat ? subcat.split(",") : [];
+
+    if (genderSplitArr.length !== 0) genderSplitArr.push("all");
+
+    console.log(genderSplitArr);
     let sizeArr = [];
     if (
       size === "false" ||
@@ -81,8 +85,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     let priceMin = pmin ? pmin : 0;
     let priceMax = pmax ? pmax : 9999;
 
-    genderSplitArr.includes("all") && genderSplitArr.push("men's", "women's");
-
     // "sale" on/off
     let saleItem = false;
     salesSplitToArr.map((item) => {
@@ -92,12 +94,12 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     });
     //---------------
 
-    const results = await strapi.entityService.findMany(
+    const products = await strapi.entityService.findMany(
       "api::product.product",
       {
         orderBy: "id",
-        start: startPage,
-        limit: 16,
+        // start: startPage,
+        // limit: 16,
         filters: {
           publishedAt: {
             $null: null,
@@ -209,7 +211,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     );
 
     // get Min, Max price
-    if (results.length !== 0) {
+    if (products.length !== 0) {
       const minMaxPriceArr = pagination?.map((item) => {
         if (item.sale) {
           return item.salePrice;
@@ -223,7 +225,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     //---------------
 
     // fixed "sale" in priceSlider
-    const priceFilter = results.filter((item) => {
+    const fixedSaleInSearchFilter = products.filter((item) => {
       if (!item.sale) {
         return item;
       } else {
@@ -309,7 +311,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     //---------------
 
-    const sanitizedEntity = await this.sanitizeOutput(priceFilter, ctx);
+    const sanitizedEntity = await this.sanitizeOutput(
+      fixedSaleInSearchFilter,
+      ctx
+    );
     const sanitizedPagination = await this.sanitizeOutput(
       {
         priceMin,

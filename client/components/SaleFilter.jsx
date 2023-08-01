@@ -1,35 +1,13 @@
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setDiscounts } from '@/state/searchPageSlice';
 
-const SaleClearanceFilter = () => {
+const SaleFilter = () => {
   const dispatch = useDispatch();
-
-  const [state, setState] = useState({
-    Sale: false,
-    Clearance: false,
-  });
-
-  useEffect(() => {
-    const salesFilter = Object.entries(state);
-
-    const getSalesFilter = salesFilter
-      .filter((item) => {
-        if (item[1]) return item;
-      })
-      .map((item) => {
-        if (item[1]) return item[0];
-      });
-
-    dispatch(setDiscounts(getSalesFilter));
-  }, [state]);
+  const status = useSelector((state) => state.search.status);
 
   const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+    dispatch(setDiscounts(event.target.name));
   };
   return (
     <Box mb="10px">
@@ -39,6 +17,7 @@ const SaleClearanceFilter = () => {
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
           <FormControlLabel
+            disabled={status === 'resolved' ? false : true}
             control={<Checkbox sx={{ p: '4px' }} onChange={handleChange} name="Sale" />}
             label="Sale"
           />
@@ -48,4 +27,4 @@ const SaleClearanceFilter = () => {
   );
 };
 
-export default SaleClearanceFilter;
+export default SaleFilter;
