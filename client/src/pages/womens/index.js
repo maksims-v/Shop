@@ -9,8 +9,7 @@ import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearFilters, search } from '@/state/searchPageSlice';
-import { useRouter } from 'next/router';
+import { clearFilters, search, inputValue } from '@/state/searchPageSlice';
 
 const index = () => {
   const [page, setPage] = useState(1);
@@ -21,6 +20,7 @@ const index = () => {
   const searchFlag = useSelector((state) => state.search.searchFlag);
 
   useEffect(() => {
+    dispatch(inputValue(''));
     dispatch(clearFilters());
   }, []);
 

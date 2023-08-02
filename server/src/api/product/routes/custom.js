@@ -8,7 +8,7 @@ module.exports = {
     {
       method: "GET",
       path: "/products/:gender",
-      handler: "product.genderSearch",
+      handler: "product.filterSearch",
       config: {
         auth: false,
         policies: [],

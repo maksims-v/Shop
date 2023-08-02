@@ -8,10 +8,9 @@ import { useDebounce } from 'use-debounce';
 const PriceSlider = () => {
   const dispatch = useDispatch();
 
-  const priceMin = useSelector((state) => state.search.metaData.priceMin);
-  const priceMax = useSelector((state) => state.search.metaData.priceMax);
-
+  const priceMinAndMax = useSelector((state) => state.search.priceMinAndMax);
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+
   const changePrice = useSelector((state) => state.search.changePrice);
 
   const [value, setValue] = useState([1, 9999]);
@@ -42,12 +41,12 @@ const PriceSlider = () => {
         value={value}
         valueLabelDisplay="auto"
         onChange={handleChange}
-        min={priceMin && Number(priceMin)}
-        max={priceMax && Number(priceMax)}
+        min={priceMinAndMax && Number(priceMinAndMax[0])}
+        max={priceMinAndMax && Number(priceMinAndMax[1])}
       />
       <Box display="flex" justifyContent="space-between" mt="-10px">
-        <Typography>{priceMin}</Typography>
-        <Typography>{priceMax}</Typography>
+        <Typography>{priceMinAndMax[0]}</Typography>
+        <Typography>{priceMinAndMax[1]}</Typography>
       </Box>
     </Box>
   );

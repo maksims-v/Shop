@@ -18,21 +18,18 @@ const Search = () => {
 
   const dispatch = useDispatch();
   const data = useSelector((state) => state.search.data);
-  const status = useSelector((state) => state.search.status);
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
-  const changePrice = useSelector((state) => state.search.changePrice);
   const searchFlag = useSelector((state) => state.search.searchFlag);
-
-  const [currentSearchValue, setCurrentSearchValue] = useState(null);
 
   useEffect(() => {
     dispatch(clearFilters());
-  }, []);
+  }, [inputSearchValue]);
 
   useEffect(() => {
-    dispatch(search());
-    // dispatch(inputValue(''));
-  }, [searchFlag]);
+    if (inputSearchValue.length !== 0) {
+      dispatch(search());
+    }
+  }, [searchFlag, inputSearchValue]);
 
   const changePage = (event, value) => {
     setCurrentPage(value);
@@ -61,8 +58,7 @@ const Search = () => {
           margin="0 auto"
           display="grid"
           justifyContent="space-around"
-          columnGap="1.33"
-          rowGap="20px"
+          rowGap="0px"
           gridTemplateColumns="repeat(auto-fill, 250px)">
           {data && data?.map((item) => <Item key={item.id} item={item} />)}
         </Box>

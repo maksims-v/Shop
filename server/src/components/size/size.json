@@ -13,7 +13,6 @@
     },
     "qnty": {
       "type": "integer",
-      "required": true,
       "default": 0
     }
   }

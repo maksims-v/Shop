@@ -13,7 +13,7 @@ import {
 
 export default function Item({ item }) {
   return (
-    <Card sx={{ maxWidth: 280, m: '10px 0px', height: '500px', backgroundColor: '#fdfdfd' }}>
+    <Card sx={{ maxWidth: 270, m: '10px 0px', height: '465px', backgroundColor: '#fdfdfd' }}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -34,8 +34,8 @@ export default function Item({ item }) {
         <CardActionArea>
           <CardMedia
             component="img"
-            height="300"
-            image={`${process.env.API_URL}${item?.attributes?.image?.data[0]?.attributes?.url}`}
+            height="280"
+            image={`${process.env.API_URL}${item?.attributes?.image?.data[0]?.attributes?.formats?.small?.url}`}
             alt="Paella dish"
           />
         </CardActionArea>
@@ -45,12 +45,9 @@ export default function Item({ item }) {
         <Typography sx={{ textAlign: 'left', height: '40px' }}>
           {item?.attributes?.title}
         </Typography>
-        <Typography sx={{ textAlign: 'left', pt: '10px' }} variant="body2" color="text.secondary">
-          red
-        </Typography>
       </CardContent>
 
-      <Divider />
+      <Divider sx={{ pt: '10px' }} />
 
       <CardActions
         sx={{

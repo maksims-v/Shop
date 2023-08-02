@@ -10,8 +10,7 @@ import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { newInputSearch, search, clearFilters, setPathname } from '@/state/searchPageSlice';
-import { useRouter } from 'next/router';
+import { search, clearFilters } from '@/state/searchPageSlice';
 
 const index = () => {
   const [page, setPage] = useState(1);
@@ -19,7 +18,6 @@ const index = () => {
 
   const dispatch = useDispatch();
   const data = useSelector((state) => state.search.data);
-  const changePrice = useSelector((state) => state.search.changePrice);
   const searchFlag = useSelector((state) => state.search.searchFlag);
 
   useEffect(() => {

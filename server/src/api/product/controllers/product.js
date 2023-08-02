@@ -37,6 +37,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async filterSearch(ctx) {
+    const { genderParams } = ctx.params;
+
     const {
       search,
       pmin,
@@ -49,6 +51,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       currentPage,
       size,
     } = ctx.query;
+
+    console.log(genderParams);
 
     // pagination logic
     let startPage = 0;
@@ -98,8 +102,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       "api::product.product",
       {
         orderBy: "id",
-        // start: startPage,
-        // limit: 16,
+        start: startPage,
+        limit: 16,
         filters: {
           publishedAt: {
             $null: null,

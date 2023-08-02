@@ -1,33 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// export const newInputSearch = createAsyncThunk(
-//   'shoppingCart/newInputSearch',
-//   async function (value, { rejectWithValue, getState, dispatch }) {
-//     const { inputSearchValue } = getState().search;
-//     console.log('1');
-//     try {
-//       const response = await fetch(
-//         `${process.env.API_URL}/api/products?search=${inputSearchValue}&gender=${
-//           value ? value : ''
-//         }&pmin=1&pmax=10000&currentPage=1`,
-//       );
-
-//       if (!response.ok) {
-//         throw new Error('Server Error!');
-//       }
-
-//       const data = response.json();
-
-//       return data;
-//     } catch (error) {
-//       return rejectWithValue(error.message);
-//     }
-//   },
-// );
-
 export const search = createAsyncThunk(
   'shoppingCart/search',
-  async function (value, { rejectWithValue, getState }) {
+  async function (value, { rejectWithValue, getState, dispatch }) {
     const { inputSearchValue } = getState().search;
     const { changePrice } = getState().search;
     const { brandsChecked } = getState().search;
@@ -37,7 +12,6 @@ export const search = createAsyncThunk(
     const { subCategoryChecked } = getState().search;
     const { sizesChecked } = getState().search;
     console.log('1');
-    console.log(genderChecked);
     try {
       const response = await fetch(
         `${process.env.API_URL}/api/products?search=${inputSearchValue}&pmin=${
@@ -54,6 +28,27 @@ export const search = createAsyncThunk(
       }
 
       const data = response.json();
+      dispatch(getAllSizes());
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const getAllSizes = createAsyncThunk(
+  'shoppingCart/getAllSizes',
+  async function (_, { rejectWithValue }) {
+    try {
+      const response = await fetch(`${process.env.API_URL}/api/sizes`);
+
+      if (!response.ok) {
+        throw new Error('Server Error!');
+      }
+
+      const data = response.json();
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -62,6 +57,7 @@ export const search = createAsyncThunk(
 );
 
 const initialState = {
+  allSizesFromApi: [],
   pathname: '',
   status: null,
   error: null,
@@ -80,7 +76,7 @@ const initialState = {
   brandsChecked: [],
   sizes: [],
   sizesChecked: [],
-  price: [],
+  priceMinAndMax: [1, 9999],
   changePrice: [1, 9999],
   searchFlag: false,
 };
@@ -176,10 +172,13 @@ export const searchPageSlice = createSlice({
         state.changePrice = action.payload;
       }
       state.searchFlag = !state.searchFlag;
+      state.newSearch = false;
     },
 
     setSizesChecked(state, action) {
       state.sizesChecked = action.payload;
+      state.searchFlag = !state.searchFlag;
+      state.newSearch = false;
     },
 
     clearFilters(state) {
@@ -201,6 +200,7 @@ export const searchPageSlice = createSlice({
       state.sizes = [];
       state.sizesChecked = [];
       state.price = [];
+      state.priceMinAndMax = [1, 9999];
       state.changePrice = [1, 9999];
     },
   },
@@ -217,17 +217,28 @@ export const searchPageSlice = createSlice({
       state.brands = state.newSearch ? action.payload.meta.brands : state.brands;
       state.category = state.newSearch ? action.payload.meta.category : state.category;
       state.subCategory = state.newSearch ? action.payload.meta.subCategory : state.subCategory;
+      state.priceMinAndMax = state.newSearch
+        ? [action.payload.meta.priceMin, action.payload.meta.priceMax]
+        : state.priceMinAndMax;
 
-      // state.brandsChecked = [];
-      // state.categoryChecked = [];
-      // state.genderChecked = [];
-      // state.subCategoryChecked = [];
-      state.sizes = action.payload.meta.sizes;
-      // state.sizesChecked = [];
-      // state.discounts = [];
-      // state.newSearch = false;
+      state.sizes = state.newSearch ? action.payload.meta.sizes : state.sizes;
     },
     [search.rejected]: setError,
+
+    [getAllSizes.fulfilled]: (state, action) => {
+      state.allSizesFromApi = action.payload;
+
+      const response = action.payload.data[0].attributes.size;
+      const sizesArr = response.map((item) => {
+        return item.size.toLowerCase();
+      });
+      state.allSizesFromApi = sizesArr;
+
+      state.sizes = state.sizes.sort((a, b) => {
+        return state.allSizesFromApi.indexOf(a) - state.allSizesFromApi.indexOf(b);
+      });
+    },
+    [getAllSizes.rejected]: setError,
   },
 });
 

@@ -14,8 +14,8 @@ import { addToBasket } from '@/state/shoppingCartSlice';
 import { inputValue, clearFilters, filtersSearch } from '@/state/searchPageSlice';
 
 const pages = [
-  { id: 1, title: "MEN'S", path: 'mens' },
-  { id: 2, title: "WOMEN'S", path: 'womens' },
+  { id: 1, title: "MEN'S", path: "men's" },
+  { id: 2, title: "WOMEN'S", path: "women's " },
   { id: 4, title: 'NEW ARRIVALS', path: 'newArrivals' },
   { id: 5, title: 'SALE', path: 'sale' },
   { id: 6, title: 'CLERANCE', path: 'clerance' },
@@ -105,11 +105,7 @@ const Header = () => {
           )}
           <Link href="/">
             {' '}
-            <Box
-              onClick={() => dispatch(clearFilters())}
-              sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>
-              ADVENTURE
-            </Box>
+            <Box sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>ADVENTURE</Box>
           </Link>
           <Box display={secondBreakPoint ? 'flex' : 'none'} color="white" gap="20px">
             {pages.map((item) => {

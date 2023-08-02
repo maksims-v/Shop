@@ -30,10 +30,14 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 const ItemDetails = ({ product }) => {
+  console.log(product);
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [photos, setPhotos] = useState([]);
+  const [carouselPhotos, setCarouselPhotos] = useState([]);
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
+
   const [value, setValue] = useState('description');
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
@@ -84,15 +88,24 @@ const ItemDetails = ({ product }) => {
   };
 
   function createPhotoGallery(data) {
-    const gallery = data
-      ? data &&
-        data.map((item, i) => ({
+    const carouselData = data
+      ? data.map((item, i) => ({
           src: `http://localhost:1337${item?.attributes?.url}`,
           width: 1,
           height: 1,
         }))
       : [];
-    setPhotos(gallery);
+    setCarouselPhotos(carouselData);
+
+    const galleryPhotos = data
+      ? data.map((item) => ({
+          src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
+          width: 1,
+          height: 1,
+        }))
+      : [];
+
+    setGalleryPhotos(galleryPhotos);
   }
 
   const openLightbox = useCallback((event, { photo, index }) => {
@@ -151,13 +164,13 @@ const ItemDetails = ({ product }) => {
               style={{ objectFit: 'contain' }}
             />
             <Box>
-              <Gallery targetRowHeight={20} photos={photos} onClick={openLightbox} />
+              <Gallery targetRowHeight={20} photos={galleryPhotos} onClick={openLightbox} />
               <ModalGateway>
                 {viewerIsOpen ? (
                   <Modal onClose={closeLightbox}>
                     <Carousel
                       currentIndex={currentImage}
-                      views={photos.map((x) => ({
+                      views={carouselPhotos.map((x) => ({
                         ...x,
                         srcset: x.srcSet,
                         caption: x.title,
@@ -228,7 +241,7 @@ const ItemDetails = ({ product }) => {
                     <CardMedia
                       component="img"
                       height="100"
-                      image={`http://localhost:1337${item.image[0].url}`}
+                      image={`http://localhost:1337${item?.image[0]?.formats?.thumbnail?.url}`}
                       alt="Paella dish"
                     />
                   </CardActionArea>

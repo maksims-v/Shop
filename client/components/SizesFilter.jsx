@@ -5,11 +5,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import { setSizesChecked, setChangePrice } from '@/state/searchPageSlice';
 
+let order = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
+
+let sizess = ['S', 'XL', 'XS', '3XL', 'XS', '2XL'];
+
+sizess.sort(function (a, b) {
+  return order.indexOf(a) - order.indexOf(b);
+});
+
 const SizesFilter = () => {
   const dispatch = useDispatch();
-  const sizes = useSelector((state) => state.search.metaData.sizes);
+  const sizes = useSelector((state) => state.search.sizes);
 
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+
   const [inputValue, setInpustValue] = useState('');
   const [formats, setFormats] = useState();
 
@@ -32,7 +41,7 @@ const SizesFilter = () => {
 
   return (
     <Box>
-      <Typography sx={{ mb: '5px' }} fontWeight="bold">
+      <Typography sx={{ mb: '5px', pl: '2px' }} fontWeight="bold">
         SIZE
       </Typography>
       <ToggleButtonGroup
@@ -53,6 +62,7 @@ const SizesFilter = () => {
                 aria-label={item}
                 sx={{
                   ml: '0px !Important',
+                  m: '1px',
                   height: '40px',
                   width: '40px',
                   borderLeft: '1px solid rgba(0, 0, 0, 0.12) !Important',
