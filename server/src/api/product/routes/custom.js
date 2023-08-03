@@ -9,10 +9,6 @@ module.exports = {
       method: "GET",
       path: "/products/:gender",
       handler: "product.filterSearch",
-      config: {
-        auth: false,
-        policies: [],
-      },
     },
     {
       method: "GET",

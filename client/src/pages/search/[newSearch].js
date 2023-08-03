@@ -1,11 +1,11 @@
-import PriceSlider from 'components/PriceSlider';
-import BrandFilter from 'components/BrandFilter';
-import SaleFilter from 'components/SaleFilter';
-import CategoryFilter from 'components/CategoryFilter';
-import GenderFilter from 'components/GenderFilter';
-import SubCategoryFilter from 'components/SubCategoryFilter';
+import PriceSlider from 'components/filtersComponents/PriceSlider';
+import BrandFilter from 'components/filtersComponents/BrandFilter';
+import SaleFilter from 'components/filtersComponents/SaleFilter';
+import CategoryFilter from 'components/filtersComponents/CategoryFilter';
+import GenderFilter from 'components/filtersComponents/GenderFilter';
+import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
 import PaginationComponent from 'components/PaginationComponent';
-import SizesFilter from 'components/SizesFilter';
+import SizesFilter from 'components/filtersComponents/SizesFilter';
 import { Box, Divider } from '@mui/material';
 import Item from 'components/Item';
 import { useState, useEffect } from 'react';

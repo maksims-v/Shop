@@ -11,6 +11,9 @@ export const search = createAsyncThunk(
     const { genderChecked } = getState().search;
     const { subCategoryChecked } = getState().search;
     const { sizesChecked } = getState().search;
+    const { currentPage } = getState().search;
+    const { sortValue } = getState().search;
+
     console.log('1');
     try {
       const response = await fetch(
@@ -20,7 +23,7 @@ export const search = createAsyncThunk(
           changePrice[1]
         }&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${
           value ? value : genderChecked
-        }&subcat=${subCategoryChecked}&size=${sizesChecked}`,
+        }&subcat=${subCategoryChecked}&size=${sizesChecked}&currentPage=${currentPage}&sort=${sortValue}`,
       );
 
       if (!response.ok) {
@@ -78,6 +81,8 @@ const initialState = {
   sizesChecked: [],
   priceMinAndMax: [1, 9999],
   changePrice: [1, 9999],
+  currentPage: 1,
+  sortValue: 'Sort By',
   searchFlag: false,
 };
 
@@ -112,6 +117,7 @@ export const searchPageSlice = createSlice({
             return item !== action.payload;
           }));
 
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
@@ -124,6 +130,7 @@ export const searchPageSlice = createSlice({
             return item !== action.payload;
           }));
 
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
@@ -136,7 +143,7 @@ export const searchPageSlice = createSlice({
         : (state.categoryChecked = state.categoryChecked.filter((item) => {
             return item !== action.payload;
           }));
-
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
@@ -148,7 +155,7 @@ export const searchPageSlice = createSlice({
         : (state.subCategoryChecked = state.subCategoryChecked.filter((item) => {
             return item !== action.payload;
           }));
-
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
@@ -160,7 +167,7 @@ export const searchPageSlice = createSlice({
         : (state.brandsChecked = state.brandsChecked.filter((item) => {
             return item !== action.payload;
           }));
-
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
@@ -171,6 +178,8 @@ export const searchPageSlice = createSlice({
       ) {
         state.changePrice = action.payload;
       }
+
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
@@ -178,7 +187,20 @@ export const searchPageSlice = createSlice({
     setSizesChecked(state, action) {
       state.sizesChecked = action.payload;
       state.searchFlag = !state.searchFlag;
+      state.currentPage = 1;
       state.newSearch = false;
+    },
+
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
+      state.newSearch = false;
+      state.searchFlag = !state.searchFlag;
+    },
+
+    setSortValue(state, action) {
+      state.sortValue = action.payload;
+      state.newSearch = false;
+      state.searchFlag = !state.searchFlag;
     },
 
     clearFilters(state) {
@@ -202,6 +224,8 @@ export const searchPageSlice = createSlice({
       state.price = [];
       state.priceMinAndMax = [1, 9999];
       state.changePrice = [1, 9999];
+      state.currentPage = 1;
+      state.sortValue = 'Sort By';
     },
   },
   extraReducers: {
@@ -255,6 +279,8 @@ export const {
   setSizesChecked,
   clearFilters,
   setChangePrice,
+  setCurrentPage,
+  setSortValue,
 } = searchPageSlice.actions;
 
 export default searchPageSlice.reducer;

@@ -30,8 +30,6 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 const ItemDetails = ({ product }) => {
-  console.log(product);
-
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
