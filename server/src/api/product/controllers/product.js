@@ -51,8 +51,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       sort,
     } = ctx.query;
 
-    console.log(sort);
-
     let howToSort = sort;
 
     if (sort == "Sort By") {
@@ -64,8 +62,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     } else if (sort == "Price desc.") {
       howToSort = "desc";
     }
-
-    console.log(howToSort);
 
     // pagination logic
     let startPage = 0;
@@ -112,13 +108,12 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     });
     //---------------
 
-    console.log(startPage);
-
     const products = await strapi.entityService.findMany(
       "api::product.product",
       {
-        // start: startPage,
-
+        start: startPage,
+        limit: 16,
+        sort: howToSort ? [{ price: howToSort }] : { id: "desc" },
         filters: {
           publishedAt: {
             $null: null,
@@ -128,10 +123,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               title: { $startsWith: searchItem },
             },
             {
-              $or: [
-                { price: { $between: [priceMin, priceMax] } },
-                { salePrice: { $between: [priceMin, priceMax] } },
-              ],
+              $or: [{ price: { $between: [priceMin, priceMax] } }],
             },
             {
               brand: {
@@ -169,15 +161,12 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           ],
         },
         populate: { image: true, size: true },
-        sort: howToSort ? [{ price: howToSort }] : { id: "desc" },
-        // limit: 16,
       }
     );
 
     const pagination = await strapi.entityService.findMany(
       "api::product.product",
       {
-        orderBy: "id",
         filters: {
           publishedAt: {
             $null: null,
@@ -187,10 +176,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               title: { $startsWith: searchItem },
             },
             {
-              $or: [
-                { price: { $between: [priceMin, priceMax] } },
-                { salePrice: { $between: [priceMin, priceMax] } },
-              ],
+              $or: [{ price: { $between: [priceMin, priceMax] } }],
             },
             {
               brand: {
@@ -234,9 +220,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     // get Min, Max price
     if (products.length !== 0) {
       const minMaxPriceArr = pagination?.map((item) => {
-        if (item.sale) {
-          return item.salePrice;
-        }
         return item.price;
       });
 
@@ -245,40 +228,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     }
     //---------------
 
-    // fixed "sale" in priceSlider and sorting
-    const fixedSaleInSearchFilter = products.filter((item) => {
-      if (!item.sale) {
-        return item;
-      } else {
-        if (item.salePrice >= pmin) return item;
-      }
-    });
-    //---------------
-
-    // // Price desc. sort
-    // const ascSort = (i) => (i.sale ? i.salePrice : i.price);
-    // howToSort === "desc" &&
-    //   fixedSaleInSearchFilter.sort((a, b) => ascSort(b) - ascSort(a));
-    // //---------------
-
-    // // Price asc. sort
-    // const descSort = (i) => (i.sale ? i.salePrice : i.price);
-    // howToSort === "asc" &&
-    //   fixedSaleInSearchFilter.sort((a, b) => descSort(a) - descSort(b));
-    // //---------------
-
-    // remove "sale" from filtering
-    const paginationPriceFilter = pagination.filter((item) => {
-      if (!item.sale) {
-        return item;
-      } else {
-        if (item.salePrice >= pmin) return item;
-      }
-    });
-    //---------------
-
     // get all products count
-    const paginationLength = paginationPriceFilter.length;
+    const paginationLength = pagination.length;
     //---------------
 
     // get pages count
@@ -344,12 +295,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     //---------------
 
-    const sanitizedEntity = await this.sanitizeOutput(
-      fixedSaleInSearchFilter,
-      ctx
-    );
+    const sanitizedEntity = await this.sanitizeOutput(products, ctx);
     const sanitizedPagination = await this.sanitizeOutput(
       {
+        data: pagination,
         priceMin,
         priceMax,
         total: paginationLength,
@@ -438,6 +387,39 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     return this.transformResponse(sanitizedEntity);
   },
 
+  // fixed "sale" in priceSlider and sorting
+  // const fixedSaleInSearchFilter = products.filter((item) => {
+  //   if (!item.sale) {
+  //     return item;
+  //   } else {
+  //     if (item.oldPrice >= pmin) return item;
+  //   }
+  // });
+  //---------------
+
+  // // Price desc. sort
+  // const ascSort = (i) => (i.sale ? i.oldPrice : i.price);
+  // howToSort === "desc" &&
+  //   fixedSaleInSearchFilter.sort((a, b) => ascSort(b) - ascSort(a));
+  // //---------------
+
+  // // Price asc. sort
+  // const descSort = (i) => (i.sale ? i.oldPrice : i.price);
+  // howToSort === "asc" &&
+  //   fixedSaleInSearchFilter.sort((a, b) => descSort(a) - descSort(b));
+  // //---------------
+
+  // remove "sale" from filtering
+  // const paginationPriceFilter = pagination.filter((item) => {
+  //   if (!item.sale) {
+  //     return item;
+  //   } else {
+  //     if (item.oldPrice >= pmin) return item;
+  //   }
+  // });
+  //---------------
+
+  //---------------
   // build: async (ctx) => {
   //   let product = await strapi.db
   //     .query("api::product.product")

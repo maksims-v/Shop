@@ -183,8 +183,8 @@ const Basket = () => {
                     </Box>
                     <Box textAlign="center" width="15%" fontWeight="bold">
                       €
-                      {item.item.attributes.salePrice
-                        ? item.item.attributes.salePrice * item.qnty
+                      {item.item.attributes.oldPrice
+                        ? item.item.attributes.oldPrice * item.qnty
                         : item.item.attributes.price * item.qnty}
                     </Box>
                   </>
@@ -195,8 +195,8 @@ const Basket = () => {
                     </Box>
                     <Box textAlign="center" fontWeight="bold">
                       €
-                      {item.item.attributes.salePrice
-                        ? item.item.attributes.salePrice * item.qnty
+                      {item.item.attributes.oldPrice
+                        ? item.item.attributes.oldPrice * item.qnty
                         : item.item.attributes.price * item.qnty}
                     </Box>
                   </Box>
@@ -211,7 +211,7 @@ const Basket = () => {
             Kopā: €
             {basket.reduce(function (summ, item) {
               const summItem = item.item.attributes.sale
-                ? item.qnty * item.item.attributes.salePrice
+                ? item.qnty * item.item.attributes.oldPrice
                 : item.qnty * item.item.attributes.price;
               return summ + summItem;
             }, 0)}

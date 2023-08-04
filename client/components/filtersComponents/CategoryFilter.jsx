@@ -6,6 +6,7 @@ const CategoryFilter = () => {
   const dispatch = useDispatch();
   const category = useSelector((state) => state.search.category);
   const status = useSelector((state) => state.search.status);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const handleChange = (event) => {
     dispatch(setCategoryChecked(event.target.name));
@@ -13,8 +14,8 @@ const CategoryFilter = () => {
 
   return (
     <Box mb="10px">
-      <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        CLOTHING & SHOES
+      <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
+        {mobile ? null : 'CLOTHING & SHOES'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

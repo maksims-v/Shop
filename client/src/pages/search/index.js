@@ -9,10 +9,11 @@ const Index = () => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.search.searchFlag);
   const currentPage = useSelector((state) => state.search.currentPage);
+  const sortValue = useSelector((state) => state.search.sortValue);
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
-  }, [currentPage]);
+    window.scrollTo(0, 0);
+  }, [currentPage, sortValue]);
 
   useEffect(() => {
     dispatch(clearFilters());

@@ -6,6 +6,7 @@ const SubCategoryFilter = () => {
   const dispatch = useDispatch();
   const subCategory = useSelector((state) => state.search.subCategory);
   const status = useSelector((state) => state.search.status);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const handleChange = (event) => {
     dispatch(setSubCategoryChecked(event.target.name));
@@ -13,8 +14,8 @@ const SubCategoryFilter = () => {
 
   return (
     <Box mb="10px">
-      <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        CATEGORIES
+      <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
+        {mobile ? null : 'CATEGORIES'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

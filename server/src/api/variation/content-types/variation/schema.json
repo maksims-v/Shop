@@ -28,19 +28,11 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
     "categoty": {
       "type": "enumeration",
-      "enum": [
-        "tshirt",
-        "polo"
-      ],
+      "enum": ["tshirt", "polo"],
       "required": false
     },
     "price": {
@@ -59,7 +51,7 @@
       "type": "boolean",
       "required": false
     },
-    "salePrice": {
+    "oldPrice": {
       "type": "decimal"
     }
   }

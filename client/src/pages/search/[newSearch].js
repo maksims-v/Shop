@@ -1,25 +1,18 @@
-import PriceSlider from 'components/filtersComponents/PriceSlider';
-import BrandFilter from 'components/filtersComponents/BrandFilter';
-import SaleFilter from 'components/filtersComponents/SaleFilter';
-import CategoryFilter from 'components/filtersComponents/CategoryFilter';
-import GenderFilter from 'components/filtersComponents/GenderFilter';
-import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
-import PaginationComponent from 'components/PaginationComponent';
-import SizesFilter from 'components/filtersComponents/SizesFilter';
-import { Box, Divider } from '@mui/material';
-import Item from 'components/Item';
-import { useState, useEffect } from 'react';
+import Filters from 'components/Filters';
+import ProductList from 'components/ProductList';
+import { Box, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { newInputSearch, search, clearFilters, inputValue } from '@/state/searchPageSlice';
+import { search, clearFilters } from '@/state/searchPageSlice';
+import MobileFiltersPage from 'components/MobileFiltersPage';
 
 const Search = () => {
-  const [page, setPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.search.data);
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const searchFlag = useSelector((state) => state.search.searchFlag);
+  const total = useSelector((state) => state.search.metaData.total);
+  const mobile = useSelector((state) => state.search.mobile);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(clearFilters());
@@ -31,39 +24,29 @@ const Search = () => {
     }
   }, [searchFlag, inputSearchValue]);
 
-  const changePage = (event, value) => {
-    setCurrentPage(value);
-  };
-
-  return (
-    <Box>
-      <Box pl="2px" m="10px 0px" fontSize="24px">
-        SEARCH "{inputSearchValue}"
+  return !mobile ? (
+    <Box sx={{ mt: '60px' }}>
+      <Box display="flex" alignContent="center" flexDirection="column">
+        <Typography
+          sx={{
+            fontSize: '22px',
+            fontWeight: 'bold',
+            margin: '0 auto 17px auto',
+          }}>
+          Your search for as produced {total} results
+        </Typography>
       </Box>
-      <PaginationComponent page={page} changePage={changePage} currentPage={currentPage} />
       <Box display="flex">
         <Box flex="1 1 10%">
-          <Box fontSize="18px">FILTERS</Box>
-          <Divider sx={{ width: '90%', mb: '10px' }} />
-          <GenderFilter />
-          <SaleFilter />
-          <CategoryFilter />
-          <SubCategoryFilter />
-          <BrandFilter />
-          <PriceSlider />
-          <SizesFilter />
+          <Filters />
         </Box>
-        <Box
-          flex="1 1 80%"
-          margin="0 auto"
-          display="grid"
-          justifyContent="space-around"
-          rowGap="0px"
-          gridTemplateColumns="repeat(auto-fill, 250px)">
-          {data && data?.map((item) => <Item key={item.id} item={item} />)}
+        <Box flex="1 1 80%">
+          <ProductList />
         </Box>
       </Box>
     </Box>
+  ) : (
+    <MobileFiltersPage />
   );
 };
 

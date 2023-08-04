@@ -6,6 +6,7 @@ const GenderFilter = () => {
   const dispatch = useDispatch();
   const genders = useSelector((state) => state.search.genders);
   const status = useSelector((state) => state.search.status);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const handleChange = (event) => {
     dispatch(setGenderChecked(event.target.name));
@@ -13,8 +14,8 @@ const GenderFilter = () => {
 
   return (
     <Box mb="10px">
-      <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        Gender
+      <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
+        {mobile ? null : 'Gender'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

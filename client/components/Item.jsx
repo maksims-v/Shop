@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
   Card,
@@ -11,30 +12,40 @@ import {
   Divider,
 } from '@mui/material';
 
-export default function Item({ item }) {
+const Item = ({ item }) => {
+  const mobile = useSelector((state) => state.search.mobile);
+
   return (
-    <Card sx={{ maxWidth: 270, m: '10px 0px', height: '465px', backgroundColor: '#fdfdfd' }}>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        p="0px 10px 0px 10px"
-        height="54px">
-        <Box fontSize="14px" fontWeight="bold">
-          {item?.attributes?.sale && (
-            <Box fontWeight="bold" fontSize="14px" color="red" textAlign="left">
-              SALE
-            </Box>
-          )}
-          {item?.attributes?.new && <Box color="#0085ca">NEW</Box>}
+    <Card
+      sx={{
+        maxWidth: 250,
+        m: mobile ? '1px 0px' : '10px 0px',
+        height: mobile ? '330px' : '465px',
+        backgroundColor: '#fdfdfd',
+      }}>
+      {!mobile && (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          p="0px 10px 0px 10px"
+          height="54px">
+          <Box fontSize="14px" fontWeight="bold">
+            {item?.attributes?.sale && (
+              <Box fontWeight="bold" fontSize="14px" color="red" textAlign="left">
+                SALE
+              </Box>
+            )}
+            {item?.attributes?.new && <Box color="#0085ca">NEW</Box>}
+          </Box>
         </Box>
-      </Box>
+      )}
+
       <Link
         href={`/${item.attributes.gender}/${item.attributes.category}/${item.attributes.subcategory}/${item.attributes.slug}`}>
         <CardActionArea>
           <CardMedia
             component="img"
-            height="280"
             image={`${process.env.API_URL}${item?.attributes?.image?.data[0]?.attributes?.formats?.small?.url}`}
             alt="Paella dish"
           />
@@ -67,7 +78,7 @@ export default function Item({ item }) {
               width: '100%',
               pl: '5px',
             }}>
-            {item?.attributes?.salePrice}$
+            {item?.attributes?.price}$
           </Typography>
         )}
         <Typography
@@ -76,9 +87,11 @@ export default function Item({ item }) {
             fontSize: item?.attributes?.sale ? '12px' : '20px',
             width: '100%',
           }}>
-          ${item?.attributes?.sale ? item?.attributes?.price : item?.attributes?.price}
+          {item?.attributes?.sale ? item?.attributes?.oldPrice : item?.attributes?.price} $
         </Typography>
       </CardActions>
     </Card>
   );
-}
+};
+
+export default Item;

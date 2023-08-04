@@ -190,16 +190,16 @@ const ItemDetails = ({ product }) => {
             <Divider sx={{ mb: '10px' }} color="yellow" />
 
             <Typography sx={{ fontSize: '18px', pl: '5px', fontWeight: 'bold' }}>
-              ${data?.attributes?.sale ? data?.attributes?.salePrice : data?.attributes?.price}
+              ${data?.attributes?.sale ? data?.attributes?.oldPrice : data?.attributes?.price}
             </Typography>
 
             <Typography
-              sx={{ fontSize: '12px', pl: '5px', color: data?.attributes?.salePrice && 'red' }}>
+              sx={{ fontSize: '12px', pl: '5px', color: data?.attributes?.oldPrice && 'red' }}>
               {data?.attributes?.sale &&
                 `Save:
               ${
                 data?.attributes?.sale &&
-                (data?.attributes?.price - data?.attributes?.salePrice).toFixed(2)
+                (data?.attributes?.price - data?.attributes?.oldPrice).toFixed(2)
               }
               $`}
             </Typography>

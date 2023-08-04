@@ -68,7 +68,7 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
                       <Box
                         fontWeight="bold"
                         color="red"
-                        lineHeight="13px">{` €${item.item.attributes.salePrice}`}</Box>
+                        lineHeight="13px">{` €${item.item.attributes.oldPrice}`}</Box>
                       <Box
                         sx={{
                           textDecorationLine: 'line-through',

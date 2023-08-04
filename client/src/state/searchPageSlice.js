@@ -60,6 +60,7 @@ export const getAllSizes = createAsyncThunk(
 );
 
 const initialState = {
+  mobile: true,
   allSizesFromApi: [],
   pathname: '',
   status: null,
@@ -95,6 +96,12 @@ export const searchPageSlice = createSlice({
   name: 'shoppingCart',
   initialState,
   reducers: {
+    setMobile(state, action) {
+      state.mobile = true;
+    },
+    setPathname(state, action) {
+      state.mobile = action.payload;
+    },
     setPathname(state, action) {
       state.pathname = action.payload;
     },
@@ -267,6 +274,7 @@ export const searchPageSlice = createSlice({
 });
 
 export const {
+  setMobile,
   setPathname,
   setData,
   setMetaData,

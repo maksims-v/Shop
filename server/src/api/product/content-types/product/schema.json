@@ -82,7 +82,7 @@
         }
       }
     },
-    "salePrice": {
+    "oldPrice": {
       "type": "decimal",
       "pluginOptions": {
         "i18n": {

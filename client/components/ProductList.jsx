@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 const ProductList = () => {
   const data = useSelector((state) => state.search.data);
   const sortValue = useSelector((state) => state.search.sortValue);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const dispatch = useDispatch(sortValue);
 
@@ -17,19 +18,20 @@ const ProductList = () => {
   };
 
   return (
-    <Box m="0 auto">
-      <Box display="flex" justifyContent="space-between" mb="10px">
-        <Typography>SEARCH</Typography>
-        <FilteringByPriceAndName getValue={getValue} />
-      </Box>
-
+    <Box m="0 auto" width="100%">
+      {!mobile && (
+        <Box display="flex" justifyContent="space-between" mb="10px">
+          <Typography>SEARCH</Typography>
+          <FilteringByPriceAndName getValue={getValue} />
+        </Box>
+      )}
       <Box
         mb="20px"
         display="grid"
         justifyContent="space-around"
         columnGap="1.33"
         rowGap="0px"
-        gridTemplateColumns="repeat(auto-fill, 250px)">
+        gridTemplateColumns={mobile ? 'repeat(auto-fill, 180px)' : 'repeat(auto-fill, 250px)'}>
         {data && data?.map((item) => <Item key={item.id} item={item} />)}
       </Box>
       <PaginationComponent />

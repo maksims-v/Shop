@@ -18,6 +18,7 @@ const SizesFilter = () => {
   const sizes = useSelector((state) => state.search.sizes);
 
   const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const [inputValue, setInpustValue] = useState('');
   const [formats, setFormats] = useState();
@@ -40,9 +41,9 @@ const SizesFilter = () => {
   };
 
   return (
-    <Box>
-      <Typography sx={{ mb: '5px', pl: '2px' }} fontWeight="bold">
-        SIZE
+    <Box sx={{ mb: mobile ? '20px' : '0px' }}>
+      <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
+        {mobile ? null : 'SIZE'}
       </Typography>
       <ToggleButtonGroup
         value={formats}
@@ -61,8 +62,9 @@ const SizesFilter = () => {
                 value={item}
                 aria-label={item}
                 sx={{
+                  color: 'black',
                   ml: '0px !Important',
-                  m: '1px',
+                  m: '3px',
                   height: '40px',
                   width: '40px',
                   borderLeft: '1px solid rgba(0, 0, 0, 0.12) !Important',

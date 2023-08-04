@@ -12,11 +12,11 @@ const Filters = () => {
   return (
     <Box maxWidth="195px">
       <GenderFilter />
+      <PriceSlider />
       <SaleFilter />
       <CategoryFilter />
       <SubCategoryFilter />
       <BrandFilter />
-      <PriceSlider />
       <SizesFilter />
     </Box>
   );

@@ -6,6 +6,7 @@ const BrandFilter = () => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.search.brands);
   const status = useSelector((state) => state.search.status);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const handleChange = (event) => {
     dispatch(setBrandsChecked(event.target.name));
@@ -13,8 +14,8 @@ const BrandFilter = () => {
 
   return (
     <Box mb="10px">
-      <Typography sx={{ mb: '2px' }} fontWeight="bold">
-        BRAND
+      <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
+        {mobile ? null : 'BRAND'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
