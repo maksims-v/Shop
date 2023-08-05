@@ -60,13 +60,14 @@ export const getAllSizes = createAsyncThunk(
 );
 
 const initialState = {
-  mobile: true,
+  mobile: false,
   allSizesFromApi: [],
   pathname: '',
   status: null,
   error: null,
   data: [],
   metaData: [],
+  dataFromServerSideRenderingNewSearchPage: [],
   inputSearchValue: '',
   newSearch: true,
   genders: [],
@@ -115,6 +116,7 @@ export const searchPageSlice = createSlice({
       state.inputSearchValue = action.payload;
       state.newSearch = true;
     },
+
     setGenderChecked(state, action) {
       const itemSearch = state.genderChecked.includes(action.payload);
 
@@ -234,6 +236,20 @@ export const searchPageSlice = createSlice({
       state.currentPage = 1;
       state.sortValue = 'Sort By';
     },
+
+    setDataFromServerSideRenderingNewSearchPage(state, action) {
+      state.status = 'resolved';
+      state.inputSearchValue = action.payload.meta.searchValue;
+      state.data = action.payload.data.attributes.imageSorted;
+      state.metaData = action.payload.meta;
+      state.genders = action.payload.meta.genders;
+      state.brands = action.payload.meta.brands;
+      state.category = action.payload.meta.category;
+      state.subCategory = action.payload.meta.subCategory;
+      state.priceMinAndMax = [action.payload.meta.priceMin, action.payload.meta.priceMax];
+      state.sizes = action.payload.meta.sizes;
+      state.newSearch = true;
+    },
   },
   extraReducers: {
     [search.pending]: (state, action) => {
@@ -289,6 +305,7 @@ export const {
   setChangePrice,
   setCurrentPage,
   setSortValue,
+  setDataFromServerSideRenderingNewSearchPage,
 } = searchPageSlice.actions;
 
 export default searchPageSlice.reducer;

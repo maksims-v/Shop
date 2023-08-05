@@ -2,6 +2,11 @@ module.exports = {
   routes: [
     {
       method: "GET",
+      path: "/products/search/:newSearch",
+      handler: "product.newSearch",
+    },
+    {
+      method: "GET",
       path: "/products",
       handler: "product.filterSearch",
     },
