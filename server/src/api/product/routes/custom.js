@@ -2,36 +2,8 @@ module.exports = {
   routes: [
     {
       method: "GET",
-      path: "/products/search/:newSearch",
-      handler: "product.newSearch",
-    },
-    {
-      method: "GET",
       path: "/products",
       handler: "product.filterSearch",
-    },
-    {
-      method: "GET",
-      path: "/products/:gender",
-      handler: "product.filterSearch",
-    },
-    {
-      method: "GET",
-      path: "/products/:gender/:category",
-      handler: "product.categorySearch",
-      config: {
-        auth: false,
-        policies: [],
-      },
-    },
-    {
-      method: "GET",
-      path: "/products/:gender/:category/:subcategory",
-      handler: "product.subCategorySearch",
-      config: {
-        auth: false,
-        policies: [],
-      },
     },
     {
       method: "GET",

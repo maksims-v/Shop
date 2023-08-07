@@ -1,35 +1,56 @@
 import { Box, Breadcrumbs } from '@mui/material';
-import Item from 'components/Item';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { search, clearFilters } from '@/state/searchPageSlice';
+import ProductList from 'components/ProductList';
+import SaleFilter from 'components/filtersComponents/SaleFilter';
+import BrandFilter from 'components/filtersComponents/BrandFilter';
+import PriceSlider from 'components/filtersComponents/PriceSlider';
+import SizesFilter from 'components/filtersComponents/SizesFilter';
 import Link from 'next/link';
-import { useState } from 'react';
 
-const SubCategory = ({ product }) => {
-  const [data] = useState(product);
+const SubCategory = ({ gender, category, subcategory }) => {
+  const dispatch = useDispatch();
+  const searchFlag = useSelector((state) => state.search.searchFlag);
+  const currentPage = useSelector((state) => state.search.currentPage);
+  const sortValue = useSelector((state) => state.search.sortValue);
+  const total = useSelector((state) => state.search.metaData.total);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage, sortValue]);
+
+  useEffect(() => {
+    dispatch(clearFilters());
+  }, [gender]);
+
+  useEffect(() => {
+    dispatch(search({ gender, category, subcategory }));
+  }, [searchFlag, gender, category, subcategory]);
   return (
     <Box mt="10px">
-      <Breadcrumbs aria-label="breadcrumb">
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${data?.attributes?.gender}`}>
-          {data && data.data[0]?.attributes?.gender.toUpperCase()}
+        <Link underline="hover" color="inherit" href={`/${gender}`}>
+          {gender?.toUpperCase()}
         </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          href={`/${data.data[0]?.attributes?.gender}/${data.data[0]?.attributes?.category}`}>
-          {data && data.data[0]?.attributes?.category.toUpperCase()}
+        <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
+          {gender?.toUpperCase()}
         </Link>
       </Breadcrumbs>
-      <Box
-        margin="0 auto"
-        display="grid"
-        justifyContent="space-around"
-        columnGap="1.33"
-        rowGap="20px"
-        gridTemplateColumns="repeat(auto-fill, 300px)">
-        {product && product.data.map((item) => <Item key={item.id} item={item} />)}
+
+      <Box display="flex">
+        <Box flex="1 1 10%">
+          <PriceSlider />
+          <SaleFilter />
+          <BrandFilter />
+          <SizesFilter />
+        </Box>
+        <Box flex="1 1 80%">
+          <ProductList gender={gender} category={category} />
+        </Box>
       </Box>
     </Box>
   );
@@ -40,10 +61,5 @@ export default SubCategory;
 export async function getServerSideProps({ params }) {
   const { gender, category, subcategory } = params;
 
-  const res = await fetch(
-    `${process.env.API_URL}/api/products/${gender}/${category}/${subcategory}`,
-  );
-  const product = await res.json();
-
-  return { props: { product } };
+  return { props: { gender, category, subcategory } };
 }

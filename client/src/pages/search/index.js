@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import ProductList from 'components/ProductList';
 import Filters from 'components/Filters';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearFilters } from '@/state/searchPageSlice';
 

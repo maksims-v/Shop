@@ -7,151 +7,6 @@ const _ = require("lodash");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::product.product", ({ strapi }) => ({
-  async newSearch(ctx) {
-    const { newSearch } = ctx.params;
-
-    const products = await strapi.entityService.findMany(
-      "api::product.product",
-      {
-        start: 0,
-        limit: 2,
-        filters: {
-          publishedAt: {
-            $null: null,
-          },
-          title: { $startsWith: newSearch },
-        },
-        populate: { image: true, size: true },
-      }
-    );
-
-    const imageSorted = products.map((item) => ({
-      ...item,
-      image: item.image[0].formats.medium.url,
-    }));
-
-    // let filteringProducts2 = filteringProducts.map((item, index) => {
-    //   return item[0].formats.medium.url;
-    // });
-
-    const pagination = await strapi.entityService.findMany(
-      "api::product.product",
-      {
-        filters: {
-          publishedAt: {
-            $null: null,
-          },
-          $and: [
-            {
-              title: { $startsWith: newSearch },
-            },
-          ],
-        },
-        populate: { size: true },
-      }
-    );
-
-    // get Min, Max price
-    let priceMax;
-    let priceMin;
-
-    if (products.length !== 0) {
-      const minMaxPriceArr = pagination?.map((item) => {
-        return item.price;
-      });
-
-      priceMin = Math.min.apply(null, minMaxPriceArr);
-      priceMax = Math.max.apply(null, minMaxPriceArr);
-    }
-    //---------------
-
-    // get all products count
-    const paginationLength = pagination.length;
-    //---------------
-
-    // get pages count
-    const pages = Math.ceil(paginationLength / 16);
-    //---------------
-
-    // get gendre
-    const allGender = pagination.map((item) => {
-      return item.gender.toLowerCase();
-    });
-    const getUniqGendre = allGender.filter(
-      (item, id) => allGender.indexOf(item) === id
-    );
-    //---------------
-
-    // get category
-    const allCategory = pagination.map((item) => {
-      return item.category.toLowerCase();
-    });
-    const getUniqCategory = allCategory.filter(
-      (item, id) => allCategory.indexOf(item) === id
-    );
-    //---------------
-
-    // get subCategory
-    const allSubCategory = pagination.map((item) => {
-      return item.subcategory.toLowerCase();
-    });
-    const getUniqSubCategory = allSubCategory.filter(
-      (item, id) => allSubCategory.indexOf(item) === id
-    );
-    //---------------
-
-    // get brands
-    const allBrands = pagination.map((item) => {
-      return item.brand.toLowerCase();
-    });
-
-    const getUniqBrands = allBrands.filter(
-      (item, id) => allBrands.indexOf(item) === id
-    );
-    //---------------
-
-    // get sizes
-    const allSizes = pagination.map((item) => {
-      return item.size;
-    });
-    const sortSizes = allSizes.filter(
-      (item, id) => allSizes.indexOf(item) === id
-    );
-
-    const filterSizes = sortSizes.map((item) => {
-      const sort = item.map((items) => {
-        return items.size;
-      });
-      return sort;
-    });
-
-    const filterSizesConcCat = filterSizes.flat(2);
-    const getUniqSize = filterSizesConcCat.filter(
-      (item, id) => filterSizesConcCat.indexOf(item) === id
-    );
-
-    //---------------
-
-    const sanitizedEntity = await this.sanitizeOutput({ imageSorted }, ctx);
-    const sanitizedPagination = await this.sanitizeOutput(
-      {
-        searchValue: newSearch,
-        priceMin,
-        priceMax,
-        total: paginationLength,
-        pages,
-        category: getUniqCategory,
-        genders: getUniqGendre,
-        subCategory: getUniqSubCategory,
-        brands: getUniqBrands,
-        sizes: getUniqSize,
-      },
-      ctx
-    );
-
-    return this.transformResponse(sanitizedEntity, sanitizedPagination);
-  },
-
   async slug(ctx) {
     const { slug } = ctx.params;
 
@@ -440,7 +295,15 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     //---------------
 
-    const sanitizedEntity = await this.sanitizeOutput(products, ctx);
+    //sortedProductsImages
+    const sortedProducts = products.map((item) => ({
+      ...item,
+      image: item.image[0].formats.medium.url,
+    }));
+
+    //---------------
+
+    const sanitizedEntity = await this.sanitizeOutput({ sortedProducts }, ctx);
     const sanitizedPagination = await this.sanitizeOutput(
       {
         data: pagination,
@@ -458,78 +321,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     );
 
     return this.transformResponse(sanitizedEntity, sanitizedPagination);
-  },
-
-  async genderSearch(ctx) {
-    const { gender } = ctx.params;
-
-    const entity = await strapi.entityService.findMany("api::product.product", {
-      filters: {
-        gender: {
-          $eqi: ["all", gender],
-        },
-        publishedAt: {
-          $ne: null,
-        },
-      },
-      populate: { image: true },
-    });
-
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-    return this.transformResponse(sanitizedEntity);
-  },
-
-  async categorySearch(ctx) {
-    const { gender, category } = ctx.params;
-
-    const entity = await strapi.entityService.findMany("api::product.product", {
-      filters: {
-        $and: [
-          {
-            gender: {
-              $eqi: [gender, "all"],
-            },
-          },
-          {
-            category: category,
-          },
-        ],
-        publishedAt: {
-          $ne: null,
-        },
-      },
-      populate: { image: true },
-    });
-
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-    return this.transformResponse(sanitizedEntity);
-  },
-
-  async subCategorySearch(ctx) {
-    const { gender, category, subcategory } = ctx.params;
-
-    const entity = await strapi.entityService.findMany("api::product.product", {
-      filters: {
-        $and: [
-          {
-            gender: gender,
-          },
-          {
-            category: category,
-          },
-          {
-            subcategory: subcategory,
-          },
-        ],
-        publishedAt: {
-          $ne: null,
-        },
-      },
-      populate: { image: true },
-    });
-
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-    return this.transformResponse(sanitizedEntity);
   },
 
   // fixed "sale" in priceSlider and sorting

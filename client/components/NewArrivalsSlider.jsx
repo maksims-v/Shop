@@ -64,7 +64,7 @@ const NewArrivalsSlider = () => {
             <NavigateNextIcon sx={{ fontSize: 40 }} />
           </IconButton>
         )}>
-        {sliderData && sliderData.map((item) => <Item key={item.id} item={item} />)}
+        {/* {sliderData && sliderData?.map((item) => <Item key={item.id} item={item} />)} */}
       </Carousel>
     </Box>
   );

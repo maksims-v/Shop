@@ -11,7 +11,6 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
-import { inputValue, clearFilters, filtersSearch } from '@/state/searchPageSlice';
 
 const pages = [
   { id: 1, title: "MEN'S", path: "men's" },
@@ -22,17 +21,17 @@ const pages = [
 ];
 
 const mensCategory = [
-  { id: 3, title: 'CLOTHING', path: '/mens/clothing' },
-  { id: 4, title: 'FOOTWEAR', path: '/mens/footwear' },
-  { id: 5, title: 'ACCESSORIES', path: '/mens/accessories' },
-  { id: 6, title: 'ACTIVITY', path: '/mens/activity' },
+  { id: 3, title: 'CLOTHING', path: "/men's/clothing" },
+  { id: 4, title: 'FOOTWEAR', path: "/men's/footwear" },
+  { id: 5, title: 'ACCESSORIES', path: "/men's/accessories" },
+  { id: 6, title: 'ACTIVITY', path: "/men's/activity" },
 ];
 
 const womensCategory = [
-  { id: 3, title: 'CLOTHING', path: '/womens/clothing' },
-  { id: 4, title: 'FOOTWEAR', path: '/womens/footwear' },
-  { id: 5, title: 'ACCESSORIES', path: '/womens/accessories' },
-  { id: 6, title: 'ACTIVITY', path: '/womens/activity' },
+  { id: 3, title: 'CLOTHING', path: "/women's/clothing" },
+  { id: 4, title: 'FOOTWEAR', path: "/women's/footwear" },
+  { id: 5, title: 'ACCESSORIES', path: "/women's/accessories" },
+  { id: 6, title: 'ACTIVITY', path: "/women's/activity" },
 ];
 
 const Header = () => {
@@ -63,11 +62,6 @@ const Header = () => {
 
   const logout = () => {
     unsetToken();
-  };
-
-  const searchProduct = () => {
-    dispatch(inputValue(searchValue));
-    setSearchValue('');
   };
 
   useEffect(() => {
@@ -126,7 +120,7 @@ const Header = () => {
             zIndex="2"
             sx={{ position: 'relative' }}>
             <Link href={`/search/${searchValue}`}>
-              <IconButton onClick={searchProduct}>
+              <IconButton onClick={() => setSearchValue('')}>
                 <SearchOutlined sx={{ color: 'white' }} />
               </IconButton>
             </Link>

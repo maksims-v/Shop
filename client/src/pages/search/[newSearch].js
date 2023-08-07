@@ -1,39 +1,28 @@
 import Filters from 'components/Filters';
 import ProductList from 'components/ProductList';
 import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  search,
-  clearFilters,
-  setDataFromServerSideRenderingNewSearchPage,
-} from '@/state/searchPageSlice';
+import { search, clearFilters, inputValue } from '@/state/searchPageSlice';
 import MobileFiltersPage from 'components/MobileFiltersPage';
 
-import { usePathname } from 'next/navigation';
-
-const Search = ({ data }) => {
-  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
+const Search = ({ newSearch }) => {
   const searchFlag = useSelector((state) => state.search.searchFlag);
   const total = useSelector((state) => state.search.metaData.total);
   const mobile = useSelector((state) => state.search.mobile);
 
-  // useEffect(() => {
-  //   dispatch(clearFilters());
-  // }, [inputSearchValue]);
-
-  useEffect(() => {
-    dispatch(setDataFromServerSideRenderingNewSearchPage(data));
-  }, []);
-  console.log(data);
-
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (inputSearchValue.length !== 0) {
-  //     dispatch(search());
-  //   }
-  // }, [searchFlag, inputSearchValue]);
+  useEffect(() => {
+    if (newSearch.length !== 0) {
+      dispatch(clearFilters());
+      dispatch(inputValue(newSearch));
+    }
+  }, [newSearch]);
+
+  useEffect(() => {
+    dispatch(search());
+  }, [searchFlag, newSearch]);
 
   return !mobile ? (
     <Box sx={{ mt: '60px' }}>
@@ -63,11 +52,8 @@ const Search = ({ data }) => {
 
 export default Search;
 
-export async function getServerSideProps({ params }) {
-  const { newSearch } = params;
+export async function getServerSideProps({ query }) {
+  const { newSearch } = query;
 
-  const res = await fetch(`${process.env.API_URL}/api/products/search/${newSearch}`);
-  const data = await res.json();
-
-  return { props: { data } };
+  return { props: { newSearch } };
 }

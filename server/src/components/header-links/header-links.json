@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_header_links_header_links",
+  "info": {
+    "displayName": "HeaderLinks",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "page": {
+      "type": "string",
+      "required": true,
+      "unique": false,
+      "default": "/"
+    }
+  }
+}

@@ -42,6 +42,8 @@ const ItemDetails = ({ product }) => {
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [size, setSize] = useState('uni');
 
+  console.log(product);
+
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCart.basket);

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "header_paths",
+  "info": {
+    "singularName": "header-path",
+    "pluralName": "header-paths",
+    "displayName": "HeaderPath"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "path": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "header-links.header-links"
+    }
+  }
+}

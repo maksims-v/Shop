@@ -24,7 +24,7 @@ const CategoryFilter = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    sx={{ p: '4px' }}
+                    sx={{ p: '2px' }}
                     disabled={status === 'resolved' ? false : true}
                     onChange={handleChange}
                     name={item.toLowerCase()}

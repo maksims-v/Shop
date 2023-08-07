@@ -27,7 +27,7 @@ const GenderFilter = () => {
                     control={
                       <Checkbox
                         disabled={status === 'resolved' ? false : true}
-                        sx={{ p: '4px' }}
+                        sx={{ p: '2px' }}
                         onChange={handleChange}
                         name={item.toLowerCase()}
                       />

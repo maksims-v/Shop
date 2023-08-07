@@ -1,28 +1,33 @@
 import { Box, Typography } from '@mui/material';
-import Item from './Item';
-import FilteringByPriceAndName from './FilteringByPriceAndName';
 import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentPage, setSortValue } from '@/state/searchPageSlice';
+import SortingByPriceAndName from './SortingByPriceAndName';
 import PaginationComponent from './PaginationComponent';
-import { setSortValue } from '@/state/searchPageSlice';
-import { useEffect, useState } from 'react';
+import Item from './Item';
 
-const ProductList = () => {
+const ProductList = ({ gender, category }) => {
   const data = useSelector((state) => state.search.data);
-  const sortValue = useSelector((state) => state.search.sortValue);
   const mobile = useSelector((state) => state.search.mobile);
 
-  const dispatch = useDispatch(sortValue);
+  const total = useSelector((state) => state.search.metaData.total);
 
-  const getValue = (e) => {
-    dispatch(setSortValue(e.target.value));
+  const dispatch = useDispatch();
+
+  const changePage = (event, value) => {
+    dispatch(setCurrentPage(value));
   };
 
   return (
     <Box m="0 auto" width="100%">
       {!mobile && (
         <Box display="flex" justifyContent="space-between" mb="10px">
-          <Typography>SEARCH</Typography>
-          <FilteringByPriceAndName getValue={getValue} />
+          <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
+            {gender?.toUpperCase()} {category?.toUpperCase()}{' '}
+            <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
+              ({total} products)
+            </Typography>
+          </Typography>
+          <SortingByPriceAndName />
         </Box>
       )}
       <Box
@@ -34,7 +39,7 @@ const ProductList = () => {
         gridTemplateColumns={mobile ? 'repeat(auto-fill, 180px)' : 'repeat(auto-fill, 250px)'}>
         {data && data?.map((item) => <Item key={item.id} item={item} />)}
       </Box>
-      <PaginationComponent />
+      <PaginationComponent changePage={changePage} />
     </Box>
   );
 };

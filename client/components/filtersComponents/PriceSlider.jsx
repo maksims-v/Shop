@@ -49,7 +49,7 @@ const PriceSlider = () => {
       />
       <Box
         m={mobile ? '-10px auto 0 auto' : '-10px 0 0 0'}
-        width={mobile ? '90%' : '80%'}
+        width={mobile ? '90%' : '100%'}
         display="flex"
         justifyContent="space-between">
         <Typography>{priceMinAndMax[0]}</Typography>

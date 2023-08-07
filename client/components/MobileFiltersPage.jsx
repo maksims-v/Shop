@@ -10,29 +10,30 @@ import SubCategoryFilter from './filtersComponents/SubCategoryFilter';
 import SizesFilter from './filtersComponents/SizesFilter';
 import BrandFilter from './filtersComponents/BrandFilter';
 import ProductList from './ProductList';
-import { clearFilters, setSortValue } from '@/state/searchPageSlice';
+import { clearFilters, inputValue, search } from '@/state/searchPageSlice';
 import PriceSlider from './filtersComponents/PriceSlider';
-import FilteringByPriceAndName from './FilteringByPriceAndName';
+import SortingByPriceAndName from './SortingByPriceAndName';
 
 const disableMarginInAccordion = true;
 
-const MobileFiltersPage = () => {
+const MobileFiltersPage = ({ newSearch }) => {
   const [toggle, setToggle] = useState(false);
-  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const total = useSelector((state) => state.search.metaData.total);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearFilters());
+    dispatch(inputValue(newSearch));
+  }, [newSearch]);
 
   const toggleButton = () => {
     setToggle(!toggle);
   };
 
-  useEffect(() => {
+  const clear = () => {
     dispatch(clearFilters());
-  }, [inputSearchValue]);
-
-  const getValue = (e) => {
-    dispatch(setSortValue(e.target.value));
+    dispatch(search());
   };
 
   return (
@@ -50,7 +51,7 @@ const MobileFiltersPage = () => {
 
           <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: '17px' }}>
             <CustomButton toggleButton={toggleButton}>SHOW FILTERS</CustomButton>
-            <CustomButton>CLEAR FILTERS</CustomButton>
+            <CustomButton toggleButton={clear}>CLEAR FILTERS</CustomButton>
           </Box>
           <Box m="0 auto" width="100%">
             <PriceSlider />
@@ -62,7 +63,7 @@ const MobileFiltersPage = () => {
               </Typography>
               <Typography component="span"> products</Typography>
             </Box>
-            <FilteringByPriceAndName getValue={getValue} />
+            <SortingByPriceAndName />
           </Box>
 
           <Box
@@ -160,7 +161,6 @@ const MobileFiltersPage = () => {
             </Box>
           </Box>
 
-          {/* {toggle && <MobileFilters toggleButton={toggleButton} />} */}
           <ProductList />
         </Box>
       </Box>
@@ -169,3 +169,9 @@ const MobileFiltersPage = () => {
 };
 
 export default MobileFiltersPage;
+
+export async function getServerSideProps({ query }) {
+  const { newSearch } = query;
+
+  return { props: { newSearch } };
+}

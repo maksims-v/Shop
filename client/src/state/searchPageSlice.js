@@ -6,7 +6,7 @@ export const search = createAsyncThunk(
     const { inputSearchValue } = getState().search;
     const { changePrice } = getState().search;
     const { brandsChecked } = getState().search;
-    const { discounts } = getState().search;
+    const { sale } = getState().search;
     const { categoryChecked } = getState().search;
     const { genderChecked } = getState().search;
     const { subCategoryChecked } = getState().search;
@@ -14,16 +14,13 @@ export const search = createAsyncThunk(
     const { currentPage } = getState().search;
     const { sortValue } = getState().search;
 
-    console.log('1');
+    const getGenderValue = value?.gender ? value.gender : genderChecked;
+    const getCategoryValue = value?.category ? value.category : categoryChecked;
+    const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
+    const saleproducts = sale ? 'Sale' : '';
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/products?search=${inputSearchValue}&pmin=${
-          changePrice[0]
-        }&pmax=${
-          changePrice[1]
-        }&brands=${brandsChecked}&sale=${discounts}&category=${categoryChecked}&gender=${
-          value ? value : genderChecked
-        }&subcat=${subCategoryChecked}&size=${sizesChecked}&currentPage=${currentPage}&sort=${sortValue}`,
+        `${process.env.API_URL}/api/products?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sort=${sortValue}`,
       );
 
       if (!response.ok) {
@@ -60,19 +57,17 @@ export const getAllSizes = createAsyncThunk(
 );
 
 const initialState = {
-  mobile: false,
+  mobile: true,
   allSizesFromApi: [],
-  pathname: '',
   status: null,
   error: null,
   data: [],
   metaData: [],
-  dataFromServerSideRenderingNewSearchPage: [],
   inputSearchValue: '',
   newSearch: true,
   genders: [],
   genderChecked: [],
-  discounts: [],
+  sale: false,
   category: [],
   categoryChecked: [],
   subCategory: [],
@@ -100,18 +95,6 @@ export const searchPageSlice = createSlice({
     setMobile(state, action) {
       state.mobile = true;
     },
-    setPathname(state, action) {
-      state.mobile = action.payload;
-    },
-    setPathname(state, action) {
-      state.pathname = action.payload;
-    },
-    setData(state, action) {
-      state.data = action.payload;
-    },
-    setMetaData(state, action) {
-      state.metaData = action.payload;
-    },
     inputValue(state, action) {
       state.inputSearchValue = action.payload;
       state.newSearch = true;
@@ -130,14 +113,8 @@ export const searchPageSlice = createSlice({
       state.searchFlag = !state.searchFlag;
       state.newSearch = false;
     },
-    setDiscounts(state, action) {
-      const itemSearch = state.discounts.includes(action.payload);
-
-      !itemSearch
-        ? state.discounts.push(action.payload)
-        : (state.discounts = state.discounts.filter((item) => {
-            return item !== action.payload;
-          }));
+    setSale(state, action) {
+      state.sale = !state.sale;
 
       state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
@@ -209,6 +186,7 @@ export const searchPageSlice = createSlice({
     setSortValue(state, action) {
       state.sortValue = action.payload;
       state.newSearch = false;
+      state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
     },
 
@@ -217,11 +195,11 @@ export const searchPageSlice = createSlice({
       state.error = null;
       state.data = [];
       state.metaData = [];
-      state.inputSearchValue = state.inputSearchValue.length !== 0 ? state.inputSearchValue : '';
+      state.inputSearchValue = '';
       state.newSearch = true;
       state.genders = [];
       state.genderChecked = [];
-      state.discounts = [];
+      state.sale = false;
       state.category = [];
       state.categoryChecked = [];
       state.subCategory = [];
@@ -236,20 +214,6 @@ export const searchPageSlice = createSlice({
       state.currentPage = 1;
       state.sortValue = 'Sort By';
     },
-
-    setDataFromServerSideRenderingNewSearchPage(state, action) {
-      state.status = 'resolved';
-      state.inputSearchValue = action.payload.meta.searchValue;
-      state.data = action.payload.data.attributes.imageSorted;
-      state.metaData = action.payload.meta;
-      state.genders = action.payload.meta.genders;
-      state.brands = action.payload.meta.brands;
-      state.category = action.payload.meta.category;
-      state.subCategory = action.payload.meta.subCategory;
-      state.priceMinAndMax = [action.payload.meta.priceMin, action.payload.meta.priceMax];
-      state.sizes = action.payload.meta.sizes;
-      state.newSearch = true;
-    },
   },
   extraReducers: {
     [search.pending]: (state, action) => {
@@ -258,7 +222,7 @@ export const searchPageSlice = createSlice({
     },
     [search.fulfilled]: (state, action) => {
       state.status = 'resolved';
-      state.data = action.payload.data;
+      state.data = action.payload.data.attributes.sortedProducts;
       state.metaData = action.payload.meta;
       state.genders = state.newSearch ? action.payload.meta.genders : state.genders;
       state.brands = state.newSearch ? action.payload.meta.brands : state.brands;
@@ -274,7 +238,7 @@ export const searchPageSlice = createSlice({
 
     [getAllSizes.fulfilled]: (state, action) => {
       state.allSizesFromApi = action.payload;
-
+      console.log(action.payload);
       const response = action.payload.data[0].attributes.size;
       const sizesArr = response.map((item) => {
         return item.size.toLowerCase();
@@ -291,21 +255,17 @@ export const searchPageSlice = createSlice({
 
 export const {
   setMobile,
-  setPathname,
-  setData,
-  setMetaData,
   inputValue,
   setBrandsChecked,
   setCategoryChecked,
   setGenderChecked,
   setSubCategoryChecked,
-  setDiscounts,
+  setSale,
   setSizesChecked,
   clearFilters,
   setChangePrice,
   setCurrentPage,
   setSortValue,
-  setDataFromServerSideRenderingNewSearchPage,
 } = searchPageSlice.actions;
 
 export default searchPageSlice.reducer;

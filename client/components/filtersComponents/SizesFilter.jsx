@@ -3,15 +3,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography } from '@mui/material';
-import { setSizesChecked, setChangePrice } from '@/state/searchPageSlice';
-
-let order = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
-
-let sizess = ['S', 'XL', 'XS', '3XL', 'XS', '2XL'];
-
-sizess.sort(function (a, b) {
-  return order.indexOf(a) - order.indexOf(b);
-});
+import { setSizesChecked } from '@/state/searchPageSlice';
 
 const SizesFilter = () => {
   const dispatch = useDispatch();
@@ -64,7 +56,7 @@ const SizesFilter = () => {
                 sx={{
                   color: 'black',
                   ml: '0px !Important',
-                  m: '3px',
+                  m: '2px',
                   height: '40px',
                   width: '40px',
                   borderLeft: '1px solid rgba(0, 0, 0, 0.12) !Important',

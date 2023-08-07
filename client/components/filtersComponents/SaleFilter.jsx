@@ -1,14 +1,18 @@
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { setDiscounts } from '@/state/searchPageSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSale } from '@/state/searchPageSlice';
 
 const SaleFilter = () => {
-  const dispatch = useDispatch();
   const status = useSelector((state) => state.search.status);
+  const data = useSelector((state) => state.search.data);
+  const sale = useSelector((state) => state.search.sale);
 
-  const handleChange = (event) => {
-    dispatch(setDiscounts(event.target.name));
+  const dispatch = useDispatch();
+
+  const handleChange = () => {
+    dispatch(setSale());
   };
+
   return (
     <Box mb="10px">
       <Typography sx={{ mb: '2px' }} fontWeight="bold">
@@ -18,7 +22,9 @@ const SaleFilter = () => {
         <FormGroup>
           <FormControlLabel
             disabled={status === 'resolved' ? false : true}
-            control={<Checkbox sx={{ p: '4px' }} onChange={handleChange} name="Sale" />}
+            control={
+              <Checkbox sx={{ p: '2px' }} onChange={handleChange} checked={sale} name="Sale" />
+            }
             label="Sale"
           />
         </FormGroup>
