@@ -1,166 +1,25 @@
-import { useState, useEffect } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Box, Typography } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import CustomButton from './ui/CustomButton';
-import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import GenderFilter from './filtersComponents/GenderFilter';
-import CategoryFilter from './filtersComponents/CategoryFilter';
-import SubCategoryFilter from './filtersComponents/SubCategoryFilter';
-import SizesFilter from './filtersComponents/SizesFilter';
-import BrandFilter from './filtersComponents/BrandFilter';
+import { Box, Chip, Stack } from '@mui/material';
 import ProductList from './ProductList';
-import { clearFilters, inputValue, search } from '@/state/searchPageSlice';
-import PriceSlider from './filtersComponents/PriceSlider';
-import SortingByPriceAndName from './SortingByPriceAndName';
-
-const disableMarginInAccordion = true;
+import MobileFilters from './filtersComponents/MobileFilters';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGenderChecked } from '@/state/searchPageSlice';
+import { useState } from 'react';
 
 const MobileFiltersPage = ({ newSearch }) => {
-  const [toggle, setToggle] = useState(false);
-  const total = useSelector((state) => state.search.metaData.total);
-
+  const genderChecked = useSelector((state) => state.search.genderChecked);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(clearFilters());
-    dispatch(inputValue(newSearch));
-  }, [newSearch]);
-
-  const toggleButton = () => {
-    setToggle(!toggle);
-  };
-
-  const clear = () => {
-    dispatch(clearFilters());
-    dispatch(search());
-  };
+  const [gender, setGender] = useState('');
 
   return (
     <>
-      <Box sx={{ mt: '17px' }}>
+      <Box>
         <Box display="flex" alignContent="center" flexDirection="column">
-          <Typography
-            sx={{
-              fontSize: '14px',
-              fontWeight: 'bold',
-              margin: '0 auto 17px auto',
-            }}>
-            Your search for as produced {total} results
-          </Typography>
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: '17px' }}>
-            <CustomButton toggleButton={toggleButton}>SHOW FILTERS</CustomButton>
-            <CustomButton toggleButton={clear}>CLEAR FILTERS</CustomButton>
-          </Box>
-          <Box m="0 auto" width="100%">
-            <PriceSlider />
-          </Box>
-          <Box pl="10px" mb="17px" display="flex" justifyContent="space-between">
-            <Box pt="10px">
-              <Typography sx={{ fontWeight: 'bold' }} component="span">
-                {total}
-              </Typography>
-              <Typography component="span"> products</Typography>
-            </Box>
-            <SortingByPriceAndName />
-          </Box>
-
-          <Box
-            sx={{
-              display: toggle ? 'block' : 'none',
-              position: 'absolute',
-              top: '0px',
-              left: '0px',
-              zIndex: '99',
-              height: '100%',
-              width: '100%',
-              backgroundColor: 'white',
-            }}>
-            <Box sx={{ mb: '50px' }}>
-              <Box>
-                <Typography
-                  sx={{
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '16px',
-                    lineHeight: '60px',
-                    width: '100%',
-                  }}>
-                  Filters
-                </Typography>
-                <CloseIcon
-                  fontSize="large"
-                  onClick={toggleButton}
-                  sx={{ position: 'absolute', top: '17px', right: '15px' }}
-                />
-              </Box>
-
-              <Accordion disableGutters={disableMarginInAccordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header">
-                  <Typography fontWeight="bold">GENDER</Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-                  <GenderFilter />
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion disableGutters={disableMarginInAccordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header">
-                  <Typography fontWeight="bold">CLOTHING & SHOES</Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-                  <CategoryFilter />
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion disableGutters={disableMarginInAccordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header">
-                  <Typography fontWeight="bold">BRANDS</Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-                  <BrandFilter />
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion disableGutters={disableMarginInAccordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header">
-                  <Typography fontWeight="bold">SIZE</Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-                  <SizesFilter />
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion disableGutters={disableMarginInAccordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel2a-content"
-                  id="panel2a-header">
-                  <Typography fontWeight="bold">CATEGORIES</Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-                  <SubCategoryFilter />
-                </AccordionDetails>
-              </Accordion>
-            </Box>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', pb: '55px' }}>
-              <CustomButton toggleButton={toggleButton}>SHOW</CustomButton>
-            </Box>
-          </Box>
-
+          <Stack direction="row" spacing={0.2} sx={{ m: '0 auto', mb: '5px', color: 'black' }}>
+            {genderChecked?.map((item) => (
+              <Chip key={item} label={item} size="small" onDelete={() => setGender(item)} />
+            ))}
+          </Stack>
+          <MobileFilters newSearch={newSearch} gender={gender} />
           <ProductList />
         </Box>
       </Box>

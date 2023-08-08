@@ -19,6 +19,7 @@ export const search = createAsyncThunk(
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';
     try {
+      console.log('hai');
       const response = await fetch(
         `${process.env.API_URL}/api/products?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sort=${sortValue}`,
       );
@@ -238,7 +239,6 @@ export const searchPageSlice = createSlice({
 
     [getAllSizes.fulfilled]: (state, action) => {
       state.allSizesFromApi = action.payload;
-      console.log(action.payload);
       const response = action.payload.data[0].attributes.size;
       const sizesArr = response.map((item) => {
         return item.size.toLowerCase();

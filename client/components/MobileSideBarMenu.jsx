@@ -13,13 +13,7 @@ import Link from 'next/link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-const MobileSideBarMenu = ({
-  pages,
-  mobileOpen,
-  handleDrawerToggle,
-  womensCategory,
-  mensCategory,
-}) => {
+const MobileSideBarMenu = ({ mobileOpen, handleDrawerToggle, womensCategory, mensCategory }) => {
   const [expanded, setExpanded] = useState(true);
   const disable = true;
 

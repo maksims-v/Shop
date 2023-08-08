@@ -14,7 +14,8 @@ export default CustomButton;
 
 const buttonStyle = {
   width: '150px',
-  borderRadius: '10px',
+  borderRadius: '1px',
+  height: '30px',
   fontSize: '13px',
   color: 'black',
   borderColor: '#cecece',

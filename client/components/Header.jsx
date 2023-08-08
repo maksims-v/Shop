@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, IconButton, Badge, Container, TextField } from '@mui/material';
-import { PersonOutline, ShoppingBagOutlined, SearchOutlined } from '@mui/icons-material';
+import {
+  Box,
+  IconButton,
+  Badge,
+  Container,
+  TextField,
+  Paper,
+  InputBase,
+  Divider,
+} from '@mui/material';
+import { PersonOutline, ShoppingBagOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import MobileSideBarMenu from './MobileSideBarMenu';
@@ -11,6 +21,7 @@ import AuthModal from './AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
+import MobileHeader from './mobileVersion/MobileHeader';
 
 const pages = [
   { id: 1, title: "MEN'S", path: "men's" },
@@ -37,6 +48,7 @@ const womensCategory = [
 const Header = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
   const basket = useSelector((state) => state.shoppingCart.basket);
+  const mobile = useSelector((state) => state.search.mobile);
 
   const dispatch = useDispatch();
 
@@ -45,6 +57,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [badgeCount, setBadgeCount] = useState(1);
+  const [openSearchMenu, setOpenSearchMenu] = useState(false);
 
   const secondBreakPoint = useMediaQuery('(min-width:650px)');
 
@@ -64,12 +77,19 @@ const Header = () => {
     unsetToken();
   };
 
+  const toggleSearch = () => {
+    setOpenSearchMenu(false);
+    setSearchValue('');
+  };
+
   useEffect(() => {
     const basket = localStorage.getItem('cart');
     if (basket) dispatch(addToBasket(JSON.parse(basket)));
   }, []);
 
-  return (
+  return mobile ? (
+    <MobileHeader />
+  ) : (
     <>
       <Box
         display="flex"
@@ -97,6 +117,17 @@ const Header = () => {
               <MenuIcon fontSize="large" sx={{ color: 'white' }} />
             </IconButton>
           )}
+          {mobile && (
+            <Link href={`/search/${searchValue}`}>
+              <IconButton
+                onClick={() => setSearchValue('')}
+                type="button"
+                sx={{}}
+                aria-label="search">
+                <SearchIcon sx={{ color: 'white' }} />
+              </IconButton>
+            </Link>
+          )}
           <Link href="/">
             {' '}
             <Box sx={{ '&:hover': { cursor: 'pointer' }, color: '#ffde00' }}>ADVENTURE</Box>
@@ -119,26 +150,29 @@ const Header = () => {
             justifyContent="space-between"
             zIndex="2"
             sx={{ position: 'relative' }}>
-            <Link href={`/search/${searchValue}`}>
-              <IconButton onClick={() => setSearchValue('')}>
-                <SearchOutlined sx={{ color: 'white' }} />
-              </IconButton>
-            </Link>
-            <TextField
-              onChange={(e) => setSearchValue(e.target.value)}
-              value={searchValue}
-              id="outlined-search"
-              label="Search field"
-              type="search"
-              sx={{
-                position: 'absolute',
-                top: '-8px',
-                right: '100%',
-                width: '200px',
-                zIndex: 150,
-                backgroundColor: '#edf5fc',
-              }}
-            />
+            {!mobile && (
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}>
+                <InputBase
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  value={searchValue}
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <Link href={`/search/${searchValue}`}>
+                  <IconButton
+                    onClick={() => setSearchValue('')}
+                    type="button"
+                    sx={{ p: '10px' }}
+                    aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                </Link>
+              </Paper>
+            )}
 
             {isAuth ? (
               <Box>
