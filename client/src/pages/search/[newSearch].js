@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearFilters, inputValue } from '@/state/searchPageSlice';
 import MobileFiltersPage from 'components/MobileFiltersPage';
+import Layout from 'components/layout/Layout';
 
 const Search = ({ newSearch }) => {
   const searchFlag = useSelector((state) => state.search.searchFlag);
@@ -25,26 +26,28 @@ const Search = ({ newSearch }) => {
   }, [searchFlag, newSearch]);
 
   return !mobile ? (
-    <Box sx={{ mt: '60px' }}>
-      <Box display="flex" alignContent="center" flexDirection="column">
-        <Typography
-          sx={{
-            fontSize: '22px',
-            fontWeight: 'bold',
-            margin: '0 auto 17px auto',
-          }}>
-          Your search for as produced {total} results
-        </Typography>
-      </Box>
-      <Box display="flex">
-        <Box flex="1 1 10%">
-          <Filters />
+    <Layout>
+      <Box sx={{ mt: '60px' }}>
+        <Box display="flex" alignContent="center" flexDirection="column">
+          <Typography
+            sx={{
+              fontSize: '22px',
+              fontWeight: 'bold',
+              margin: '0 auto 17px auto',
+            }}>
+            Your search for as produced {total} results
+          </Typography>
         </Box>
-        <Box flex="1 1 80%">
-          <ProductList />
+        <Box display="flex">
+          <Box flex="1 1 10%">
+            <Filters />
+          </Box>
+          <Box flex="1 1 80%">
+            <ProductList />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Layout>
   ) : (
     <MobileFiltersPage />
   );

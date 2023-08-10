@@ -4,6 +4,7 @@ import Filters from 'components/Filters';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearFilters } from '@/state/searchPageSlice';
+import Layout from 'components/layout/Layout';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -24,16 +25,18 @@ const Index = () => {
   }, [searchFlag]);
 
   return (
-    <Box mt="60px">
-      <Box display="flex">
-        <Box flex="1 1 10%">
-          <Filters />
-        </Box>
-        <Box flex="1 1 80%">
-          <ProductList />
+    <Layout>
+      <Box mt="60px">
+        <Box display="flex">
+          <Box flex="1 1 10%">
+            <Filters />
+          </Box>
+          <Box flex="1 1 80%">
+            <ProductList />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Layout>
   );
 };
 

@@ -9,6 +9,7 @@ import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
+import Layout from 'components/layout/Layout';
 
 const PageCategory = ({ gender }) => {
   const dispatch = useDispatch();
@@ -34,21 +35,23 @@ const PageCategory = ({ gender }) => {
   };
 
   return (
-    <Box mt="60px">
-      <Box display="flex">
-        <Box flex="1 1 10%">
-          <PriceSlider />
-          <SaleFilter handleChange={handleChange} />
-          <CategoryFilter />
-          <SubCategoryFilter />
-          <BrandFilter />
-          <SizesFilter />
-        </Box>
-        <Box flex="1 1 80%">
-          <ProductList gender={gender} />
+    <Layout>
+      <Box mt="60px">
+        <Box display="flex">
+          <Box flex="1 1 10%">
+            <PriceSlider />
+            <SaleFilter handleChange={handleChange} />
+            <CategoryFilter />
+            <SubCategoryFilter />
+            <BrandFilter />
+            <SizesFilter />
+          </Box>
+          <Box flex="1 1 80%">
+            <ProductList gender={gender} />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Layout>
   );
 };
 

@@ -6,7 +6,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import MobileSideBarMenu from 'components/MobileSideBarMenu';
+import MobileSideBarMenu from 'components/mobileVersion/MobileSideBarMenu';
 import AuthModal from '../AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
@@ -97,7 +97,7 @@ const MobileHeader = () => {
               left: '50%',
               transform: 'translate(-50%, -46%)',
             }}>
-            <Image src="/logo.jpg" width={40} height={40} />
+            <Image src="/logo2.png" width={90} height={65} />
           </Box>
         </Link>
         <Box

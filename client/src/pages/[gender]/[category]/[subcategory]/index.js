@@ -8,6 +8,7 @@ import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import Link from 'next/link';
+import Layout from 'components/layout/Layout';
 
 const SubCategory = ({ gender, category, subcategory }) => {
   const dispatch = useDispatch();
@@ -28,31 +29,33 @@ const SubCategory = ({ gender, category, subcategory }) => {
     dispatch(search({ gender, category, subcategory }));
   }, [searchFlag, gender, category, subcategory]);
   return (
-    <Box mt="10px">
-      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
-        <Link underline="hover" color="inherit" href="/">
-          HOME
-        </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}`}>
-          {gender?.toUpperCase()}
-        </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
-          {gender?.toUpperCase()}
-        </Link>
-      </Breadcrumbs>
+    <Layout>
+      <Box mt="10px">
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
+          <Link underline="hover" color="inherit" href="/">
+            HOME
+          </Link>
+          <Link underline="hover" color="inherit" href={`/${gender}`}>
+            {gender?.toUpperCase()}
+          </Link>
+          <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
+            {gender?.toUpperCase()}
+          </Link>
+        </Breadcrumbs>
 
-      <Box display="flex">
-        <Box flex="1 1 10%">
-          <PriceSlider />
-          <SaleFilter />
-          <BrandFilter />
-          <SizesFilter />
-        </Box>
-        <Box flex="1 1 80%">
-          <ProductList gender={gender} category={category} />
+        <Box display="flex">
+          <Box flex="1 1 10%">
+            <PriceSlider />
+            <SaleFilter />
+            <BrandFilter />
+            <SizesFilter />
+          </Box>
+          <Box flex="1 1 80%">
+            <ProductList gender={gender} category={category} />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </Layout>
   );
 };
 

@@ -13,14 +13,14 @@ const GenderFilter = () => {
   const [addBoleanGenders, setAddBoleanGenders] = useState();
   const [genderArr, setGenderArr] = useState(addBoleanGenders && Object.entries(addBoleanGenders));
 
-  useEffect(() => {
-    setAddBoleanGenders(
-      genders?.reduce((object, value) => {
-        return { ...object, [value]: false };
-      }, {}),
-    );
-    setGenderArr(addBoleanGenders && Object.entries(addBoleanGenders));
-  }, [genders, addBoleanGenders]);
+  // useEffect(() => {
+  //   setAddBoleanGenders(
+  //     genders?.reduce((object, value) => {
+  //       return { ...object, [value]: false };
+  //     }, {}),
+  //   );
+  //   setGenderArr(addBoleanGenders && Object.entries(addBoleanGenders));
+  // }, [genders, addBoleanGenders]);
 
   const handleChange = (event) => {
     setAddBoleanGenders({

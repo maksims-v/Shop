@@ -1,14 +1,14 @@
-import HeadBanner from 'components/HeadBanner';
-import { Box } from '@mui/material';
+import Layout from 'components/layout/Layout';
 import NewArrivalsSlider from 'components/NewArrivalsSlider';
+import SectionBanner from 'components/SectionBanner';
 
-const Home = () => {
+const Index = () => {
   return (
-    <Box>
-      <HeadBanner />
+    <Layout>
+      <SectionBanner />
       <NewArrivalsSlider />
-    </Box>
+    </Layout>
   );
 };
 
-export default Home;
+export default Index;

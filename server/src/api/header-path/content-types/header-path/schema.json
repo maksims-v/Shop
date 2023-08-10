@@ -14,16 +14,5 @@
       "localized": true
     }
   },
-  "attributes": {
-    "path": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "header-links.header-links"
-    }
-  }
+  "attributes": {}
 }
