@@ -1,13 +1,71 @@
-import { Box, Container } from '@mui/material';
+import { Box, Container, List, Typography, ListItem } from '@mui/material';
+import { useSelector } from 'react-redux';
+import Link from 'next/link';
 
 const Footer = () => {
+  const data = useSelector((state) => state.fetchFooterData.data);
+  const status = useSelector((state) => state.fetchFooterData.status);
+
   return (
-    <Box minHeight="200px" backgroundColor="#262624" color="white">
-      <Container maxWidth="xl">
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: '30px 0px' }}>
-          <Box>asdfads</Box>
-          <Box>1254113</Box>
-        </Box>
+    <Box minHeight="300px" backgroundColor="#262624" color="white" pt="40px" mt="50px">
+      <Container maxWidth="md" sx={{ height: '100%' }}>
+        {status === 'resolved' && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              height: '100%',
+            }}>
+            <Box>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h3">
+                {data && data?.supportLinks[0]?.label}
+              </Typography>
+              <List>
+                {data?.supportLinks[0]?.link?.map((item, index) => (
+                  <ListItem key={index} sx={{ p: '0px 0px 0px 0px' }}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </ListItem>
+                ))}{' '}
+              </List>
+            </Box>
+            <Box>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h3">
+                {data && data?.aboutLinks[0]?.label}
+              </Typography>
+              <List>
+                {data?.aboutLinks[0]?.link?.map((item, index) => (
+                  <ListItem key={index} sx={{ p: '0px 0px 0px 0px' }}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </ListItem>
+                ))}{' '}
+              </List>
+            </Box>
+            <Box>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h3">
+                {data && data?.allProductsLinks[0]?.label}
+              </Typography>
+              <List>
+                {data?.allProductsLinks[0]?.link?.map((item, index) => (
+                  <ListItem key={index} sx={{ p: '0px 0px 0px 0px' }}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </ListItem>
+                ))}{' '}
+              </List>
+            </Box>
+            <Box>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h3">
+                {data && data?.socialLinks[0]?.label}
+              </Typography>
+              <List>
+                {data?.socialLinks[0]?.link?.map((item, index) => (
+                  <ListItem key={index} sx={{ p: '0px 0px 0px 0px' }}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </ListItem>
+                ))}{' '}
+              </List>
+            </Box>
+          </Box>
+        )}
       </Container>
     </Box>
   );

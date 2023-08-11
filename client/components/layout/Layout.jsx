@@ -2,6 +2,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { Box, Container } from '@mui/material';
 import { getHeaderData } from '@/state/headerSlice';
+import { getFooterData } from '@/state/footerSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getUserFromLocalCookie } from '@/http/authCookie.js';
@@ -12,6 +13,7 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     dispatch(getHeaderData());
+    dispatch(getFooterData());
     getUser();
   }, []);
 

@@ -3,7 +3,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getSectionBannerData = createAsyncThunk(
   'bannerData/getSectionBannerData',
   async function (_, { rejectWithValue }) {
-    console.log('hai');
     try {
       const response = await fetch(`${process.env.API_URL}/api/section-banners`);
 
@@ -43,12 +42,12 @@ export const sectionBannerSlice = createSlice({
     },
     [getSectionBannerData.fulfilled]: (state, action) => {
       state.status = 'resolved';
-      state.category = action.payload.data[0].attributes?.category;
-      state.subcategory = action.payload.data[0].attributes?.subcategory
+      state.category = action.payload?.data[0]?.attributes?.category;
+      state.subcategory = action.payload?.data[0]?.attributes?.subcategory
         ? action.payload.data[0].attributes?.subcategory
         : false;
 
-      state.image = action.payload.data[0].attributes.image.data?.attributes.url;
+      state.image = action.payload?.data[0]?.attributes?.image.data?.attributes?.url;
     },
 
     [getSectionBannerData.rejected]: setError,

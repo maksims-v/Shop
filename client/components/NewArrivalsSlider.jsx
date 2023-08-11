@@ -1,41 +1,39 @@
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import { Carousel } from 'react-responsive-carousel';
-import Item from './Item';
+import ProductCard from './ProductCard';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { getNewArrivalsSliderData } from '@/state/newArrivalsSliderSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const NewArrivalsSlider = () => {
-  const [sliderData, setSliderData] = useState(false);
+  const data = useSelector((state) => state.fetchNewArrivalsData.data);
+  const status = useSelector((state) => state.fetchNewArrivalsData.status);
 
-  async function getSliderData() {
-    const res = await fetch(`${process.env.API_URL}/api/products?populate=*`);
-    const data = await res.json();
-
-    if (data) {
-      setSliderData(data?.data);
-    }
-  }
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getSliderData();
+    dispatch(getNewArrivalsSliderData());
   }, []);
 
   return (
     <Box width="100%" m="20px 0px 50px 0px" fontWeight="bold" fontSize="20px">
       <Link href="/newArrivals">
-        <Box component="span">New Arrivals</Box>{' '}
+        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+          New Arrivals
+        </Typography>{' '}
       </Link>
       <Carousel
-        infiniteLoop={true}
-        autoPlay={true}
+        infiniteLoop={false}
+        autoPlay={false}
         showThumbs={false}
         showIndicators={false}
         showStatus={false}
         centerMode
-        centerSlidePercentage={24}
+        centerSlidePercentage={20}
         renderArrowPrev={(onClickHandler, hasPrev, label) => (
           <IconButton
             onClick={onClickHandler}
@@ -64,7 +62,7 @@ const NewArrivalsSlider = () => {
             <NavigateNextIcon sx={{ fontSize: 40 }} />
           </IconButton>
         )}>
-        {/* {sliderData && sliderData?.map((item) => <Item key={item.id} item={item} />)} */}
+        {status === 'resolved' && data?.map((item) => <ProductCard key={item.id} item={item} />)}
       </Carousel>
     </Box>
   );

@@ -8,13 +8,15 @@ import {
   Box,
   Skeleton,
 } from '@mui/material';
-
+import FiberNewIcon from '@mui/icons-material/FiberNew';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-const Item = ({ item }) => {
+const ProductCard = ({ item }) => {
   const mobile = useSelector((state) => state.search.mobile);
   const status = useSelector((state) => state.search.status);
+  const status2 = useSelector((state) => state.fetchNewArrivalsData.status);
+  const status3 = useSelector((state) => state.fetchRelatedProductsData.data);
 
   return (
     <Card
@@ -25,17 +27,23 @@ const Item = ({ item }) => {
         boxShadow: 'none',
       }}>
       <Link href={`/${item?.gender}/${item?.category}/${item?.subcategory}/${item?.slug}`}>
-        {status === 'resolved' ? (
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              image={`${process.env.API_URL}${item?.image}`}
-              alt="Paella dish"
+        {/* {status || status2 || status3 === 'resolved' ? ( */}
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            image={`${process.env.API_URL}${item?.image}`}
+            alt="Paella dish"
+          />
+
+          {item.new && (
+            <FiberNewIcon
+              sx={{ color: '#0070d6', position: 'absolute', top: '7px', left: '7px' }}
             />
-          </CardActionArea>
-        ) : (
+          )}
+        </CardActionArea>
+        {/* ) : (
           <Skeleton variant="rectangular" width={230} height={283} />
-        )}
+        )} */}
         {status === 'loading' ? (
           <Skeleton sx={{ mt: '20px' }} variant="rectangular" width={230} height={50} />
         ) : (
@@ -97,4 +105,4 @@ const Item = ({ item }) => {
   );
 };
 
-export default Item;
+export default ProductCard;

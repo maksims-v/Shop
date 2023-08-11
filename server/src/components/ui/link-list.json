@@ -12,7 +12,7 @@
     },
     "href": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "link": {
       "type": "component",

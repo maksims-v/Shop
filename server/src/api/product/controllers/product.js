@@ -323,6 +323,52 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     return this.transformResponse(sanitizedEntity, sanitizedPagination);
   },
 
+  async newArrivals(ctx) {
+    const entity = await strapi.entityService.findMany("api::product.product", {
+      limit: 20,
+      filters: {
+        new: true,
+        publishedAt: {
+          $ne: null,
+        },
+      },
+      populate: { image: true },
+    });
+
+    //sortedProductsImages
+    const sortedProducts = entity.map((item) => ({
+      ...item,
+      image: item.image[0].formats.small.url,
+    }));
+
+    const sanitizedEntity = await this.sanitizeOutput({ sortedProducts }, ctx);
+
+    return this.transformResponse(sanitizedEntity);
+  },
+
+  async relatedProducts(ctx) {
+    const entity = await strapi.entityService.findMany("api::product.product", {
+      limit: 20,
+      filters: {
+        new: true,
+        publishedAt: {
+          $ne: null,
+        },
+      },
+      populate: { image: true },
+    });
+
+    //sortedProductsImages
+    const sortedProducts = entity.map((item) => ({
+      ...item,
+      image: item.image[0].formats.small.url,
+    }));
+
+    const sanitizedEntity = await this.sanitizeOutput({ sortedProducts }, ctx);
+
+    return this.transformResponse(sanitizedEntity);
+  },
+
   // fixed "sale" in priceSlider and sorting
   // const fixedSaleInSearchFilter = products.filter((item) => {
   //   if (!item.sale) {

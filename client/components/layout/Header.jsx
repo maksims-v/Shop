@@ -59,7 +59,7 @@ const Header = () => {
                 top: '52%',
                 transform: 'translate(0%, -50%)',
               }}>
-              <Image src="/logo2.png" width={90} height={65} />
+              <Image alt="logo" src="/logo2.png" width={90} height={65} />
             </Box>
           </Link>
           <Box

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentPage, setSortValue } from '@/state/searchPageSlice';
 import SortingByPriceAndName from './SortingByPriceAndName';
 import PaginationComponent from './PaginationComponent';
-import Item from './Item';
+import Item from './ProductCard';
 
 const ProductList = ({ gender, category }) => {
   const data = useSelector((state) => state.search.data);

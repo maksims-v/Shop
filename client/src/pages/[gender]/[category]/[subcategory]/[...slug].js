@@ -12,6 +12,10 @@ import {
   CardActionArea,
   CardMedia,
 } from '@mui/material';
+import { Carousel } from 'react-responsive-carousel';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ProductCard from 'components/ProductCard';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -19,18 +23,19 @@ import { useState, useCallback, useEffect, forwardRef } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Gallery from 'react-photo-gallery-next';
-import Carousel, { Modal, ModalGateway } from 'react-images';
+import ItemCarousel, { Modal, ModalGateway } from 'react-images';
 import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import Layout from 'components/layout/Layout';
+import { getRelatedProductsSliderData } from '@/state/relatedProductsSliderSlice';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ItemDetails = ({ product }) => {
+const ItemDetails = ({ product, gender, category, subcategory }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +51,12 @@ const ItemDetails = ({ product }) => {
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCart.basket);
+  const status = useSelector((state) => state.fetchRelatedProductsData.status);
+  const relatedProductsData = useSelector((state) => state.fetchRelatedProductsData.data);
+
+  console.log(relatedProductsData);
+
+  // console.log(gender, category, subcategory);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -73,6 +84,10 @@ const ItemDetails = ({ product }) => {
     }
     setOpen(true);
   };
+
+  useEffect(() => {
+    dispatch(getRelatedProductsSliderData());
+  }, []);
 
   useEffect(() => {
     setData(product.data[0]);
@@ -103,7 +118,6 @@ const ItemDetails = ({ product }) => {
           height: 1,
         }))
       : [];
-
     setGalleryPhotos(galleryPhotos);
   }
 
@@ -164,11 +178,21 @@ const ItemDetails = ({ product }) => {
                 style={{ objectFit: 'contain' }}
               />
               <Box>
-                <Gallery targetRowHeight={20} photos={galleryPhotos} onClick={openLightbox} />
+                {galleryPhotos.length !== 1 && (
+                  <Box width={galleryPhotos.length <= 2 ? '40%' : '100%'}>
+                    <Gallery
+                      targetRowHeight={20}
+                      thumbnailHeight={50}
+                      photos={galleryPhotos}
+                      onClick={openLightbox}
+                    />
+                  </Box>
+                )}
+
                 <ModalGateway>
                   {viewerIsOpen ? (
                     <Modal onClose={closeLightbox}>
-                      <Carousel
+                      <ItemCarousel
                         currentIndex={currentImage}
                         views={carouselPhotos.map((x) => ({
                           ...x,
@@ -296,6 +320,23 @@ const ItemDetails = ({ product }) => {
           <Typography variant="h3" fontWeight="bold">
             Related Products
           </Typography>
+          {status === 'resolved' && (
+            <Box sx={{ width: '100%', display: 'flex' }}>
+              <Carousel
+                axis="horizontal"
+                infiniteLoop={false}
+                autoPlay={false}
+                showThumbs={false}
+                showIndicators={false}
+                showStatus={false}
+                centerMode
+                centerSlidePercentage={20}>
+                {status === 'resolved' &&
+                  relatedProductsData?.map((item) => <ProductCard key={item.id} item={item} />)}
+              </Carousel>
+            </Box>
+          )}
+
           <Box
             mt="20px"
             display="flex"
@@ -329,5 +370,5 @@ export async function getServerSideProps({ params }) {
   );
   const product = await res.json();
 
-  return { props: { product } };
+  return { props: { product, gender, category, subcategory } };
 }

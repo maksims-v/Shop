@@ -2,10 +2,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSectionBannerData } from '@/state/sectionBannerSlice';
 import { useEffect } from 'react';
 import { Box } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Link from 'next/link';
 
 const SectionBanner = () => {
   const dispatch = useDispatch();
+
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const category = useSelector((state) => state.fetchSectionBannerData.category);
   const subcategory = useSelector((state) => state.fetchSectionBannerData.subcategory);
@@ -16,9 +19,9 @@ const SectionBanner = () => {
   }, []);
 
   return (
-    <Box justifyContent="center" width="100%" display="flex" flexWrap="wrap" maxHeight="630px">
-      <Link href={subcategory ? `/${category}/${subcategory}` : `/${category}`}>
-        <img style={{ maxHeight: '630px' }} src={`http://localhost:1337${image}`} />
+    <Box>
+      <Link href={subcategory ? `${category}/${subcategory}` : `${category}`}>
+        <img alt="?" width="100%" src={`http://localhost:1337${image}`} />
       </Link>
     </Box>
   );
