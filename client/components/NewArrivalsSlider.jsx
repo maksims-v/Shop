@@ -1,18 +1,23 @@
-import { Box, IconButton, Typography } from '@mui/material';
-import { Carousel } from 'react-responsive-carousel';
+import { Box, Typography } from '@mui/material';
 import ProductCard from './ProductCard';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { getNewArrivalsSliderData } from '@/state/newArrivalsSliderSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
+
+const responsive = {
+  0: { items: 1 },
+  568: { items: 2 },
+  1152: { items: 4 },
+};
 
 const NewArrivalsSlider = () => {
   const data = useSelector((state) => state.fetchNewArrivalsData.data);
   const status = useSelector((state) => state.fetchNewArrivalsData.status);
 
+  console.log(data);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,52 +25,30 @@ const NewArrivalsSlider = () => {
   }, []);
 
   return (
-    <Box width="100%" m="20px 0px 50px 0px" fontWeight="bold" fontSize="20px">
+    <Box width="100%">
       <Link href="/newArrivals">
-        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
           New Arrivals
         </Typography>{' '}
       </Link>
-      <Carousel
-        infiniteLoop={false}
-        autoPlay={false}
-        showThumbs={false}
-        showIndicators={false}
-        showStatus={false}
-        centerMode
-        centerSlidePercentage={20}
-        renderArrowPrev={(onClickHandler, hasPrev, label) => (
-          <IconButton
-            onClick={onClickHandler}
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '0px',
-              color: 'red',
-              padding: '5px',
-              zIndex: '10',
-            }}>
-            <NavigateBeforeIcon sx={{ fontSize: 40 }} />
-          </IconButton>
-        )}
-        renderArrowNext={(onClickHandler, hasNext, label) => (
-          <IconButton
-            onClick={onClickHandler}
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              right: '0px',
-              color: 'red',
-              padding: '5px',
-              zIndex: '10',
-            }}>
-            <NavigateNextIcon sx={{ fontSize: 40 }} />
-          </IconButton>
-        )}>
-        {status === 'resolved' && data?.map((item) => <ProductCard key={item.id} item={item} />)}
-      </Carousel>
+      {status === 'resolved' && (
+        <AliceCarousel
+          mouseTracking
+          animationDuration={800}
+          disableDotsControls="true"
+          infinite
+          autoPlay
+          autoPlayInterval={2000}
+          items={data?.map((item) => (
+            <ProductCard key={item.id} item={item} />
+          ))}
+          responsive={responsive}
+          controlsStrategy="alternate"
+        />
+      )}
     </Box>
   );
 };
+// {status === 'resolved' && data?.map((item) => <ProductCard key={item.id} item={item} />)}
 
 export default NewArrivalsSlider;

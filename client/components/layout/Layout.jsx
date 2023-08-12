@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
       <Header />
       <Box sx={{ mt: '60px', flex: '1 1 auto' }}>
-        <Container maxWidth="xl">{children}</Container>
+        <Container maxWidth="lg">{children}</Container>
       </Box>
       <Footer />
     </Box>

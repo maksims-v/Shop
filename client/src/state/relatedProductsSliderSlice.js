@@ -2,9 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getRelatedProductsSliderData = createAsyncThunk(
   'relatedProductsSlider/getRelatedProductsSliderData',
-  async function (_, { rejectWithValue }) {
+  async function (query, { rejectWithValue }) {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/products/relatedproducts`);
+      const response =
+        query &&
+        (await fetch(
+          `${process.env.API_URL}/api/products/relatedproducts?gender=${query.gender}&category=${query.category}&subcat=${query.subcategory}&id=${query.id}`,
+        ));
 
       if (!response.ok) {
         throw new Error('Server Error!');

@@ -39,7 +39,7 @@ const SubCategory = ({ gender, category, subcategory }) => {
             {gender?.toUpperCase()}
           </Link>
           <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
-            {gender?.toUpperCase()}
+            {category?.toUpperCase()}
           </Link>
         </Breadcrumbs>
 

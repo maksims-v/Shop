@@ -12,10 +12,6 @@ import {
   CardActionArea,
   CardMedia,
 } from '@mui/material';
-import { Carousel } from 'react-responsive-carousel';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import ProductCard from 'components/ProductCard';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -29,16 +25,16 @@ import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import Layout from 'components/layout/Layout';
-import { getRelatedProductsSliderData } from '@/state/relatedProductsSliderSlice';
+import RelatedProductsSlider from 'components/RelatedProductsSlider';
+import NewArrivalsSlider from 'components/NewArrivalsSlider';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ItemDetails = ({ product, gender, category, subcategory }) => {
+const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [carouselPhotos, setCarouselPhotos] = useState([]);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
 
@@ -51,12 +47,14 @@ const ItemDetails = ({ product, gender, category, subcategory }) => {
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCart.basket);
-  const status = useSelector((state) => state.fetchRelatedProductsData.status);
-  const relatedProductsData = useSelector((state) => state.fetchRelatedProductsData.data);
 
-  console.log(relatedProductsData);
+  useEffect(() => {
+    setData(product.data[0]);
+    createPhotoGallery(data?.attributes?.image?.data);
 
-  // console.log(gender, category, subcategory);
+    const basket = localStorage.getItem('cart');
+    if (basket) dispatch(addToBasket(JSON.parse(basket)));
+  }, [data, product]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -84,18 +82,6 @@ const ItemDetails = ({ product, gender, category, subcategory }) => {
     }
     setOpen(true);
   };
-
-  useEffect(() => {
-    dispatch(getRelatedProductsSliderData());
-  }, []);
-
-  useEffect(() => {
-    setData(product.data[0]);
-    createPhotoGallery(data?.attributes?.image?.data);
-
-    const basket = localStorage.getItem('cart');
-    if (basket) dispatch(addToBasket(JSON.parse(basket)));
-  }, [data, product]);
 
   const sizeHandleChange = (event, newAlignment) => {
     setSize(newAlignment);
@@ -316,38 +302,15 @@ const ItemDetails = ({ product, gender, category, subcategory }) => {
           <ReactMarkdown>{data?.attributes?.longDescription}</ReactMarkdown>
         </Box>
 
-        <Box mt="50px" width="100%">
-          <Typography variant="h3" fontWeight="bold">
-            Related Products
-          </Typography>
-          {status === 'resolved' && (
-            <Box sx={{ width: '100%', display: 'flex' }}>
-              <Carousel
-                axis="horizontal"
-                infiniteLoop={false}
-                autoPlay={false}
-                showThumbs={false}
-                showIndicators={false}
-                showStatus={false}
-                centerMode
-                centerSlidePercentage={20}>
-                {status === 'resolved' &&
-                  relatedProductsData?.map((item) => <ProductCard key={item.id} item={item} />)}
-              </Carousel>
-            </Box>
-          )}
+        <RelatedProductsSlider
+          slug={slug}
+          gender={gender}
+          category={category}
+          subcategory={subcategory}
+          id={product?.data[0].id}
+        />
 
-          <Box
-            mt="20px"
-            display="flex"
-            flexWrap="wrap"
-            columnGap="1.33%"
-            justifyContent="space-between">
-            {/* {data.slice(0, 4).map((item, i) => (
-            <Item key={`${data.name}-${i}`} data={data} />
-          ))} */}
-          </Box>
-        </Box>
+        <NewArrivalsSlider />
         <Stack>
           <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
@@ -370,5 +333,5 @@ export async function getServerSideProps({ params }) {
   );
   const product = await res.json();
 
-  return { props: { product, gender, category, subcategory } };
+  return { props: { product, gender, category, subcategory, slug } };
 }

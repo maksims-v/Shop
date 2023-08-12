@@ -65,9 +65,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     // pagination logic
     let startPage = 0;
-    let limitPage = 16 * currentPage;
+    let limitPage = 21 * currentPage;
     if (currentPage > 1) {
-      startPage = limitPage - 16;
+      startPage = limitPage - 21;
     } else {
       startPage = 0;
     }
@@ -112,7 +112,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       "api::product.product",
       {
         start: startPage,
-        limit: 16,
+        limit: 21,
         sort: howToSort ? [{ price: howToSort }] : { id: "desc" },
         filters: {
           publishedAt: {
@@ -347,14 +347,38 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async relatedProducts(ctx) {
+    const { gender, category, subcat, id } = ctx.query;
+
+    const productId = id;
+
     const entity = await strapi.entityService.findMany("api::product.product", {
       limit: 20,
       filters: {
-        new: true,
         publishedAt: {
           $ne: null,
         },
+        $not: {
+          id: productId,
+        },
+        $and: [
+          {
+            gender: {
+              $eqi: gender,
+            },
+          },
+          {
+            category: {
+              $eqi: category,
+            },
+          },
+          {
+            subcategory: {
+              $eqi: subcat,
+            },
+          },
+        ],
       },
+
       populate: { image: true },
     });
 
