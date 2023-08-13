@@ -14,39 +14,39 @@
   "attributes": {
     "email": {
       "type": "email",
-      "required": true
+      "required": false
     },
     "orderid": {
       "type": "uid",
-      "required": true
+      "required": false
     },
     "paymantinfo": {
       "type": "json",
-      "required": true
+      "required": false
     },
     "products": {
       "type": "json",
-      "required": true
+      "required": false
     },
     "address": {
       "type": "text",
-      "required": true
+      "required": false
     },
     "name": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "transactionid": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "amount": {
       "type": "integer",
-      "required": true
+      "required": false
     },
     "status": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "variation": {
       "type": "relation",

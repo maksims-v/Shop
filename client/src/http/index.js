@@ -9,6 +9,10 @@ const $authHost = axios.create({
   baseURL: process.env.API_URL,
 });
 
+const $orderHost = axios.create({
+  baseURL: process.env.API_URL,
+});
+
 const authInterceptor = (config) => {
   config.headers.authorization = `Bearer ${Cookies.get('jwt')}`;
   return config;
@@ -16,4 +20,4 @@ const authInterceptor = (config) => {
 
 $authHost.interceptors.request.use(authInterceptor);
 
-export { $host, $authHost };
+export { $host, $authHost, $orderHost };

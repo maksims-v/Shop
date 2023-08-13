@@ -198,6 +198,30 @@
         "gloves"
       ],
       "required": true
+    },
+    "Equipment": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "customField",
+      "options": [
+        "Tents",
+        "Shelters",
+        "Sleeping Bags",
+        "Sleeping Pads",
+        "Hammocks/Accessories",
+        "Camping Furniture",
+        "Pillows"
+      ],
+      "customField": "plugin::multi-select.multi-select"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "variation"
     }
   }
 }

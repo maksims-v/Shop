@@ -9,6 +9,8 @@ import { Fragment } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Layout from 'components/layout/Layout';
+import { createOrder } from '@/http/orderAPI';
+import { useState } from 'react';
 
 const Basket = () => {
   const basket = useSelector((state) => state.shoppingCart.basket);
@@ -17,6 +19,16 @@ const Basket = () => {
 
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const mediumScreen = useMediaQuery('(min-width:900px)');
+
+  const [order, setOrder] = useState({
+    data: {
+      email: 'makxc@asdf.ru',
+      address: 'celmu',
+      name: 'maks',
+      transactionid: 'asd',
+      amount: 2,
+    },
+  });
 
   const deleteProduct = (item) => {
     dispatch(addToBasket(basket.filter((product) => product !== item)));
@@ -58,6 +70,12 @@ const Basket = () => {
 
   const cleanBasket = () => {
     dispatch(basketReset());
+  };
+
+  const buyProducts = async () => {
+    const data = await createOrder(order);
+
+    console.log(basket);
   };
 
   return (
@@ -221,7 +239,7 @@ const Basket = () => {
             <Button onClick={cleanBasket} variant="outlined" color="error" size="large">
               Dzest grozu
             </Button>
-            <Button variant="outlined" size="large">
+            <Button onClick={buyProducts} variant="outlined" size="large">
               Talak
             </Button>
           </Box>

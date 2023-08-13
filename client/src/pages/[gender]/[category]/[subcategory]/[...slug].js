@@ -26,7 +26,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import Layout from 'components/layout/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
-import NewArrivalsSlider from 'components/NewArrivalsSlider';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -42,7 +41,7 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
-  const [size, setSize] = useState('uni');
+  const [size, setSize] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -64,23 +63,29 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    setSize(null);
+  }, [slug]);
+
   const addToBag = () => {
-    const item = {
-      item: data,
-      name: data.attributes.slug,
-      qnty: count,
-      productSize: size,
-      id: data.id,
-    };
+    if (size) {
+      const item = {
+        item: data,
+        name: data.attributes.slug,
+        qnty: count,
+        productSize: size,
+        id: data.id,
+      };
 
-    const product = basket
-      .filter((item) => item.id === data.id)
-      .filter((item) => item.productSize === size);
+      const product = basket
+        .filter((item) => item.id === data.id)
+        .filter((item) => item.productSize === size);
 
-    if (product.length === 0) {
-      dispatch(addToBasket([...basket, item]));
+      if (product.length === 0) {
+        dispatch(addToBasket([...basket, item]));
+      }
+      setOpen(true);
     }
-    setOpen(true);
   };
 
   const sizeHandleChange = (event, newAlignment) => {
@@ -310,7 +315,6 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
           id={product?.data[0].id}
         />
 
-        <NewArrivalsSlider />
         <Stack>
           <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
