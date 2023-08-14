@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearFilters, inputValue } from '@/state/searchPageSlice';
-import MobileFiltersPage from 'components/MobileFiltersPage';
+import NewSearchMobileVesersion from 'components/mobileVersionPage/NewSearchMobileVesersion';
 import Layout from 'components/layout/Layout';
 
 const Search = ({ newSearch }) => {
@@ -25,7 +25,9 @@ const Search = ({ newSearch }) => {
     dispatch(search());
   }, [searchFlag, newSearch]);
 
-  return !mobile ? (
+  return mobile ? (
+    <NewSearchMobileVesersion />
+  ) : (
     <Layout>
       <Box sx={{ mt: '60px' }}>
         <Box display="flex" alignContent="center" flexDirection="column">
@@ -48,8 +50,6 @@ const Search = ({ newSearch }) => {
         </Box>
       </Box>
     </Layout>
-  ) : (
-    <MobileFiltersPage />
   );
 };
 

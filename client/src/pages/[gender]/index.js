@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearFilters, setDiscounts, setSortValue } from '@/state/searchPageSlice';
@@ -10,6 +10,9 @@ import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import Layout from 'components/layout/Layout';
+import SortingByPriceAndName from 'components/SortingByPriceAndName';
+import Link from 'next/link';
+import GenderMobileVersion from 'components/mobileVersionPage/GenderMobileVersion';
 
 const PageCategory = ({ gender }) => {
   const dispatch = useDispatch();
@@ -17,6 +20,7 @@ const PageCategory = ({ gender }) => {
   const currentPage = useSelector((state) => state.search.currentPage);
   const sortValue = useSelector((state) => state.search.sortValue);
   const total = useSelector((state) => state.search.metaData.total);
+  const mobile = useSelector((state) => state.search.mobile);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,9 +38,23 @@ const PageCategory = ({ gender }) => {
     dispatch(setDiscounts(event.target.name));
   };
 
-  return (
+  return mobile ? (
+    <GenderMobileVersion gender={gender} />
+  ) : (
     <Layout>
-      <Box mt="60px">
+      <Box mt="50px">
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
+          <Link underline="hover" color="inherit" href="/">
+            HOME
+          </Link>
+          <Link
+            underline="hover"
+            color="inherit"
+            style={{ pointerEvents: 'none', fontWeight: 'bold' }}
+            href={`/${gender}`}>
+            {gender?.toUpperCase()}
+          </Link>
+        </Breadcrumbs>
         <Box display="flex">
           <Box flex="1 1 10%">
             <PriceSlider />
@@ -47,6 +65,17 @@ const PageCategory = ({ gender }) => {
             <SizesFilter />
           </Box>
           <Box flex="1 1 80%">
+            {!mobile && (
+              <Box display="flex" justifyContent="space-between" mb="10px">
+                <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
+                  {gender?.toUpperCase()}
+                  <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
+                    ({total} products)
+                  </Typography>
+                </Typography>
+                <SortingByPriceAndName />
+              </Box>
+            )}
             <ProductList gender={gender} />
           </Box>
         </Box>

@@ -7,8 +7,6 @@ import {
   Breadcrumbs,
   ToggleButton,
   ToggleButtonGroup,
-  Tabs,
-  Tab,
   CardActionArea,
   CardMedia,
 } from '@mui/material';
@@ -26,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import Layout from 'components/layout/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
+import DoneIcon from '@mui/icons-material/Done';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -37,18 +36,19 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
   const [carouselPhotos, setCarouselPhotos] = useState([]);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
 
-  const [value, setValue] = useState('description');
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [size, setSize] = useState(null);
+  const [productQnty, setProductQnty] = useState(null);
+  const [changeSizeColor, setChangeSizeColor] = useState('black');
 
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCart.basket);
 
   useEffect(() => {
-    setData(product.data[0]);
+    setData(product?.data[0]);
     createPhotoGallery(data?.attributes?.image?.data);
 
     const basket = localStorage.getItem('cart');
@@ -67,8 +67,13 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
     setSize(null);
   }, [slug]);
 
+  useEffect(() => {
+    !size && setProductQnty(null);
+    setChangeSizeColor('black');
+  }, [size]);
+
   const addToBag = () => {
-    if (size) {
+    if (size && productQnty !== 0) {
       const item = {
         item: data,
         name: data.attributes.slug,
@@ -85,6 +90,8 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
         dispatch(addToBasket([...basket, item]));
       }
       setOpen(true);
+    } else if (!size) {
+      setChangeSizeColor('red');
     }
   };
 
@@ -125,14 +132,10 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
     setViewerIsOpen(false);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <Layout>
-      <Box width="100%" m="10px auto">
-        <Breadcrumbs aria-label="breadcrumb">
+      <Box width="100%" m="50px auto 10px auto">
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px', mt: '20px' }}>
           <Link underline="hover" color="inherit" href="/">
             HOME
           </Link>
@@ -200,14 +203,14 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
 
           <Box flex="1 1 45%" mb="40px">
             <Box m="20px 0 25px 0">
-              <Typography sx={{ mb: '8px', fontSize: '26px' }} variant="h3">
+              <Typography sx={{ mb: '8px', fontSize: '24px', fontWeight: 'bold' }} variant="h3">
                 {data?.attributes?.title}
               </Typography>
 
               <Divider sx={{ mb: '10px' }} color="yellow" />
 
-              <Typography sx={{ fontSize: '18px', pl: '5px', fontWeight: 'bold' }}>
-                ${data?.attributes?.sale ? data?.attributes?.oldPrice : data?.attributes?.price}
+              <Typography sx={{ fontSize: '38px', fontWeight: 'bold' }}>
+                {data?.attributes?.price} $
               </Typography>
 
               <Typography
@@ -221,47 +224,80 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
               $`}
               </Typography>
               <Divider sx={{ mb: '10px', mt: '10px' }} color="yellow" />
-              <ReactMarkdown>{data?.attributes?.description}</ReactMarkdown>
-            </Box>
-            <Box mb="10px" maxWidth="300px">
-              <ToggleButtonGroup
-                color="primary"
-                value={size}
-                exclusive
-                onChange={sizeHandleChange}
-                aria-label="Platform">
-                {data?.attributes?.size?.map((item, index) => {
-                  return (
-                    <ToggleButton
+              {product?.meta?.length !== 0 && (
+                <Box sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px' }}>
+                  Choose color:{' '}
+                  <Typography component="span">{data?.attributes?.color[0]?.color}</Typography>
+                </Box>
+              )}
+              <Box sx={{ display: 'flex', mb: '10px' }}>
+                {product?.meta?.length !== 0 &&
+                  product.meta.map((item, index) => (
+                    <Link
                       key={index}
-                      disabled={item.qnty === 0 && true}
-                      color="error"
-                      value={item.size}>
-                      {item.size}
-                    </ToggleButton>
-                  );
-                })}
-              </ToggleButtonGroup>
-            </Box>
-            {product?.meta?.length !== 0 && <Box>Available colours</Box>}
-            <Box display="flex">
-              {product?.meta?.length !== 0 &&
-                product.meta.map((item, index) => (
-                  <Link
-                    key={index}
-                    underline="hover"
-                    color="inherit"
-                    href={`/${item.gender}/${item.category}/${item.subcategory}/${item.slug}`}>
-                    <CardActionArea sx={{ p: '0 15px' }}>
-                      <CardMedia
-                        component="img"
-                        height="100"
-                        image={`http://localhost:1337${item?.image[0]?.formats?.thumbnail?.url}`}
-                        alt="Paella dish"
-                      />
-                    </CardActionArea>
-                  </Link>
-                ))}
+                      underline="hover"
+                      color="inherit"
+                      href={`/${item.gender}/${item.category}/${item.subcategory}/${item.slug}`}>
+                      <CardActionArea sx={{ p: '0 15px' }}>
+                        <CardMedia
+                          component="img"
+                          height="100"
+                          image={`http://localhost:1337${item?.image[0]?.formats?.thumbnail?.url}`}
+                          alt="Paella dish"
+                        />
+                      </CardActionArea>
+                    </Link>
+                  ))}
+              </Box>
+              <Box
+                sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px', color: changeSizeColor }}>
+                Choose size:
+                <Box component="span" sx={{ pl: '3px', fontWeight: 'normal' }}>
+                  {' '}
+                  {size?.toUpperCase()}
+                </Box>
+                <Box component="span" sx={{ pl: '3px' }}>
+                  {}
+                  {productQnty > 0 && (
+                    <>
+                      <DoneIcon fontSize="small" sx={{ color: '#449d44', position: 'absolute' }} />
+                      <Box
+                        sx={{ fontWeight: 'normal', color: '#449d44', pl: '18px' }}
+                        component="span">
+                        {' '}
+                        In stock!
+                      </Box>
+                    </>
+                  )}
+                  {productQnty === 0 && (
+                    <Box sx={{ fontWeight: 'normal', color: 'red' }} component="span">
+                      {' '}
+                      Out of stock!
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+              <Box mb="10px" maxWidth="300px">
+                <ToggleButtonGroup
+                  color="primary"
+                  value={size}
+                  exclusive
+                  onChange={sizeHandleChange}
+                  aria-label="Platform">
+                  {data?.attributes?.size?.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        key={index}
+                        onClick={() => setProductQnty(item.qnty ? item.qnty : 0)}
+                        color={item.qnty === 0 ? 'error' : 'success'}
+                        value={item.size}>
+                        {item.size}
+                      </ToggleButton>
+                    );
+                  })}
+                </ToggleButtonGroup>
+              </Box>
+              <ReactMarkdown>{data?.attributes?.description}</ReactMarkdown>
             </Box>
 
             <Divider sx={{ mb: '10px' }} color="yellow" />
@@ -273,7 +309,7 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
                 borderRadius="3px"
                 mr="20px"
                 p="2px 5px">
-                <IconButton onClick={() => setCount(Math.max(count - 1, 0))}>
+                <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
                   <RemoveIcon />
                 </IconButton>
                 <Typography sx={{ p: '0 5px' }}>{count}</Typography>
@@ -298,12 +334,7 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
           </Box>
         </Box>
 
-        <Box m="20px 0">
-          <Tabs value={value} onChange={handleChange}>
-            <Tab label="DESCRIPTION" value="description" />
-          </Tabs>
-        </Box>
-        <Box display="flex" flexWrap="wrap" gap="15px">
+        <Box display="flex" flexWrap="wrap" gap="15px" mb="50px">
           <ReactMarkdown>{data?.attributes?.longDescription}</ReactMarkdown>
         </Box>
 
@@ -316,7 +347,7 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
         />
 
         <Stack>
-          <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+          <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
               Produkts veiksmīgi pievienots iepirkumu grozam!
             </Alert>

@@ -12,7 +12,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     const entity = await strapi.entityService.findMany("api::product.product", {
       filters: { slug: slug },
-      populate: { image: true, size: true },
+      populate: { image: true, size: true, color: true },
     });
 
     const title = entity[0].title ? entity[0].title : "";
@@ -160,7 +160,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             },
           ],
         },
-        populate: { image: true, size: true },
+        populate: {
+          image: true,
+          size: true,
+        },
       }
     );
 
@@ -233,7 +236,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     //---------------
 
     // get pages count
-    const pages = Math.ceil(paginationLength / 16);
+    const pages = Math.ceil(paginationLength / 21);
     //---------------
 
     // get gendre

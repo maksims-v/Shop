@@ -28,12 +28,8 @@ const ProductCard = ({ item }) => {
       }}>
       <Link href={`/${item?.gender}/${item?.category}/${item?.subcategory}/${item?.slug}`}>
         {/* {status || status2 || status3 === 'resolved' ? ( */}
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            image={`${process.env.API_URL}${item?.image}`}
-            alt="Paella dish"
-          />
+        <CardActionArea sx={{ minHeight: mobile ? '213px' : '283px' }}>
+          <CardMedia component="img" image={`${process.env.API_URL}${item?.image}`} alt="img" />
 
           {item.new && (
             <FiberNewIcon

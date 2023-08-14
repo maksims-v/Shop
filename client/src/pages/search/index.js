@@ -5,12 +5,14 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearFilters } from '@/state/searchPageSlice';
 import Layout from 'components/layout/Layout';
+import SearchMobileVersion from 'components/mobileVersionPage/SearchMobileVersion';
 
 const Index = () => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.search.searchFlag);
   const currentPage = useSelector((state) => state.search.currentPage);
   const sortValue = useSelector((state) => state.search.sortValue);
+  const mobile = useSelector((state) => state.search.mobile);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,7 +26,9 @@ const Index = () => {
     dispatch(search());
   }, [searchFlag]);
 
-  return (
+  return mobile ? (
+    <SearchMobileVersion />
+  ) : (
     <Layout>
       <Box mt="60px">
         <Box display="flex">

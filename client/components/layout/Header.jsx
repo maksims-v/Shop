@@ -9,7 +9,7 @@ import AuthModal from '../AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
-import MobileHeader from '../mobileVersion/MobileHeader';
+import MobileHeader from '../mobileVersionPage/MobileHeader';
 import Image from 'next/image';
 
 const Header = () => {
@@ -59,7 +59,7 @@ const Header = () => {
                 top: '52%',
                 transform: 'translate(0%, -50%)',
               }}>
-              <Image alt="logo" src="/logo2.png" width={90} height={65} />
+              <Image alt="logo" src="/logo.png" width={90} height={65} />
             </Box>
           </Link>
           <Box

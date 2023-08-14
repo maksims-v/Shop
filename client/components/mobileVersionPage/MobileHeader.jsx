@@ -6,34 +6,12 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import MobileSideBarMenu from 'components/mobileVersion/MobileSideBarMenu';
+import MobileSideBarMenu from 'components/mobileVersionPage/MobileSideBarMenu';
 import AuthModal from '../AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { unsetToken } from '@/http/authCookie';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import Image from 'next/image';
-
-const pages = [
-  { id: 1, title: "MEN'S", path: "men's" },
-  { id: 2, title: "WOMEN'S", path: "women's " },
-  { id: 4, title: 'NEW ARRIVALS', path: 'newArrivals' },
-  { id: 5, title: 'SALE', path: 'sale' },
-  { id: 6, title: 'CLERANCE', path: 'clerance' },
-];
-
-const mensCategory = [
-  { id: 3, title: 'CLOTHING', path: "/men's/clothing" },
-  { id: 4, title: 'FOOTWEAR', path: "/men's/footwear" },
-  { id: 5, title: 'ACCESSORIES', path: "/men's/accessories" },
-  { id: 6, title: 'ACTIVITY', path: "/men's/activity" },
-];
-
-const womensCategory = [
-  { id: 3, title: 'CLOTHING', path: "/women's/clothing" },
-  { id: 4, title: 'FOOTWEAR', path: "/women's/footwear" },
-  { id: 5, title: 'ACCESSORIES', path: "/women's/accessories" },
-  { id: 6, title: 'ACTIVITY', path: "/women's/activity" },
-];
 
 const MobileHeader = () => {
   const isAuth = useSelector((state) => state.auth.isAuth);
@@ -97,7 +75,7 @@ const MobileHeader = () => {
               left: '50%',
               transform: 'translate(-50%, -46%)',
             }}>
-            <Image src="/logo2.png" width={90} height={65} />
+            <Image src="/logo.png" alt="logo" width={90} height={65} />
           </Box>
         </Link>
         <Box
@@ -165,13 +143,7 @@ const MobileHeader = () => {
         </Box>
       </Box>
 
-      <MobileSideBarMenu
-        pages={pages}
-        mobileOpen={mobileOpen}
-        handleDrawerToggle={handleDrawerToggle}
-        mensCategory={mensCategory}
-        womensCategory={womensCategory}
-      />
+      <MobileSideBarMenu mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
       {openSearchMenu && (
         <Paper
           component="form"

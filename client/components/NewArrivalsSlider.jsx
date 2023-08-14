@@ -8,8 +8,8 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
 const responsive = {
-  0: { items: 1 },
-  568: { items: 2 },
+  0: { items: 2 },
+  600: { items: 3 },
   1152: { items: 4 },
 };
 
@@ -17,7 +17,6 @@ const NewArrivalsSlider = () => {
   const data = useSelector((state) => state.fetchNewArrivalsData.data);
   const status = useSelector((state) => state.fetchNewArrivalsData.status);
 
-  console.log(data);
   const dispatch = useDispatch();
 
   useEffect(() => {

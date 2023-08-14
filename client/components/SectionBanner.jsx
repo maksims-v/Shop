@@ -19,9 +19,9 @@ const SectionBanner = () => {
   }, []);
 
   return (
-    <Box>
+    <Box sx={{ mb: '50px' }}>
       <Link href={subcategory ? `${category}/${subcategory}` : `${category}`}>
-        <img alt="?" width="100%" src={`http://localhost:1337${image}`} />
+        <img alt="banner" width="100%" src={`http://localhost:1337${image}`} />
       </Link>
     </Box>
   );

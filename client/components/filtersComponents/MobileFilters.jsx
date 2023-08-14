@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SizesFilter from './SizesFilter';
 import SubCategoryFilter from './SubCategoryFilter';
 import { clearFilters, search, inputValue } from '@/state/searchPageSlice';
+import Link from 'next/link';
 
 const disableMarginInAccordion = true;
 
@@ -41,7 +42,9 @@ const MobileFilters = ({ newSearch, gender }) => {
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: '17px' }}>
         <CustomButton toggleButton={toggleButton}>SHOW FILTERS</CustomButton>
-        <CustomButton toggleButton={clear}>CLEAR FILTERS</CustomButton>
+        <Link href="/search">
+          <CustomButton toggleButton={clear}>CLEAR FILTERS</CustomButton>
+        </Link>
       </Box>
       <Box m="0 auto" width="100%">
         <PriceSlider resetPriceSlider={resetPriceSlider} />
