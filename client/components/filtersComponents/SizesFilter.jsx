@@ -8,28 +8,19 @@ import { setSizesChecked } from '@/state/searchPageSlice';
 const SizesFilter = () => {
   const dispatch = useDispatch();
   const sizes = useSelector((state) => state.search.sizes);
+  const sizesChecked = useSelector((state) => state.search.sizesChecked);
 
-  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
   const mobile = useSelector((state) => state.search.mobile);
 
-  const [inputValue, setInpustValue] = useState('');
   const [formats, setFormats] = useState();
 
   useEffect(() => {
-    setInpustValue(inputSearchValue);
-    if (inputSearchValue !== inputValue) {
-      setFormats(false);
-    }
-  }, [inputSearchValue]);
-
-  useEffect(() => {
-    if (formats) {
-      dispatch(setSizesChecked(formats));
-    }
-  }, [formats]);
+    setFormats(sizesChecked);
+  }, [sizesChecked]);
 
   const handleFormat = (event, newFormats) => {
     setFormats(newFormats);
+    dispatch(setSizesChecked(newFormats));
   };
 
   return (

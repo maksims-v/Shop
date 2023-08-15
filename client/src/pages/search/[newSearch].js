@@ -3,7 +3,7 @@ import ProductList from 'components/ProductList';
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { search, clearFilters, inputValue } from '@/state/searchPageSlice';
+import { search, clearAllFilters, inputValue } from '@/state/searchPageSlice';
 import NewSearchMobileVesersion from 'components/mobileVersionPage/NewSearchMobileVesersion';
 import Layout from 'components/layout/Layout';
 
@@ -16,7 +16,7 @@ const Search = ({ newSearch }) => {
 
   useEffect(() => {
     if (newSearch.length !== 0) {
-      dispatch(clearFilters());
+      dispatch(clearAllFilters());
       dispatch(inputValue(newSearch));
     }
   }, [newSearch]);
@@ -25,8 +25,14 @@ const Search = ({ newSearch }) => {
     dispatch(search());
   }, [searchFlag, newSearch]);
 
+  const clearFilters = () => {
+    dispatch(clearAllFilters());
+    dispatch(inputValue(newSearch));
+    dispatch(search());
+  };
+
   return mobile ? (
-    <NewSearchMobileVesersion />
+    <NewSearchMobileVesersion newSearch={newSearch} clearFilters={clearFilters} />
   ) : (
     <Layout>
       <Box sx={{ mt: '60px' }}>

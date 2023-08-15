@@ -19,7 +19,6 @@ const MobileHeader = () => {
 
   const dispatch = useDispatch();
 
-  const [id, getId] = useState(null);
   const [openModalAuth, setOpenModalAuth] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -28,14 +27,6 @@ const MobileHeader = () => {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
-  };
-
-  const openMenu = (id) => {
-    if (id === 1 || id === 2) {
-      getId(id);
-    } else {
-      getId(null);
-    }
   };
 
   const logout = () => {

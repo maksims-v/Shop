@@ -189,8 +189,7 @@ export const searchPageSlice = createSlice({
       state.currentPage = 1;
       state.searchFlag = !state.searchFlag;
     },
-
-    clearFilters(state) {
+    clearAllFilters(state) {
       state.status = null;
       state.error = null;
       state.data = [];
@@ -261,7 +260,7 @@ export const {
   setSubCategoryChecked,
   setSale,
   setSizesChecked,
-  clearFilters,
+  clearAllFilters,
   setChangePrice,
   setCurrentPage,
   setSortValue,

@@ -1,7 +1,7 @@
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { search, clearFilters } from '@/state/searchPageSlice';
+import { search, clearAllFilters } from '@/state/searchPageSlice';
 import ProductList from 'components/ProductList';
 import SaleFilter from 'components/filtersComponents/SaleFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
@@ -25,14 +25,25 @@ const SubCategory = ({ gender, category, subcategory }) => {
   }, [currentPage, sortValue]);
 
   useEffect(() => {
-    dispatch(clearFilters());
+    dispatch(clearAllFilters());
   }, [gender]);
 
   useEffect(() => {
     dispatch(search({ gender, category, subcategory }));
   }, [searchFlag, gender, category, subcategory]);
+
+  const clearFilters = () => {
+    dispatch(clearAllFilters());
+    dispatch(search({ gender, category, subcategory }));
+  };
+
   return mobile ? (
-    <SubCategoryMobileVersion gender={gender} category={category} subcategory={subcategory} />
+    <SubCategoryMobileVersion
+      gender={gender}
+      category={category}
+      subcategory={subcategory}
+      clearFilters={clearFilters}
+    />
   ) : (
     <Layout>
       <Box mt="50px">

@@ -11,16 +11,19 @@ import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import { useDispatch, useSelector } from 'react-redux';
 import SizesFilter from './SizesFilter';
 import SubCategoryFilter from './SubCategoryFilter';
-import { clearFilters, search, inputValue } from '@/state/searchPageSlice';
+import { clearAllFilters, search, inputValue } from '@/state/searchPageSlice';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const disableMarginInAccordion = true;
 
-const MobileFilters = ({ newSearch, gender }) => {
+const MobileFilters = ({ newSearch, clearFilters }) => {
   const [toggle, setToggle] = useState(false);
 
   const total = useSelector((state) => state.search.metaData.total);
   const [resetPriceSlider, setResetPriceSlider] = useState(false);
+
+  const { asPath } = useRouter();
 
   const dispatch = useDispatch();
 
@@ -29,20 +32,20 @@ const MobileFilters = ({ newSearch, gender }) => {
   };
 
   const clear = () => {
-    dispatch(clearFilters());
-    dispatch(search());
+    clearFilters();
     setResetPriceSlider(!resetPriceSlider);
   };
 
   useEffect(() => {
-    dispatch(clearFilters());
+    console.log('hai');
     dispatch(inputValue(newSearch));
   }, [newSearch]);
+
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: '17px' }}>
         <CustomButton toggleButton={toggleButton}>SHOW FILTERS</CustomButton>
-        <Link href="/search">
+        <Link href={asPath}>
           <CustomButton toggleButton={clear}>CLEAR FILTERS</CustomButton>
         </Link>
       </Box>
@@ -96,7 +99,7 @@ const MobileFilters = ({ newSearch, gender }) => {
               <Typography fontWeight="bold">GENDER</Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-              <GenderFilter gender={gender} />
+              <GenderFilter />
             </AccordionDetails>
           </Accordion>
 

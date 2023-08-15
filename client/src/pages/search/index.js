@@ -3,7 +3,7 @@ import ProductList from 'components/ProductList';
 import Filters from 'components/Filters';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { search, clearFilters } from '@/state/searchPageSlice';
+import { search, clearAllFilters } from '@/state/searchPageSlice';
 import Layout from 'components/layout/Layout';
 import SearchMobileVersion from 'components/mobileVersionPage/SearchMobileVersion';
 
@@ -19,15 +19,20 @@ const Index = () => {
   }, [currentPage, sortValue]);
 
   useEffect(() => {
-    dispatch(clearFilters());
+    dispatch(clearAllFilters());
   }, []);
 
   useEffect(() => {
     dispatch(search());
   }, [searchFlag]);
 
+  const clearFilters = () => {
+    dispatch(clearAllFilters());
+    dispatch(search());
+  };
+
   return mobile ? (
-    <SearchMobileVersion />
+    <SearchMobileVersion clearFilters={clearFilters} />
   ) : (
     <Layout>
       <Box mt="60px">
