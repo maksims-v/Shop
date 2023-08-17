@@ -32,7 +32,6 @@ const NewArrivalsSlider = () => {
       </Link>
       {status === 'resolved' && (
         <AliceCarousel
-          mouseTracking
           animationDuration={800}
           disableDotsControls="true"
           infinite

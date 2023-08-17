@@ -37,6 +37,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async filterSearch(ctx) {
+    const sanitizedQueryParams = await this.sanitizeQuery(ctx);
     const {
       sale,
       brands,
@@ -48,18 +49,18 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       pmin,
       pmax,
       currentPage,
-      sort,
-    } = ctx.query;
+      sorting,
+    } = sanitizedQueryParams;
 
-    let howToSort = sort;
+    let howToSort = sorting;
 
-    if (sort == "Sort By") {
+    if (sorting == "Sort By") {
       howToSort = false;
-    } else if (sort == "Latest arrivals") {
+    } else if (sorting == "Latest arrivals") {
       howToSort = false;
-    } else if (sort == "Price asc.") {
+    } else if (sorting == "Price asc.") {
       howToSort = "asc";
-    } else if (sort == "Price desc.") {
+    } else if (sorting == "Price desc.") {
       howToSort = "desc";
     }
 

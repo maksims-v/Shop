@@ -13,11 +13,9 @@ import {
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { useState, useCallback, useEffect, forwardRef } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import Gallery from 'react-photo-gallery-next';
-import ItemCarousel, { Modal, ModalGateway } from 'react-images';
 import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,21 +23,23 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import Layout from 'components/layout/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
 import DoneIcon from '@mui/icons-material/Done';
-import SlugMobileVesrsion from 'components/mobileVersionPage/SlugMobileVesrsion';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
+const responsive = {
+  0: { items: 1 },
+  600: { items: 2 },
+};
+
+const SlugMobileVesrsion = ({ product, gender, category, subcategory, slug }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [carouselPhotos, setCarouselPhotos] = useState([]);
-  const [galleryPhotos, setGalleryPhotos] = useState([]);
 
   const [count, setCount] = useState(1);
-  const [currentImage, setCurrentImage] = useState(0);
-  const [viewerIsOpen, setViewerIsOpen] = useState(false);
   const [size, setSize] = useState(null);
   const [productQnty, setProductQnty] = useState(null);
   const [changeSizeColor, setChangeSizeColor] = useState('black');
@@ -51,7 +51,6 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
 
   useEffect(() => {
     setData(product?.data[0]);
-    createPhotoGallery(data?.attributes?.image?.data);
 
     const basket = localStorage.getItem('cart');
     if (basket) dispatch(addToBasket(JSON.parse(basket)));
@@ -101,51 +100,10 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
     setSize(newAlignment);
   };
 
-  function createPhotoGallery(data) {
-    const carouselData = data
-      ? data.map((item, i) => ({
-          src: `http://localhost:1337${item?.attributes?.url}`,
-          width: 1,
-          height: 1,
-        }))
-      : [];
-    setCarouselPhotos(carouselData);
-
-    const galleryPhotos = data
-      ? data.map((item) => ({
-          src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
-          width: 1,
-          height: 1,
-        }))
-      : [];
-    setGalleryPhotos(galleryPhotos);
-  }
-
-  const openLightbox = useCallback((event, { photo, index }) => {
-    setCurrentImage(index);
-  }, []);
-
-  const openModalPhoto = () => {
-    setViewerIsOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setCurrentImage(0);
-    setViewerIsOpen(false);
-  };
-
-  return mobile ? (
-    <SlugMobileVesrsion
-      product={product}
-      gender={gender}
-      category={category}
-      subcategory={subcategory}
-      slug={slug}
-    />
-  ) : (
+  return (
     <Layout>
-      <Box width="100%" m="50px auto 10px auto">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px', mt: '20px' }}>
+      <Box width="100%" m="0px auto" p="0px 5px">
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '10px' }}>
           <Link underline="hover" color="inherit" href="/">
             HOME
           </Link>
@@ -165,51 +123,25 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
             {data?.attributes?.subcategory.toUpperCase()}
           </Link>
         </Breadcrumbs>
-        <Box display="flex" flexWrap="wrap" columnGap="40px">
-          <Box flex="1 1 50%">
-            <Box
-              sx={{
-                ':hover': {
-                  cursor: 'pointer',
-                },
-              }}>
-              <img
-                onClick={openModalPhoto}
-                alt={data?.name}
-                width="100%"
-                height="500px"
-                src={`http://localhost:1337${data?.attributes?.image?.data[currentImage]?.attributes?.url}`}
-                style={{ objectFit: 'contain' }}
-              />
-              <Box>
-                {galleryPhotos.length !== 1 && (
-                  <Box width={galleryPhotos.length <= 2 ? '40%' : '100%'}>
-                    <Gallery
-                      targetRowHeight={20}
-                      thumbnailHeight={50}
-                      photos={galleryPhotos}
-                      onClick={openLightbox}
-                    />
-                  </Box>
-                )}
-
-                <ModalGateway>
-                  {viewerIsOpen ? (
-                    <Modal onClose={closeLightbox}>
-                      <ItemCarousel
-                        currentIndex={currentImage}
-                        views={carouselPhotos.map((x) => ({
-                          ...x,
-                          srcset: x.srcSet,
-                          caption: x.title,
-                        }))}
-                      />
-                    </Modal>
-                  ) : null}
-                </ModalGateway>
-              </Box>
-            </Box>
-          </Box>
+        <Box display="flex" flexWrap="wrap">
+          <AliceCarousel
+            mouseTracking
+            disableButtonsControls
+            animationDuration={800}
+            items={product?.data[0]?.attributes?.image?.data?.map((item) => {
+              return (
+                <Box sx={{ textAlign: 'center' }}>
+                  <img
+                    src={`${process.env.API_URL}${item?.attributes?.url}`}
+                    style={{ width: '90%' }}
+                    alt={item.id}
+                  />
+                </Box>
+              );
+            })}
+            responsive={responsive}
+            controlsStrategy="alternate"
+          />
 
           <Box flex="1 1 45%" mb="40px">
             <Box m="20px 0 25px 0">
@@ -227,11 +159,11 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
                 sx={{ fontSize: '12px', pl: '5px', color: data?.attributes?.oldPrice && 'red' }}>
                 {data?.attributes?.sale &&
                   `Save:
-              ${
-                data?.attributes?.sale &&
-                (data?.attributes?.price - data?.attributes?.oldPrice).toFixed(2)
-              }
-              $`}
+               ${
+                 data?.attributes?.sale &&
+                 (data?.attributes?.price - data?.attributes?.oldPrice).toFixed(2)
+               }
+               $`}
               </Typography>
               <Divider sx={{ mb: '10px', mt: '10px' }} color="yellow" />
               {product?.meta?.length !== 0 && (
@@ -368,15 +300,4 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
   );
 };
 
-export default ItemDetails;
-
-export async function getServerSideProps({ params }) {
-  const { slug, gender, category, subcategory } = params;
-
-  const res = await fetch(
-    `${process.env.API_URL}/api/products/${gender}/${category}/${subcategory}/${slug}`,
-  );
-  const product = await res.json();
-
-  return { props: { product, gender, category, subcategory, slug } };
-}
+export default SlugMobileVesrsion;
