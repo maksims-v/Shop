@@ -1,3 +1,5 @@
+const qs = require('qs');
+
 import {
   Box,
   Button,
@@ -31,7 +33,40 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
+// const ItemDetails = ({ product, similarProducts, gender, category, subcategory, slug }) => {
+//   if (product.data.length !== 0) {
+//     const getSimilarProducts = createAsyncThunk(
+//       'shoppingCart/getSimilarProducts',
+//       async function (query, { rejectWithValue }) {
+//         const similarProductQuery = qs.stringify({
+//           filters: {
+//             $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
+//             publishedAt: {
+//               $ne: null,
+//             },
+//           },
+//           populate: { image: true, size: true },
+//         });
+
+//         try {
+//           const response = await fetch(
+//             `${process.env.API_URL}/api/products?${similarProductQuery}`,
+//           );
+
+//           if (!response.ok) {
+//             throw new Error('Server Error!');
+//           }
+
+//           const data = response.json();
+
+//           return data;
+//         } catch (error) {
+//           return rejectWithValue(error.message);
+//         }
+//       },
+//     );
+//   }
+
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [carouselPhotos, setCarouselPhotos] = useState([]);
@@ -141,6 +176,7 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
       category={category}
       subcategory={subcategory}
       slug={slug}
+      similarProducts={similarProducts}
     />
   ) : (
     <Layout>
@@ -370,13 +406,16 @@ const ItemDetails = ({ product, gender, category, subcategory, slug }) => {
 
 export default ItemDetails;
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, query }) {
   const { slug, gender, category, subcategory } = params;
 
-  const res = await fetch(
-    `${process.env.API_URL}/api/products/${gender}/${category}/${subcategory}/${slug}`,
-  );
-  const product = await res.json();
+  const slugQuery = qs.stringify({
+    filters: { slug: slug },
+    populate: { image: true, size: true, color: true },
+  });
+
+  const slugItem = await fetch(`${process.env.API_URL}/api/products?${slugQuery}`);
+  const product = await slugItem.json();
 
   return { props: { product, gender, category, subcategory, slug } };
 }

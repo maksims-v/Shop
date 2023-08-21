@@ -1,0 +1,14 @@
+https://www.youtube.com/watch?v=YIbhKm1o0fE&list=PL7Q0DQYATmvg5Ip7hpXypLf_G3-zEWhR6&index=3&t=1s&ab_channel=Strapi
+сделать чсёткчик времени, сколько ушло нга запрос. х3 зачем. (8:00)
+
+https://www.youtube.com/watch?v=YIbhKm1o0fE&list=PL7Q0DQYATmvg5Ip7hpXypLf_G3-zEWhR6&index=3&t=1s&ab_channel=Strapi
+Пример как можно заполнять Populate. Если запрос без параметров, или Populate. Пример производительности, при обоих случаях.
+И также, где можно использовать middlewares (17:00)
+
+31:20 -причина не делать нового маршрута по slug. Пример фильтрации по slug 32:00
+
+38:00 - то как добавлять midldlewares в маршруты.
+
+40:00 - hideuserinfo middlewear. Тут пример как удаялть USER данные
+
+52:00 - Если мы связанны с защитой данных, то нужно использовать policy

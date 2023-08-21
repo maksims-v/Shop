@@ -35,7 +35,7 @@ const responsive = {
   600: { items: 2 },
 };
 
-const SlugMobileVesrsion = ({ product, gender, category, subcategory, slug }) => {
+const SlugMobileVesrsion = ({ product, similarProducts, gender, category, subcategory, slug }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
 
@@ -166,13 +166,13 @@ const SlugMobileVesrsion = ({ product, gender, category, subcategory, slug }) =>
                $`}
               </Typography>
               <Divider sx={{ mb: '10px', mt: '10px' }} color="yellow" />
-              {product?.meta?.length !== 0 && (
+              {/* {product?.meta?.length !== 0 && (
                 <Box sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px' }}>
                   Choose color:{' '}
                   <Typography component="span">{data?.attributes?.color[0]?.color}</Typography>
                 </Box>
-              )}
-              <Box sx={{ display: 'flex', mb: '10px' }}>
+              )} */}
+              {/* <Box sx={{ display: 'flex', mb: '10px' }}>
                 {product?.meta?.length !== 0 &&
                   product.meta.map((item, index) => (
                     <Link
@@ -190,7 +190,7 @@ const SlugMobileVesrsion = ({ product, gender, category, subcategory, slug }) =>
                       </CardActionArea>
                     </Link>
                   ))}
-              </Box>
+              </Box> */}
               <Box
                 sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px', color: changeSizeColor }}>
                 Choose size:
@@ -280,13 +280,13 @@ const SlugMobileVesrsion = ({ product, gender, category, subcategory, slug }) =>
           <ReactMarkdown>{data?.attributes?.longDescription}</ReactMarkdown>
         </Box>
 
-        <RelatedProductsSlider
+        {/* <RelatedProductsSlider
           slug={slug}
           gender={gender}
           category={category}
           subcategory={subcategory}
           id={product?.data[0].id}
-        />
+        /> */}
 
         <Stack>
           <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>

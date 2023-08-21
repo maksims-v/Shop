@@ -15,8 +15,6 @@ import { useSelector } from 'react-redux';
 const ProductCard = ({ item }) => {
   const mobile = useSelector((state) => state.search.mobile);
   const status = useSelector((state) => state.search.status);
-  const status2 = useSelector((state) => state.fetchNewArrivalsData.status);
-  const status3 = useSelector((state) => state.fetchRelatedProductsData.data);
 
   return (
     <Card
