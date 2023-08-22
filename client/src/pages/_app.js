@@ -9,6 +9,7 @@ import sectionBannerSlice from '@/state/sectionBannerSlice.js';
 import footerSlice from '@/state/footerSlice.js';
 import newArrivalsSliderSlice from '@/state/newArrivalsSliderSlice.js';
 import relatedProductsSliderSlice from '@/state/relatedProductsSliderSlice.js';
+import productPageSlice from '@/state/productPageSlice.js';
 import { ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -23,6 +24,7 @@ const store = configureStore({
     fetchFooterData: footerSlice,
     fetchNewArrivalsData: newArrivalsSliderSlice,
     fetchRelatedProductsData: relatedProductsSliderSlice,
+    fetchProductPageData: productPageSlice,
   },
 });
 

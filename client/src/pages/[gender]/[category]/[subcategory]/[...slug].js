@@ -28,49 +28,21 @@ import Layout from 'components/layout/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
 import DoneIcon from '@mui/icons-material/Done';
 import SlugMobileVesrsion from 'components/mobileVersionPage/SlugMobileVesrsion';
+import { getSimilarProductData, getProductData } from '@/state/productPageSlice';
 
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+// if (product.data.length !== 0) {
+//   console.log(product?.data[0]?.attributes?.title);
+//   dispatch(getSimilarProductData({ title: product?.data[0]?.attributes?.title, slug }));
+// }
 
-// const ItemDetails = ({ product, similarProducts, gender, category, subcategory, slug }) => {
-//   if (product.data.length !== 0) {
-//     const getSimilarProducts = createAsyncThunk(
-//       'shoppingCart/getSimilarProducts',
-//       async function (query, { rejectWithValue }) {
-//         const similarProductQuery = qs.stringify({
-//           filters: {
-//             $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
-//             publishedAt: {
-//               $ne: null,
-//             },
-//           },
-//           populate: { image: true, size: true },
-//         });
+const ItemDetails = ({ gender, category, subcategory, slug }) => {
+  const dispatch = useDispatch();
 
-//         try {
-//           const response = await fetch(
-//             `${process.env.API_URL}/api/products?${similarProductQuery}`,
-//           );
-
-//           if (!response.ok) {
-//             throw new Error('Server Error!');
-//           }
-
-//           const data = response.json();
-
-//           return data;
-//         } catch (error) {
-//           return rejectWithValue(error.message);
-//         }
-//       },
-//     );
-//   }
+  const basket = useSelector((state) => state.shoppingCart.basket);
+  const mobile = useSelector((state) => state.search.mobile);
+  const productData = useSelector((state) => state.fetchProductPageData.productData);
 
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState([]);
-  const [carouselPhotos, setCarouselPhotos] = useState([]);
-  const [galleryPhotos, setGalleryPhotos] = useState([]);
 
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
@@ -79,18 +51,15 @@ const Alert = forwardRef(function Alert(props, ref) {
   const [productQnty, setProductQnty] = useState(null);
   const [changeSizeColor, setChangeSizeColor] = useState('black');
 
-  const dispatch = useDispatch();
-
-  const basket = useSelector((state) => state.shoppingCart.basket);
-  const mobile = useSelector((state) => state.search.mobile);
-
   useEffect(() => {
-    setData(product?.data[0]);
-    createPhotoGallery(data?.attributes?.image?.data);
-
     const basket = localStorage.getItem('cart');
     if (basket) dispatch(addToBasket(JSON.parse(basket)));
-  }, [data, product]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(getProductData(slug));
+    setSize(null);
+  }, [slug]);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -101,10 +70,6 @@ const Alert = forwardRef(function Alert(props, ref) {
   };
 
   useEffect(() => {
-    setSize(null);
-  }, [slug]);
-
-  useEffect(() => {
     !size && setProductQnty(null);
     setChangeSizeColor('black');
   }, [size]);
@@ -112,15 +77,15 @@ const Alert = forwardRef(function Alert(props, ref) {
   const addToBag = () => {
     if (size && productQnty !== 0) {
       const item = {
-        item: data,
-        name: data.attributes.slug,
+        item: productData,
+        name: productData.slug,
         qnty: count,
         productSize: size,
-        id: data.id,
+        id: productData.id,
       };
 
       const product = basket
-        .filter((item) => item.id === data.id)
+        .filter((item) => item.id === productData.id)
         .filter((item) => item.productSize === size);
 
       if (product.length === 0) {
@@ -136,26 +101,6 @@ const Alert = forwardRef(function Alert(props, ref) {
     setSize(newAlignment);
   };
 
-  function createPhotoGallery(data) {
-    const carouselData = data
-      ? data.map((item, i) => ({
-          src: `http://localhost:1337${item?.attributes?.url}`,
-          width: 1,
-          height: 1,
-        }))
-      : [];
-    setCarouselPhotos(carouselData);
-
-    const galleryPhotos = data
-      ? data.map((item) => ({
-          src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
-          width: 1,
-          height: 1,
-        }))
-      : [];
-    setGalleryPhotos(galleryPhotos);
-  }
-
   const openLightbox = useCallback((event, { photo, index }) => {
     setCurrentImage(index);
   }, []);
@@ -170,35 +115,30 @@ const Alert = forwardRef(function Alert(props, ref) {
   };
 
   return mobile ? (
-    <SlugMobileVesrsion
-      product={product}
-      gender={gender}
-      category={category}
-      subcategory={subcategory}
-      slug={slug}
-      similarProducts={similarProducts}
-    />
+    <></>
   ) : (
+    // <SlugMobileVesrsion
+    //   product={product}
+    //   gender={gender}
+    //   category={category}
+    //   subcategory={subcategory}
+    //   slug={slug}
+    //   similarProducts={similarProducts}
+    // />
     <Layout>
       <Box width="100%" m="50px auto 10px auto">
         <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px', mt: '20px' }}>
           <Link underline="hover" color="inherit" href="/">
             HOME
           </Link>
-          <Link underline="hover" color="inherit" href={`/${data?.attributes?.gender}`}>
-            {data?.attributes?.gender.toUpperCase()}
+          <Link underline="hover" color="inherit" href={`/${gender}`}>
+            {gender.toUpperCase()}
           </Link>
-          <Link
-            underline="hover"
-            color="inherit"
-            href={`/${data?.attributes?.gender}/${data?.attributes?.category}`}>
-            {data?.attributes?.category.toUpperCase()}
+          <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
+            {category.toUpperCase()}
           </Link>
-          <Link
-            underline="hover"
-            color="inherit"
-            href={`/${data?.attributes?.gender}/${data?.attributes?.category}/${data?.attributes?.subcategory}`}>
-            {data?.attributes?.subcategory.toUpperCase()}
+          <Link underline="hover" color="inherit" href={`/${gender}/${category}/${subcategory}`}>
+            {subcategory.toUpperCase()}
           </Link>
         </Breadcrumbs>
         <Box display="flex" flexWrap="wrap" columnGap="40px">
@@ -211,33 +151,32 @@ const Alert = forwardRef(function Alert(props, ref) {
               }}>
               <img
                 onClick={openModalPhoto}
-                alt={data?.name}
+                alt={productData?.name}
                 width="100%"
                 height="500px"
-                src={`http://localhost:1337${data?.attributes?.image?.data[currentImage]?.attributes?.url}`}
+                src={`http://localhost:1337${productData?.image?.data[currentImage]?.attributes?.url}`}
                 style={{ objectFit: 'contain' }}
               />
               <Box>
-                {galleryPhotos.length !== 1 && (
-                  <Box width={galleryPhotos.length <= 2 ? '40%' : '100%'}>
-                    <Gallery
-                      targetRowHeight={20}
-                      thumbnailHeight={50}
-                      photos={galleryPhotos}
-                      onClick={openLightbox}
-                    />
-                  </Box>
-                )}
-
+                <Box width={productData?.image?.data?.length <= 2 ? '40%' : '100%'}>
+                  <Gallery
+                    targetRowHeight={20}
+                    thumbnailHeight={50}
+                    photos={productData?.image?.data?.map((item) => ({
+                      src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
+                      width: 1,
+                      height: 1,
+                    }))}
+                    onClick={openLightbox}
+                  />
+                </Box>
                 <ModalGateway>
                   {viewerIsOpen ? (
                     <Modal onClose={closeLightbox}>
                       <ItemCarousel
                         currentIndex={currentImage}
-                        views={carouselPhotos.map((x) => ({
-                          ...x,
-                          srcset: x.srcSet,
-                          caption: x.title,
+                        views={productData?.image?.data?.map((item, i) => ({
+                          src: `http://localhost:1337${item?.attributes?.url}`,
                         }))}
                       />
                     </Modal>
@@ -250,34 +189,31 @@ const Alert = forwardRef(function Alert(props, ref) {
           <Box flex="1 1 45%" mb="40px">
             <Box m="20px 0 25px 0">
               <Typography sx={{ mb: '8px', fontSize: '24px', fontWeight: 'bold' }} variant="h3">
-                {data?.attributes?.title}
+                {productData?.title}
               </Typography>
 
               <Divider sx={{ mb: '10px' }} color="yellow" />
 
               <Typography sx={{ fontSize: '38px', fontWeight: 'bold' }}>
-                {data?.attributes?.price} $
+                {productData?.price} $
               </Typography>
 
               <Typography
-                sx={{ fontSize: '12px', pl: '5px', color: data?.attributes?.oldPrice && 'red' }}>
-                {data?.attributes?.sale &&
+                sx={{ fontSize: '12px', pl: '5px', color: productData?.oldPrice && 'red' }}>
+                {productData?.sale &&
                   `Save:
-              ${
-                data?.attributes?.sale &&
-                (data?.attributes?.price - data?.attributes?.oldPrice).toFixed(2)
-              }
+              ${productData?.sale && (productData?.price - productData?.oldPrice).toFixed(2)}
               $`}
               </Typography>
               <Divider sx={{ mb: '10px', mt: '10px' }} color="yellow" />
-              {product?.meta?.length !== 0 && (
+              {/* {product?.meta?.length !== 0 && (
                 <Box sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px' }}>
                   Choose color:{' '}
-                  <Typography component="span">{data?.attributes?.color[0]?.color}</Typography>
+                  <Typography component="span">{productData?.color[0]?.color}</Typography>
                 </Box>
-              )}
+              )} */}
               <Box sx={{ display: 'flex', mb: '10px' }}>
-                {product?.meta?.length !== 0 &&
+                {/* {product?.meta?.length !== 0 &&
                   product.meta.map((item, index) => (
                     <Link
                       key={index}
@@ -293,7 +229,7 @@ const Alert = forwardRef(function Alert(props, ref) {
                         />
                       </CardActionArea>
                     </Link>
-                  ))}
+                  ))} */}
               </Box>
               <Box
                 sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px', color: changeSizeColor }}>
@@ -330,7 +266,7 @@ const Alert = forwardRef(function Alert(props, ref) {
                   exclusive
                   onChange={sizeHandleChange}
                   aria-label="Platform">
-                  {data?.attributes?.size?.map((item, index) => {
+                  {productData?.size?.map((item, index) => {
                     return (
                       <ToggleButton
                         key={index}
@@ -343,7 +279,7 @@ const Alert = forwardRef(function Alert(props, ref) {
                   })}
                 </ToggleButtonGroup>
               </Box>
-              <ReactMarkdown>{data?.attributes?.description}</ReactMarkdown>
+              <ReactMarkdown>{productData?.description}</ReactMarkdown>
             </Box>
 
             <Divider sx={{ mb: '10px' }} color="yellow" />
@@ -381,7 +317,7 @@ const Alert = forwardRef(function Alert(props, ref) {
         </Box>
 
         <Box display="flex" flexWrap="wrap" gap="15px" mb="50px">
-          <ReactMarkdown>{data?.attributes?.longDescription}</ReactMarkdown>
+          <ReactMarkdown>{productData?.longDescription}</ReactMarkdown>
         </Box>
 
         <RelatedProductsSlider
@@ -389,7 +325,7 @@ const Alert = forwardRef(function Alert(props, ref) {
           gender={gender}
           category={category}
           subcategory={subcategory}
-          id={product?.data[0].id}
+          id={productData?.id}
         />
 
         <Stack>
@@ -406,16 +342,11 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 export default ItemDetails;
 
-export async function getServerSideProps({ params, query }) {
+export async function getServerSideProps({ params }) {
   const { slug, gender, category, subcategory } = params;
-
-  const slugQuery = qs.stringify({
-    filters: { slug: slug },
-    populate: { image: true, size: true, color: true },
-  });
-
-  const slugItem = await fetch(`${process.env.API_URL}/api/products?${slugQuery}`);
-  const product = await slugItem.json();
-
-  return { props: { product, gender, category, subcategory, slug } };
+  return { props: { slug, gender, category, subcategory } };
 }
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
