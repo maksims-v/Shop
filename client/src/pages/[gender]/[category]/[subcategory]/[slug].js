@@ -30,17 +30,17 @@ import DoneIcon from '@mui/icons-material/Done';
 import SlugMobileVesrsion from 'components/mobileVersionPage/SlugMobileVesrsion';
 import { getSimilarProductData, getProductData } from '@/state/productPageSlice';
 
-// if (product.data.length !== 0) {
-//   console.log(product?.data[0]?.attributes?.title);
-//   dispatch(getSimilarProductData({ title: product?.data[0]?.attributes?.title, slug }));
-// }
-
 const ItemDetails = ({ gender, category, subcategory, slug }) => {
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCart.basket);
   const mobile = useSelector((state) => state.search.mobile);
   const productData = useSelector((state) => state.fetchProductPageData.productData);
+  const status = useSelector((state) => state.fetchProductPageData.status);
+  const similarProductData = useSelector((state) => state.fetchProductPageData.similarProductData);
+  const similarProductStatus = useSelector(
+    (state) => state.fetchProductPageData.similarProductStatus,
+  );
 
   const [open, setOpen] = useState(false);
 
@@ -54,6 +54,10 @@ const ItemDetails = ({ gender, category, subcategory, slug }) => {
   useEffect(() => {
     const basket = localStorage.getItem('cart');
     if (basket) dispatch(addToBasket(JSON.parse(basket)));
+    if (status === 'resolved') {
+      console.log('hai');
+      dispatch(getSimilarProductData({ title: productData?.title, slug }));
+    }
   }, []);
 
   useEffect(() => {
@@ -105,10 +109,6 @@ const ItemDetails = ({ gender, category, subcategory, slug }) => {
     setCurrentImage(index);
   }, []);
 
-  const openModalPhoto = () => {
-    setViewerIsOpen(true);
-  };
-
   const closeLightbox = () => {
     setCurrentImage(0);
     setViewerIsOpen(false);
@@ -150,7 +150,7 @@ const ItemDetails = ({ gender, category, subcategory, slug }) => {
                 },
               }}>
               <img
-                onClick={openModalPhoto}
+                onClick={() => setViewerIsOpen(true)}
                 alt={productData?.name}
                 width="100%"
                 height="500px"
@@ -159,19 +159,21 @@ const ItemDetails = ({ gender, category, subcategory, slug }) => {
               />
               <Box>
                 <Box width={productData?.image?.data?.length <= 2 ? '40%' : '100%'}>
-                  <Gallery
-                    targetRowHeight={20}
-                    thumbnailHeight={50}
-                    photos={productData?.image?.data?.map((item) => ({
-                      src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
-                      width: 1,
-                      height: 1,
-                    }))}
-                    onClick={openLightbox}
-                  />
+                  {status == 'resolved' && (
+                    <Gallery
+                      targetRowHeight={20}
+                      thumbnailHeight={50}
+                      photos={productData?.image?.data?.map((item) => ({
+                        src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
+                        width: 1,
+                        height: 1,
+                      }))}
+                      onClick={openLightbox}
+                    />
+                  )}
                 </Box>
                 <ModalGateway>
-                  {viewerIsOpen ? (
+                  {viewerIsOpen && status == 'resolved' ? (
                     <Modal onClose={closeLightbox}>
                       <ItemCarousel
                         currentIndex={currentImage}
@@ -344,7 +346,7 @@ export default ItemDetails;
 
 export async function getServerSideProps({ params }) {
   const { slug, gender, category, subcategory } = params;
-  return { props: { slug, gender, category, subcategory } };
+  return { props: { slug, gender, category, subcategory, slug } };
 }
 
 const Alert = forwardRef(function Alert(props, ref) {

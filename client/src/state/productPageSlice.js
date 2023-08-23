@@ -27,11 +27,11 @@ export const getProductData = createAsyncThunk(
 
 export const getSimilarProductData = createAsyncThunk(
   'productPage/getSimilarProductData',
-  async function (value, { rejectWithValue }) {
+  async function ({ title, slug }, { rejectWithValue }) {
     try {
       const query = qs.stringify({
         filters: {
-          $and: [{ title: { $eqi: value.title } }, { slug: { $ne: value.slug } }],
+          $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
         },
         populate: { image: true, size: true },
       });
@@ -53,9 +53,11 @@ export const getSimilarProductData = createAsyncThunk(
 
 const initialState = {
   productData: false,
-  similarProductData: [],
   status: null,
   error: null,
+  similarProductData: [],
+  similarProductStatus: null,
+  similarProductsError: null,
 };
 
 const setError = (state, action) => {
@@ -72,22 +74,25 @@ export const productPageSlice = createSlice({
       state.error = null;
     },
     [getProductData.fulfilled]: (state, action) => {
-      state.status = 'resolved';
       state.productData = action.payload?.data[0]?.attributes;
+      state.status = 'resolved';
     },
 
     [getProductData.rejected]: setError,
 
     [getSimilarProductData.pending]: (state, action) => {
-      state.status = 'loading';
-      state.error = null;
+      state.similarProductStatus = 'loading';
+      state.similarProductsError = null;
     },
     [getSimilarProductData.fulfilled]: (state, action) => {
-      state.status = 'resolved';
-      state.data = action.payload;
+      state.similarProductData = action.payload;
+      state.similarProductStatus = 'resolved';
     },
 
-    [getSimilarProductData.rejected]: setError,
+    [getSimilarProductData.rejected]: (state, action) => {
+      state.similarProductStatus = 'rejected';
+      state.similarProductsError = action.payload;
+    },
   },
 });
 
