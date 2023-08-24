@@ -7,34 +7,34 @@ const _ = require("lodash");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::product.product", ({ strapi }) => ({
-  async slug(ctx) {
-    const { slug } = ctx.params;
+  // async slug(ctx) {
+  //   const { slug } = ctx.params;
 
-    const entity = await strapi.entityService.findMany("api::product.product", {
-      filters: { slug: slug },
-      populate: { image: true, size: true, color: true },
-    });
+  //   const entity = await strapi.entityService.findMany("api::product.product", {
+  //     filters: { slug: slug },
+  //     populate: { image: true, size: true, color: true },
+  //   });
 
-    const title = entity[0].title ? entity[0].title : "";
+  //   const title = entity[0].title ? entity[0].title : "";
 
-    const entity2 = await strapi.entityService.findMany(
-      "api::product.product",
-      {
-        filters: {
-          $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
-          publishedAt: {
-            $ne: null,
-          },
-        },
-        populate: { image: true, size: true },
-      }
-    );
+  //   const entity2 = await strapi.entityService.findMany(
+  //     "api::product.product",
+  //     {
+  //       filters: {
+  //         $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
+  //         publishedAt: {
+  //           $ne: null,
+  //         },
+  //       },
+  //       populate: { image: true, size: true },
+  //     }
+  //   );
 
-    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-    const sanitizedEntity2 = await this.sanitizeOutput(entity2, ctx);
+  //   const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+  //   const sanitizedEntity2 = await this.sanitizeOutput(entity2, ctx);
 
-    return this.transformResponse(sanitizedEntity, sanitizedEntity2);
-  },
+  //   return this.transformResponse(sanitizedEntity, sanitizedEntity2);
+  // },
 
   async filterSearch(ctx) {
     const sanitizedQueryParams = await this.sanitizeQuery(ctx);

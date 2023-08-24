@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getProductData = createAsyncThunk(
   'productPage/getProductData',
-  async function (value, { rejectWithValue }) {
+  async function (value, { rejectWithValue, dispatch }) {
     try {
       const slugQuery = qs.stringify({
         filters: { slug: value },
@@ -18,6 +18,8 @@ export const getProductData = createAsyncThunk(
 
       const data = response.json();
 
+      data.then((product) => dispatch(getSimilarProductData(product)));
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -27,7 +29,9 @@ export const getProductData = createAsyncThunk(
 
 export const getSimilarProductData = createAsyncThunk(
   'productPage/getSimilarProductData',
-  async function ({ title, slug }, { rejectWithValue }) {
+  async function (product, { rejectWithValue }) {
+    const { title, slug } = product.data && product.data[0].attributes;
+
     try {
       const query = qs.stringify({
         filters: {
@@ -55,7 +59,7 @@ const initialState = {
   productData: false,
   status: null,
   error: null,
-  similarProductData: [],
+  similarProductData: false,
   similarProductStatus: null,
   similarProductsError: null,
 };
