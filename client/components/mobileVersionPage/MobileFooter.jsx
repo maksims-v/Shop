@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import Link from 'next/link';
 
 const MobileFooter = () => {
-  const data = useSelector((state) => state.fetchFooterData.data);
-  const status = useSelector((state) => state.fetchFooterData.status);
+  const data = useSelector((state) => state.footerSlice.data);
+  const status = useSelector((state) => state.footerSlice.status);
   return (
     <Box backgroundColor="#262624" color="white" p="40px 0px" mt="50px">
       <Container maxWidth="md" sx={{ height: '100%' }}>

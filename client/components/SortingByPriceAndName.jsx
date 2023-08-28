@@ -3,8 +3,8 @@ import { setSortValue } from '@/state/searchPageSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SortingByPriceAndName = () => {
-  const status = useSelector((state) => state.search.status);
-  const sortValue = useSelector((state) => state.search.sortValue);
+  const status = useSelector((state) => state.searchPageSlice.status);
+  const sortValue = useSelector((state) => state.searchPageSlice.sortValue);
   const dispatch = useDispatch();
 
   const getSortValue = (e) => {

@@ -3,16 +3,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const search = createAsyncThunk(
   'shoppingCart/search',
   async function (value, { rejectWithValue, getState, dispatch }) {
-    const { inputSearchValue } = getState().search;
-    const { changePrice } = getState().search;
-    const { brandsChecked } = getState().search;
-    const { sale } = getState().search;
-    const { categoryChecked } = getState().search;
-    const { genderChecked } = getState().search;
-    const { subCategoryChecked } = getState().search;
-    const { sizesChecked } = getState().search;
-    const { currentPage } = getState().search;
-    const { sortValue } = getState().search;
+    const { inputSearchValue } = getState().searchPageSlice;
+    const { changePrice } = getState().searchPageSlice;
+    const { brandsChecked } = getState().searchPageSlice;
+    const { sale } = getState().searchPageSlice;
+    const { categoryChecked } = getState().searchPageSlice;
+    const { genderChecked } = getState().searchPageSlice;
+    const { subCategoryChecked } = getState().searchPageSlice;
+    const { sizesChecked } = getState().searchPageSlice;
+    const { currentPage } = getState().searchPageSlice;
+    const { sortValue } = getState().searchPageSlice;
 
     const getGenderValue = value?.gender ? value.gender : genderChecked;
     const getCategoryValue = value?.category ? value.category : categoryChecked;

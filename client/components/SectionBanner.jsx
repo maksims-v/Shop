@@ -10,9 +10,9 @@ const SectionBanner = () => {
 
   const largeScreen = useMediaQuery('(min-width:1200px)');
 
-  const category = useSelector((state) => state.fetchSectionBannerData.category);
-  const subcategory = useSelector((state) => state.fetchSectionBannerData.subcategory);
-  const image = useSelector((state) => state.fetchSectionBannerData.image);
+  const category = useSelector((state) => state.sectionBannerSlice.category);
+  const subcategory = useSelector((state) => state.sectionBannerSlice.subcategory);
+  const image = useSelector((state) => state.sectionBannerSlice.image);
 
   useEffect(() => {
     dispatch(getSectionBannerData());

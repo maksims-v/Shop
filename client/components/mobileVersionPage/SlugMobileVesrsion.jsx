@@ -46,8 +46,8 @@ const SlugMobileVesrsion = ({ product, similarProducts, gender, category, subcat
 
   const dispatch = useDispatch();
 
-  const basket = useSelector((state) => state.shoppingCart.basket);
-  const mobile = useSelector((state) => state.search.mobile);
+  const basket = useSelector((state) => state.shoppingCartSlice.basket);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   useEffect(() => {
     setData(product?.data[0]);

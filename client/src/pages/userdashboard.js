@@ -8,13 +8,13 @@ import Layout from 'components/layout/Layout';
 export default function CenteredTabs() {
   const [value, setValue] = useState(0);
 
-  const isAuth = useSelector((state) => state.auth.isAuth);
+  const isAuth = useSelector((state) => state.authSlice.isAuth);
 
   const router = useRouter();
 
-  useEffect(() => {
-    !isAuth && router.push('/');
-  }, [isAuth]);
+  // useEffect(() => {
+  //   !isAuth && router.push('/');
+  // }, [isAuth]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

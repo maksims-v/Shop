@@ -9,7 +9,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 const UserSettings = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.authSlice.user);
 
   useEffect(() => {}, [user]);
 

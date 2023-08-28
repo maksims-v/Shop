@@ -4,9 +4,9 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const SubCategoryFilter = () => {
   const dispatch = useDispatch();
-  const subCategory = useSelector((state) => state.search.subCategory);
-  const status = useSelector((state) => state.search.status);
-  const mobile = useSelector((state) => state.search.mobile);
+  const subCategory = useSelector((state) => state.searchPageSlice.subCategory);
+  const status = useSelector((state) => state.searchPageSlice.status);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const handleChange = (event) => {
     dispatch(setSubCategoryChecked(event.target.name));

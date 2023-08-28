@@ -8,9 +8,9 @@ import NewSearchMobileVesersion from 'components/mobileVersionPage/NewSearchMobi
 import Layout from 'components/layout/Layout';
 
 const Search = ({ newSearch }) => {
-  const searchFlag = useSelector((state) => state.search.searchFlag);
-  const total = useSelector((state) => state.search.metaData.total);
-  const mobile = useSelector((state) => state.search.mobile);
+  const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
+  const total = useSelector((state) => state.searchPageSlice.metaData.total);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const dispatch = useDispatch();
 

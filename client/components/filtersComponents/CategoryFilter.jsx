@@ -4,9 +4,9 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const CategoryFilter = () => {
   const dispatch = useDispatch();
-  const category = useSelector((state) => state.search.category);
-  const status = useSelector((state) => state.search.status);
-  const mobile = useSelector((state) => state.search.mobile);
+  const category = useSelector((state) => state.searchPageSlice.category);
+  const status = useSelector((state) => state.searchPageSlice.status);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const handleChange = (event) => {
     dispatch(setCategoryChecked(event.target.name));

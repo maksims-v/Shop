@@ -14,8 +14,8 @@ const responsive = {
 };
 
 const NewArrivalsSlider = () => {
-  const data = useSelector((state) => state.fetchNewArrivalsData.data);
-  const status = useSelector((state) => state.fetchNewArrivalsData.status);
+  const data = useSelector((state) => state.newArrivalsSliderSlice.data);
+  const status = useSelector((state) => state.newArrivalsSliderSlice.status);
 
   const dispatch = useDispatch();
 

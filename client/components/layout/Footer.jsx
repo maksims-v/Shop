@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import Link from 'next/link';
 
 const Footer = () => {
-  const data = useSelector((state) => state.fetchFooterData.data);
-  const status = useSelector((state) => state.fetchFooterData.status);
+  const data = useSelector((state) => state.footerSlice.data);
+  const status = useSelector((state) => state.footerSlice.status);
 
   return (
     <Box minHeight="300px" backgroundColor="#262624" color="white" pt="40px" mt="50px">

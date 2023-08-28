@@ -5,8 +5,8 @@ import PaginationComponent from './PaginationComponent';
 import Item from './ProductCard';
 
 const ProductList = () => {
-  const data = useSelector((state) => state.search.data);
-  const mobile = useSelector((state) => state.search.mobile);
+  const data = useSelector((state) => state.searchPageSlice.data);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const dispatch = useDispatch();
 

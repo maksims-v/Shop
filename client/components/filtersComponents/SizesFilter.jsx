@@ -7,10 +7,10 @@ import { setSizesChecked } from '@/state/searchPageSlice';
 
 const SizesFilter = () => {
   const dispatch = useDispatch();
-  const sizes = useSelector((state) => state.search.sizes);
-  const sizesChecked = useSelector((state) => state.search.sizesChecked);
+  const sizes = useSelector((state) => state.searchPageSlice.sizes);
+  const sizesChecked = useSelector((state) => state.searchPageSlice.sizesChecked);
 
-  const mobile = useSelector((state) => state.search.mobile);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const [formats, setFormats] = useState();
 

@@ -16,15 +16,15 @@ import { Provider } from 'react-redux';
 
 const store = configureStore({
   reducer: {
-    auth: authSlice,
-    shoppingCart: shoppingCartSlice,
-    search: searchPageSlice,
-    fetchHeaderData: headerSlice,
-    fetchSectionBannerData: sectionBannerSlice,
-    fetchFooterData: footerSlice,
-    fetchNewArrivalsData: newArrivalsSliderSlice,
-    fetchRelatedProductsData: relatedProductsSliderSlice,
-    fetchProductPageData: productPageSlice,
+    authSlice,
+    shoppingCartSlice,
+    searchPageSlice,
+    headerSlice,
+    sectionBannerSlice,
+    footerSlice,
+    newArrivalsSliderSlice,
+    relatedProductsSliderSlice,
+    productPageSlice,
   },
 });
 

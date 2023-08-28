@@ -7,22 +7,26 @@ import { getHeaderData } from '@/state/headerSlice';
 import { getFooterData } from '@/state/footerSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getUserFromLocalCookie } from '@/http/authCookie.js';
-import { logIn } from '@/state/authSlice';
+
+import { getUserFromLocalCookie } from '@/state/authSlice';
+import Cookies from 'js-cookie';
+
+import { addToBasket } from '@/state/shoppingCartSlice';
 
 const Layout = ({ children }) => {
   const dispatch = useDispatch();
-  const mobile = useSelector((state) => state.search.mobile);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   useEffect(() => {
+    const jwt = Cookies.get('jwt');
+    const basket = localStorage.getItem('cart');
+    if (basket) dispatch(addToBasket(JSON.parse(basket)));
     dispatch(getHeaderData());
     dispatch(getFooterData());
-    getUser();
+    if (jwt) {
+      dispatch(getUserFromLocalCookie(jwt));
+    }
   }, []);
-
-  const getUser = async () => {
-    getUserFromLocalCookie().then((response) => response && dispatch(logIn(response.data)));
-  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>

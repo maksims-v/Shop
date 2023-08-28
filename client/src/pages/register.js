@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logIn } from '@/state/authSlice';
 import { useRouter } from 'next/router';
 
-const Registration = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -75,4 +75,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default Register;

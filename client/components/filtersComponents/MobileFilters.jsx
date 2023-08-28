@@ -20,7 +20,7 @@ const disableMarginInAccordion = true;
 const MobileFilters = ({ newSearch, clearFilters }) => {
   const [toggle, setToggle] = useState(false);
 
-  const total = useSelector((state) => state.search.metaData.total);
+  const total = useSelector((state) => state.searchPageSlice.metaData.total);
   const [resetPriceSlider, setResetPriceSlider] = useState(false);
 
   const { asPath } = useRouter();

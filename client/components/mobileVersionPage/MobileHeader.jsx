@@ -14,8 +14,8 @@ import { addToBasket } from '@/state/shoppingCartSlice';
 import Image from 'next/image';
 
 const MobileHeader = () => {
-  const isAuth = useSelector((state) => state.auth.isAuth);
-  const basket = useSelector((state) => state.shoppingCart.basket);
+  const isAuth = useSelector((state) => state.authSlice.isAuth);
+  const basket = useSelector((state) => state.shoppingCartSlice.basket);
 
   const dispatch = useDispatch();
 

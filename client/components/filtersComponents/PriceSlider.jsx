@@ -8,9 +8,9 @@ import { useDebounce } from 'use-debounce';
 const PriceSlider = ({ resetPriceSlider }) => {
   const dispatch = useDispatch();
 
-  const priceMinAndMax = useSelector((state) => state.search.priceMinAndMax);
-  const inputSearchValue = useSelector((state) => state.search.inputSearchValue);
-  const mobile = useSelector((state) => state.search.mobile);
+  const priceMinAndMax = useSelector((state) => state.searchPageSlice.priceMinAndMax);
+  const inputSearchValue = useSelector((state) => state.searchPageSlice.inputSearchValue);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const [value, setValue] = useState([1, 9999]);
   const [debouncedValue] = useDebounce(value, 800);

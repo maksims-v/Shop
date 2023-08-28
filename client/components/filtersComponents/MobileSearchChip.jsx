@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 
 const MobileSearchChip = () => {
   const genderChecked = useSelector((state) => state.search.genderChecked);
-  const categoryChecked = useSelector((state) => state.search.categoryChecked);
-  const subCategoryChecked = useSelector((state) => state.search.subCategoryChecked);
-  const sizesChecked = useSelector((state) => state.search.sizesChecked);
-  const brandsChecked = useSelector((state) => state.search.brandsChecked);
+  const categoryChecked = useSelector((state) => state.searchPageSlice.categoryChecked);
+  const subCategoryChecked = useSelector((state) => state.searchPageSlice.subCategoryChecked);
+  const sizesChecked = useSelector((state) => state.searchPageSlice.sizesChecked);
+  const brandsChecked = useSelector((state) => state.searchPageSlice.brandsChecked);
 
   return (
     <Stack

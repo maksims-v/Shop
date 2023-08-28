@@ -5,8 +5,8 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 const GenderFilter = () => {
   const dispatch = useDispatch();
   const genders = useSelector((state) => state.search.genders);
-  const status = useSelector((state) => state.search.status);
-  const mobile = useSelector((state) => state.search.mobile);
+  const status = useSelector((state) => state.searchPageSlice.status);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const handleChange = (event) => {
     dispatch(setGenderChecked(event.target.name));

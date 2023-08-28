@@ -4,9 +4,9 @@ import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } f
 
 const BrandFilter = () => {
   const dispatch = useDispatch();
-  const brands = useSelector((state) => state.search.brands);
-  const status = useSelector((state) => state.search.status);
-  const mobile = useSelector((state) => state.search.mobile);
+  const brands = useSelector((state) => state.searchPageSlice.brands);
+  const status = useSelector((state) => state.searchPageSlice.status);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const handleChange = (event) => {
     dispatch(setBrandsChecked(event.target.name));

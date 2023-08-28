@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setSale } from '@/state/searchPageSlice';
 
 const SaleFilter = () => {
-  const status = useSelector((state) => state.search.status);
-  const data = useSelector((state) => state.search.data);
-  const sale = useSelector((state) => state.search.sale);
+  const status = useSelector((state) => state.searchPageSlice.status);
+  const data = useSelector((state) => state.searchPageSlice.data);
+  const sale = useSelector((state) => state.searchPageSlice.sale);
 
   const dispatch = useDispatch();
 

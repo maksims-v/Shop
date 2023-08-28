@@ -13,7 +13,7 @@ import { createOrder } from '@/http/orderAPI';
 import { useState } from 'react';
 
 const Basket = () => {
-  const basket = useSelector((state) => state.shoppingCart.basket);
+  const basket = useSelector((state) => state.shoppingCartSlice.basket);
 
   const dispatch = useDispatch();
 

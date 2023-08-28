@@ -19,7 +19,7 @@ const MobileSideBarMenu = ({ mobileOpen, handleDrawerToggle }) => {
   const [expanded, setExpanded] = useState(true);
   const disable = true;
 
-  const headerFetchData = useSelector((state) => state.fetchHeaderData.data);
+  const headerFetchData = useSelector((state) => state.headerSlice.data);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

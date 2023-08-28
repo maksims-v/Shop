@@ -15,11 +15,11 @@ import CategoryMobileVersion from '../../../../components/mobileVersionPage/Cate
 
 const Category = ({ gender, category }) => {
   const dispatch = useDispatch();
-  const searchFlag = useSelector((state) => state.search.searchFlag);
-  const currentPage = useSelector((state) => state.search.currentPage);
-  const sortValue = useSelector((state) => state.search.sortValue);
-  const total = useSelector((state) => state.search.metaData.total);
-  const mobile = useSelector((state) => state.search.mobile);
+  const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
+  const currentPage = useSelector((state) => state.searchPageSlice.currentPage);
+  const sortValue = useSelector((state) => state.searchPageSlice.sortValue);
+  const total = useSelector((state) => state.searchPageSlice.metaData.total);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   useEffect(() => {
     window.scrollTo(0, 0);

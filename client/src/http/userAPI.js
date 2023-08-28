@@ -10,7 +10,6 @@ export const login = async (data) => {
 };
 
 export const registration = async (newUser) => {
-  console.log(newUser);
   try {
     const response = await $host.post('/api/auth/local/register', newUser);
     return response;

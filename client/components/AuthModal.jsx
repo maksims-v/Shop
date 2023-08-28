@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { login } from '@/http/userAPI';
 import {
   Dialog,
   DialogActions,
@@ -11,12 +10,10 @@ import {
   Box,
 } from '@mui/material';
 import Link from 'next/link';
-import { useSelector, useDispatch } from 'react-redux';
-import { logIn } from '@/state/authSlice';
-import { setToken, unsetToken } from '@/http/authCookie';
+import { useDispatch } from 'react-redux';
+import { login } from '@/state/authSlice';
 
 const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
-  const [error, setError] = useState(null);
   const [data, setData] = useState({
     identifier: '',
     password: '',
@@ -33,14 +30,8 @@ const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
   };
 
   const handleSubmit = async () => {
-    const user = await login(data);
-    if (user?.response?.status === undefined) {
-      dispatch(logIn(user.data.user));
-      setToken(user.data);
-      handleClose();
-    } else {
-      setError(user?.response?.data?.error?.message);
-    }
+    dispatch(login(data));
+    handleClose();
   };
 
   return (
@@ -76,11 +67,8 @@ const LoginModal = ({ setOpenModalAuth, openModalAuth }) => {
           />
         </Box>
 
-        <Box color="red" margin="0 auto" pt="10px">
-          {error}
-        </Box>
         <DialogActions>
-          <Link href="/registration">
+          <Link href="/register">
             <Button autoFocus onClick={handleClose}>
               Create an account
             </Button>

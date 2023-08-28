@@ -2,8 +2,8 @@ import { Stack, Pagination } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const PaginationComponent = ({ changePage }) => {
-  const pages = useSelector((state) => state.search.metaData.pages);
-  const currentPage = useSelector((state) => state.search.currentPage);
+  const pages = useSelector((state) => state.searchPageSlice.metaData.pages);
+  const currentPage = useSelector((state) => state.searchPageSlice.currentPage);
 
   return (
     <Stack spacing={2}>
