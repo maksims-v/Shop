@@ -17,12 +17,9 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
       <FlexBox p="15px 0 15px 0">
         <Box flex="1 1 40%">
           <Link
-            href={`/${item.item.attributes.category}/${item.item.attributes.productcategory}/${item.item.attributes.slug}?title=${item.item.attributes.title}`}>
+            href={`/${item.item.gender}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
             <img
-              src={
-                `http://localhost:1337` +
-                item.item.attributes.image.data[0].attributes.formats.small.url
-              }
+              src={`http://localhost:1337` + item.item.image.data[0].attributes.formats.small.url}
               alt="alt"
               width="150px"
               height="164px"
@@ -32,14 +29,14 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
         <Box flex="1 1 60%">
           <FlexBox mb="10px">
             <Link
-              href={`/${item.item.attributes.category}/${item.item.attributes.productcategory}/${item.item.attributes.slug}?title=${item.item.attributes.title}`}>
+              href={`/${item.item.gender}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
               <Typography
                 sx={{
                   '&:hover': { cursor: 'pointer', color: 'black' },
                   color: '#1976d2',
                   fontWeight: 'bold',
                 }}>
-                {item.item.attributes.title}
+                {item.item.title}
               </Typography>
             </Link>
 
@@ -63,20 +60,20 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
                 <Box>Cena par vienību: </Box>
 
                 <Box display="flex" flexDirection="column" pl="5px">
-                  {item.item.attributes.sale ? (
+                  {item.item.sale ? (
                     <>
                       <Box
                         fontWeight="bold"
                         color="red"
-                        lineHeight="13px">{` €${item.item.attributes.oldPrice}`}</Box>
+                        lineHeight="13px">{` €${item.item.oldPrice}`}</Box>
                       <Box
                         sx={{
                           textDecorationLine: 'line-through',
                           fontSize: '10px',
-                        }}>{` €${item.item.attributes.price}`}</Box>
+                        }}>{` €${item.item.price}`}</Box>
                     </>
                   ) : (
-                    <Box fontWeight="bold">{` €${item.item.attributes.price}`}</Box>
+                    <Box fontWeight="bold">{` €${item.item.price}`}</Box>
                   )}
                 </Box>
               </Box>

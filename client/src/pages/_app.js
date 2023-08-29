@@ -13,6 +13,7 @@ import productPageSlice from '@/state/productPageSlice.js';
 import { ThemeProvider } from '@mui/material';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import Layout from 'components/Layout.jsx';
 
 const store = configureStore({
   reducer: {
@@ -32,8 +33,10 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <CssBaseline />
-        <Component {...pageProps} />
+        <Layout>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </Layout>
       </Provider>
     </ThemeProvider>
   );

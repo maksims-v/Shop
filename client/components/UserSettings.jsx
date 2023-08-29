@@ -1,8 +1,8 @@
-import { useState, forwardRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, forwardRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, TextField, Button, Stack, Snackbar } from '@mui/material';
-import { changeUserData } from '@/http/userAPI';
 import MuiAlert from '@mui/material/Alert';
+import { changeUserData } from '@/state/authSlice';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -11,7 +11,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 const UserSettings = () => {
   const user = useSelector((state) => state.authSlice.user);
 
-  useEffect(() => {}, [user]);
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({
@@ -26,13 +26,9 @@ const UserSettings = () => {
     phone: user.phone,
   });
 
-  const saveData = async () => {
-    try {
-      changeUserData(userData);
-      setOpen(true);
-    } catch (e) {
-      console.log(e.message);
-    }
+  const saveData = () => {
+    dispatch(changeUserData(userData));
+    setOpen(true);
   };
 
   const handleClose = (event, reason) => {

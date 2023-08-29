@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MobileSideBarMenu from 'components/mobileVersionPage/MobileSideBarMenu';
 import AuthModal from '../AuthModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { unsetToken } from '@/http/authCookie';
+import { unsetToken } from '@/lib/auth';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import Image from 'next/image';
 

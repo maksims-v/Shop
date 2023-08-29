@@ -20,7 +20,7 @@ export const search = createAsyncThunk(
     const saleproducts = sale ? 'Sale' : '';
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/products?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
+        `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
       );
 
       if (!response.ok) {

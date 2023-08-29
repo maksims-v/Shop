@@ -1,15 +1,15 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
-import { registration } from '@/http/userAPI';
 import { useSelector, useDispatch } from 'react-redux';
-import { logIn } from '@/state/authSlice';
 import { useRouter } from 'next/router';
+import { register } from '@/state/authSlice';
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [userData, setUserData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -17,13 +17,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = await registration({ username, email, password });
-    if (data.status === 200) {
-      localStorage.setItem('token', data.data.jwt);
-      dispatch(logIn(data.data.user));
-      router.replace('/');
-    }
-    setError(data.response?.data?.error?.message);
+    dispatch(register(userData));
+    router.replace('/');
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
   };
 
   return (
@@ -38,8 +38,8 @@ const Register = () => {
               id="email"
               name="email"
               label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userData.email}
+              onChange={(e) => handleChange(e)}
             />
             <TextField
               sx={{ width: '300px' }}
@@ -47,8 +47,8 @@ const Register = () => {
               name="username"
               label="Username"
               type="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={userData.username}
+              onChange={(e) => handleChange(e)}
             />
             <TextField
               sx={{ width: '300px' }}
@@ -56,10 +56,10 @@ const Register = () => {
               name="password"
               label="Password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={userData.password}
+              onChange={(e) => handleChange(e)}
             />
-            <Box color="red">{error}</Box>
+            <Box color="red"></Box>
             <Button
               sx={{ width: '100px' }}
               color="primary"

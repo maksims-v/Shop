@@ -23,11 +23,11 @@ import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import Layout from 'components/layout/Layout';
+import Layout from 'components/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
 import DoneIcon from '@mui/icons-material/Done';
-import SlugMobileVesrsion from 'components/mobileVersionPage/SlugMobileVesrsion';
 import { getProductData } from '@/state/productPageSlice';
+import ProductPageMobileVersion from 'components/mobileVersionPage/ProductPageMobileVersion';
 
 const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const dispatch = useDispatch();
@@ -37,7 +37,6 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const productData = useSelector((state) => state.productPageSlice.productData);
   const status = useSelector((state) => state.productPageSlice.status);
   const similarProductData = useSelector((state) => state.productPageSlice.similarProductData);
-  const similarProductStatus = useSelector((state) => state.productPageSlice.similarProductStatus);
 
   const [open, setOpen] = useState(false);
 
@@ -47,16 +46,11 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const [size, setSize] = useState(null);
   const [productQnty, setProductQnty] = useState(null);
   const [changeSizeColor, setChangeSizeColor] = useState('black');
-  const [color, setColor] = useState(false);
-
-  const toggleButton = () => {
-    setColor(!color);
-  };
 
   useEffect(() => {
-    dispatch(getProductData());
+    dispatch(getProductData(slug));
     setSize(null);
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
     const basket = localStorage.getItem('cart');
@@ -112,14 +106,22 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
     setViewerIsOpen(false);
   };
 
+  const galleryArr = productData?.image?.data
+    ? productData?.image?.data?.map((item) => ({
+        src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
+        width: 1,
+        height: 1,
+      }))
+    : [{ src: ``, width: 1, height: 1 }];
+
   return mobile ? (
-    <SlugMobileVesrsion
+    <ProductPageMobileVersion
       product={product}
       gender={gender}
       category={category}
       subcategory={subcategory}
       slug={slug}
-      similarProducts={similarProducts}
+      similarProducts={similarProductData}
     />
   ) : (
     <Layout>
@@ -156,18 +158,14 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
               />
               <Box>
                 <Box width={productData?.image?.data?.length <= 2 ? '40%' : '100%'}>
-                  {/* {status == 'resolved' && (
+                  {status == 'resolved' && (
                     <Gallery
                       targetRowHeight={20}
                       thumbnailHeight={50}
-                      photos={productData?.image?.data?.map((item) => ({
-                        src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
-                        width: 1,
-                        height: 1,
-                      }))}
+                      photos={galleryArr}
                       onClick={openLightbox}
                     />
-                  )} */}
+                  )}
                 </Box>
                 <ModalGateway>
                   {viewerIsOpen && status == 'resolved' ? (
@@ -219,7 +217,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                 {similarProductData &&
                   similarProductData.data?.map((item, index) => (
                     <Link
-                      key={item.attributes.id}
+                      key={item.id}
                       underline="hover"
                       color="inherit"
                       href={`/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`}>
@@ -328,7 +326,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
           gender={gender}
           category={category}
           subcategory={subcategory}
-          id={productData && productData.attributes.id}
+          id={productData && productData.id}
         />
 
         <Stack>

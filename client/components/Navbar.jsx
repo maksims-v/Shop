@@ -1,21 +1,24 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Box, IconButton, Badge, Paper, InputBase, Divider, Container } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
-import AuthModal from '../AuthModal';
+import AuthModal from './AuthModal';
 import { useSelector } from 'react-redux';
-import { unsetToken } from '@/http/authCookie';
-import MobileHeader from '../mobileVersionPage/MobileHeader';
+import { unsetToken } from '@/lib/auth';
+import MobileHeader from './mobileVersionPage/MobileHeader';
 import Image from 'next/image';
 
-const Header = () => {
+const Navbar = () => {
   const isAuth = useSelector((state) => state.authSlice.isAuth);
   const basket = useSelector((state) => state.shoppingCartSlice.basket);
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
   const headerFetchData = useSelector((state) => state.headerSlice.data);
+
+  const router = useRouter();
 
   const [openModalAuth, setOpenModalAuth] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -29,6 +32,7 @@ const Header = () => {
   };
 
   const logout = () => {
+    router.replace('/');
     unsetToken();
   };
 
@@ -137,6 +141,7 @@ const Header = () => {
                         <SettingsIcon />
                       </IconButton>
                     </Link>
+
                     <IconButton onClick={logout} sx={{ color: 'white' }}>
                       <LogoutIcon />
                     </IconButton>
@@ -193,4 +198,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

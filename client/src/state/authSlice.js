@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { setToken } from '@/lib/auth';
+import Cookies from 'js-cookie';
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -29,6 +30,31 @@ export const login = createAsyncThunk(
   },
 );
 
+export const register = createAsyncThunk(
+  'auth/register',
+  async function (userData, { rejectWithValue }) {
+    try {
+      const response = await fetch(`${process.env.API_URL}/api/auth/local/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Server Error!');
+      }
+
+      const data = response.json();
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
 export const getUserFromLocalCookie = createAsyncThunk(
   'auth/getUserFromLocalCookie',
   async function (jwt, { rejectWithValue }) {
@@ -39,6 +65,33 @@ export const getUserFromLocalCookie = createAsyncThunk(
           Authorization: `Bearer ${jwt}`,
         },
       });
+      if (!response.ok) {
+        throw new Error('Server Error!');
+      }
+
+      const data = response.json();
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const changeUserData = createAsyncThunk(
+  'auth/changeUserData',
+  async function (userData, { rejectWithValue }) {
+    const jwt = Cookies.get('jwt');
+    try {
+      const response = await fetch(`${process.env.API_URL}/api/users/${userData.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+        body: JSON.stringify(userData),
+      });
+
       if (!response.ok) {
         throw new Error('Server Error!');
       }
@@ -108,6 +161,36 @@ export const authSlice = createSlice({
     },
 
     [getUserFromLocalCookie.rejected]: (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+    },
+
+    [changeUserData.pending]: (state, action) => {
+      state.status = 'loading';
+      state.error = null;
+    },
+    [changeUserData.fulfilled]: (state, action) => {
+      state.user = action.payload;
+      state.status = 'resolved';
+    },
+
+    [changeUserData.rejected]: (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload;
+    },
+
+    [register.pending]: (state, action) => {
+      state.status = 'loading';
+      state.error = null;
+    },
+    [register.fulfilled]: (state, action) => {
+      state.isAuth = true;
+      state.user = action.payload.user;
+      state.status = 'resolved';
+      setToken(action.payload);
+    },
+
+    [register.rejected]: (state, action) => {
       state.status = 'rejected';
       state.error = action.payload;
     },

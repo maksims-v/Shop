@@ -22,14 +22,5 @@ export const unsetToken = () => {
   Cookies.remove('id');
   Cookies.remove('jwt');
   Cookies.remove('username');
-
-  Router.reload('/');
+  Router.reload();
 };
-
-// export const getUserFromLocalCookie = async () => {
-//   const jwt = Cookies.get('jwt');
-//   if (jwt) {
-//     const user = await getUser();
-//     return user;
-//   }
-// };

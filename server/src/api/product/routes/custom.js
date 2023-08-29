@@ -2,14 +2,9 @@ module.exports = {
   routes: [
     {
       method: "GET",
-      path: "/products",
+      path: "/products/search",
       handler: "product.filterSearch",
     },
-    // {
-    //   method: "GET",
-    //   path: "/products/:gender/:category/:subcategory/:slug",
-    //   handler: "product.slug",
-    // },
     {
       method: "GET",
       path: "/products/newarrivals",
@@ -20,14 +15,5 @@ module.exports = {
       path: "/products/relatedproducts",
       handler: "product.relatedProducts",
     },
-    // {
-    //   method: "GET",
-    //   path: "/products/:slug/build",
-    //   handler: "product.build",
-    //   config: {
-    //     auth: false,
-    //     policies: [],
-    //   },
-    // },
   ],
 };

@@ -1,4 +1,4 @@
-import Header from './Header';
+import Navbar from './Navbar';
 import Footer from './Footer';
 import MobileFooter from 'components/mobileVersionPage/MobileFooter';
 import { useSelector } from 'react-redux';
@@ -7,7 +7,6 @@ import { getHeaderData } from '@/state/headerSlice';
 import { getFooterData } from '@/state/footerSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-
 import { getUserFromLocalCookie } from '@/state/authSlice';
 import Cookies from 'js-cookie';
 
@@ -30,13 +29,13 @@ const Layout = ({ children }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
-      <Header />
+      <Navbar />
       <Box sx={{ mt: '60px', flex: '1 1 auto' }}>
         <Container maxWidth="lg" sx={{ p: mobile && '3px' }}>
           {children}
         </Container>
       </Box>
-      {mobile ? <MobileFooter /> : <Footer />}
+      <Footer />
     </Box>
   );
 };

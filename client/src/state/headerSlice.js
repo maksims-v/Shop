@@ -4,7 +4,7 @@ export const getHeaderData = createAsyncThunk(
   'headerData/getHeaderData',
   async function (_, { rejectWithValue }) {
     try {
-      const response = await fetch(`${process.env.API_URL}/api/page-homes`);
+      const response = await fetch(`${process.env.API_URL}/api/layout-header`);
 
       if (!response.ok) {
         throw new Error('Server Error!');
@@ -45,7 +45,7 @@ export const headerDataSlice = createSlice({
     },
     [getHeaderData.fulfilled]: (state, action) => {
       state.status = 'resolved';
-      state.data = action.payload.data[0].attributes.layout_header.data.attributes.linkList;
+      state.data = action.payload?.data[0].attributes.linkList;
     },
 
     [getHeaderData.rejected]: setError,

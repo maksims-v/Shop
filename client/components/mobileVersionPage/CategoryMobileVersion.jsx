@@ -1,7 +1,7 @@
 import { Box, Breadcrumbs } from '@mui/material';
 import ProductList from 'components/ProductList';
 import Link from 'next/link';
-import Layout from 'components/layout/Layout';
+import Layout from 'components/Layout';
 import MobileFilters from 'components/filtersComponents/MobileFilters';
 import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 

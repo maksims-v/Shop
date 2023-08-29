@@ -9,7 +9,7 @@ import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
-import Layout from 'components/layout/Layout';
+import Layout from 'components/Layout';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import GenderMobileVersion from 'components/mobileVersionPage/GenderMobileVersion';

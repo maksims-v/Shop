@@ -9,7 +9,7 @@ import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
-import Layout from 'components/layout/Layout';
+import Layout from 'components/Layout';
 import SubCategoryMobileVersion from 'components/mobileVersionPage/SubCategoryMobileVersion';
 
 const SubCategory = ({ gender, category, subcategory }) => {

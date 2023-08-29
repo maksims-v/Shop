@@ -20,7 +20,7 @@ import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import Layout from 'components/layout/Layout';
+import Layout from 'components/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
 import DoneIcon from '@mui/icons-material/Done';
 import AliceCarousel from 'react-alice-carousel';
@@ -35,7 +35,14 @@ const responsive = {
   600: { items: 2 },
 };
 
-const SlugMobileVesrsion = ({ product, similarProducts, gender, category, subcategory, slug }) => {
+const ProductPageMobileVersion = ({
+  product,
+  similarProductData,
+  gender,
+  category,
+  subcategory,
+  slug,
+}) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
 
@@ -300,4 +307,4 @@ const SlugMobileVesrsion = ({ product, similarProducts, gender, category, subcat
   );
 };
 
-export default SlugMobileVesrsion;
+export default ProductPageMobileVersion;
