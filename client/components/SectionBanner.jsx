@@ -1,29 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { getSectionBannerData } from '@/state/sectionBannerSlice';
-import { useEffect } from 'react';
 import { Box } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import Link from 'next/link';
 
-const SectionBanner = () => {
-  const dispatch = useDispatch();
-
-  const largeScreen = useMediaQuery('(min-width:1200px)');
-
-  const category = useSelector((state) => state.sectionBannerSlice.category);
-  const subcategory = useSelector((state) => state.sectionBannerSlice.subcategory);
-  const image = useSelector((state) => state.sectionBannerSlice.image);
-
-  useEffect(() => {
-    dispatch(getSectionBannerData());
-  }, []);
-
+const SectionBanner = ({ bannerData }) => {
   return (
-    <Box sx={{ mb: '50px' }}>
-      <Link href={subcategory ? `${category}/${subcategory}` : `${category}`}>
-        <img alt="banner" width="100%" src={`http://localhost:1337${image}`} />
-      </Link>
-    </Box>
+    bannerData.length !== 0 && (
+      <Box sx={{ mb: '50px' }}>
+        <Link
+          href={`${bannerData[0]?.attributes?.gender}/${bannerData[0]?.attributes?.category}/${bannerData[0]?.attributes?.subcategory}`}>
+          <img
+            alt="banner"
+            width="100%"
+            src={`${process.env.API_URL}${bannerData[0]?.attributes?.image?.data?.attributes?.url}`}
+          />
+        </Link>
+      </Box>
+    )
   );
 };
 

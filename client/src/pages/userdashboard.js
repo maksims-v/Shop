@@ -21,15 +21,13 @@ export default function CenteredTabs() {
   };
 
   return (
-    <Layout>
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="My profile" />
-          <Tab label="My orders" />
-          <Tab label="Delivery address" />
-        </Tabs>
-        {value === 0 && <UserSettings />}
-      </Box>
-    </Layout>
+    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <Tabs value={value} onChange={handleChange} centered>
+        <Tab label="My profile" />
+        <Tab label="My orders" />
+        <Tab label="Delivery address" />
+      </Tabs>
+      {value === 0 && <UserSettings />}
+    </Box>
   );
 }

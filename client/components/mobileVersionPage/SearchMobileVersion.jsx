@@ -6,13 +6,11 @@ import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
 const SearchMobileVersion = ({ clearFilters }) => {
   return (
-    <Layout>
-      <Box display="flex" alignContent="center" flexDirection="column">
-        <MobileSearchChip />
-        <MobileFilters clearFilters={clearFilters} />
-        <ProductList />
-      </Box>
-    </Layout>
+    <Box display="flex" alignContent="center" flexDirection="column">
+      <MobileSearchChip />
+      <MobileFilters clearFilters={clearFilters} />
+      <ProductList />
+    </Box>
   );
 };
 

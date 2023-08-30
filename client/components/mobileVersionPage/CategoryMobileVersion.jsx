@@ -7,31 +7,29 @@ import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
 const CategoryMobileVersion = ({ gender, category, clearFilters }) => {
   return (
-    <Layout>
-      <Box mt="0px">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '5px', pl: '20px' }}>
-          <Link underline="hover" color="inherit" href="/">
-            HOME
-          </Link>
-          <Link underline="hover" color="inherit" href={`/${gender}`}>
-            {gender?.toUpperCase()}
-          </Link>
-          <Link
-            style={{ fontWeight: 'bold' }}
-            underline="hover"
-            color="inherit"
-            href={`/${gender}/${category}`}>
-            {category?.toUpperCase()}
-          </Link>
-        </Breadcrumbs>
+    <Box mt="0px">
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '5px', pl: '20px' }}>
+        <Link underline="hover" color="inherit" href="/">
+          HOME
+        </Link>
+        <Link underline="hover" color="inherit" href={`/${gender}`}>
+          {gender?.toUpperCase()}
+        </Link>
+        <Link
+          style={{ fontWeight: 'bold' }}
+          underline="hover"
+          color="inherit"
+          href={`/${gender}/${category}`}>
+          {category?.toUpperCase()}
+        </Link>
+      </Breadcrumbs>
 
-        <Box display="flex" alignContent="center" flexDirection="column">
-          <MobileSearchChip />
-          <MobileFilters clearFilters={clearFilters} />
-          <ProductList />
-        </Box>
+      <Box display="flex" alignContent="center" flexDirection="column">
+        <MobileSearchChip />
+        <MobileFilters clearFilters={clearFilters} />
+        <ProductList />
       </Box>
-    </Layout>
+    </Box>
   );
 };
 

@@ -5,7 +5,6 @@ import authSlice from '@/state/authSlice.js';
 import shoppingCartSlice from '@/state/shoppingCartSlice.js';
 import searchPageSlice from '@/state/searchPageSlice.js';
 import headerSlice from '@/state/headerSlice.js';
-import sectionBannerSlice from '@/state/sectionBannerSlice.js';
 import footerSlice from '@/state/footerSlice.js';
 import newArrivalsSliderSlice from '@/state/newArrivalsSliderSlice.js';
 import relatedProductsSliderSlice from '@/state/relatedProductsSliderSlice.js';
@@ -21,7 +20,6 @@ const store = configureStore({
     shoppingCartSlice,
     searchPageSlice,
     headerSlice,
-    sectionBannerSlice,
     footerSlice,
     newArrivalsSliderSlice,
     relatedProductsSliderSlice,

@@ -34,28 +34,26 @@ const Search = ({ newSearch }) => {
   return mobile ? (
     <NewSearchMobileVesersion newSearch={newSearch} clearFilters={clearFilters} />
   ) : (
-    <Layout>
-      <Box sx={{ mt: '60px' }}>
-        <Box display="flex" alignContent="center" flexDirection="column">
-          <Typography
-            sx={{
-              fontSize: '22px',
-              fontWeight: 'bold',
-              margin: '0 auto 17px auto',
-            }}>
-            Your search for as produced {total} results
-          </Typography>
+    <Box sx={{ mt: '60px' }}>
+      <Box display="flex" alignContent="center" flexDirection="column">
+        <Typography
+          sx={{
+            fontSize: '22px',
+            fontWeight: 'bold',
+            margin: '0 auto 17px auto',
+          }}>
+          Your search for as produced {total} results
+        </Typography>
+      </Box>
+      <Box display="flex">
+        <Box flex="1 1 10%">
+          <Filters />
         </Box>
-        <Box display="flex">
-          <Box flex="1 1 10%">
-            <Filters />
-          </Box>
-          <Box flex="1 1 80%">
-            <ProductList />
-          </Box>
+        <Box flex="1 1 80%">
+          <ProductList />
         </Box>
       </Box>
-    </Layout>
+    </Box>
   );
 };
 

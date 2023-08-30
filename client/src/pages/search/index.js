@@ -34,18 +34,16 @@ const Index = () => {
   return mobile ? (
     <SearchMobileVersion clearFilters={clearFilters} />
   ) : (
-    <Layout>
-      <Box mt="60px">
-        <Box display="flex">
-          <Box flex="1 1 10%">
-            <Filters />
-          </Box>
-          <Box flex="1 1 80%">
-            <ProductList />
-          </Box>
+    <Box mt="60px">
+      <Box display="flex">
+        <Box flex="1 1 10%">
+          <Filters />
+        </Box>
+        <Box flex="1 1 80%">
+          <ProductList />
         </Box>
       </Box>
-    </Layout>
+    </Box>
   );
 };
 

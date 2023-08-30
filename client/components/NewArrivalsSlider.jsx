@@ -13,16 +13,7 @@ const responsive = {
   1152: { items: 4 },
 };
 
-const NewArrivalsSlider = () => {
-  const data = useSelector((state) => state.newArrivalsSliderSlice.data);
-  const status = useSelector((state) => state.newArrivalsSliderSlice.status);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getNewArrivalsSliderData());
-  }, []);
-
+const NewArrivalsSlider = ({ newProductsData }) => {
   return (
     <Box width="100%">
       <Link href="/newArrivals">
@@ -30,20 +21,21 @@ const NewArrivalsSlider = () => {
           New Arrivals
         </Typography>{' '}
       </Link>
-      {status === 'resolved' && (
-        <AliceCarousel
-          animationDuration={800}
-          disableDotsControls="true"
-          infinite
-          autoPlay
-          autoPlayInterval={2000}
-          items={data?.map((item) => (
-            <ProductCard key={item.id} item={item} />
-          ))}
-          responsive={responsive}
-          controlsStrategy="alternate"
-        />
-      )}
+      {/* <AliceCarousel
+        animationDuration={800}
+        disableDotsControls="true"
+        infinite
+        autoPlay
+        autoPlayInterval={2000}
+        items={newProductsData?.sortedProducts.map((item) => (
+          <ProductCard key={item.id} item={item} />
+        ))}
+        responsive={responsive}
+        controlsStrategy="alternate"
+      /> */}
+      {newProductsData?.sortedProducts?.map((item) => (
+        <ProductCard key={item.id} item={item} />
+      ))}
     </Box>
   );
 };

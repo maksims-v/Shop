@@ -6,13 +6,11 @@ import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
 const NewSearchMobileVesersion = ({ newSearch, clearFilters }) => {
   return (
-    <Layout>
       <Box display="flex" alignContent="center" flexDirection="column">
         <MobileSearchChip />
         <MobileFilters newSearch={newSearch} clearFilters={clearFilters} />
         <ProductList />
       </Box>
-    </Layout>
   );
 };
 

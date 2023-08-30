@@ -45,51 +45,49 @@ const SubCategory = ({ gender, category, subcategory }) => {
       clearFilters={clearFilters}
     />
   ) : (
-    <Layout>
-      <Box mt="50px">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
-          <Link underline="hover" color="inherit" href="/">
-            HOME
-          </Link>
-          <Link underline="hover" color="inherit" href={`/${gender}`}>
-            {gender?.toUpperCase()}
-          </Link>
-          <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
-            {category?.toUpperCase()}
-          </Link>
-          <Link
-            underline="hover"
-            style={{ pointerEvents: 'none', fontWeight: 'bold' }}
-            color="inherit"
-            href={`/${gender}/${category}/${subcategory}`}>
-            {subcategory.toUpperCase()}
-          </Link>
-        </Breadcrumbs>
+    <Box mt="50px">
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
+        <Link underline="hover" color="inherit" href="/">
+          HOME
+        </Link>
+        <Link underline="hover" color="inherit" href={`/${gender}`}>
+          {gender?.toUpperCase()}
+        </Link>
+        <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
+          {category?.toUpperCase()}
+        </Link>
+        <Link
+          underline="hover"
+          style={{ pointerEvents: 'none', fontWeight: 'bold' }}
+          color="inherit"
+          href={`/${gender}/${category}/${subcategory}`}>
+          {subcategory.toUpperCase()}
+        </Link>
+      </Breadcrumbs>
 
-        <Box display="flex">
-          <Box flex="1 1 10%">
-            <PriceSlider />
-            <SaleFilter />
-            <BrandFilter />
-            <SizesFilter />
-          </Box>
-          <Box flex="1 1 80%">
-            {!mobile && (
-              <Box display="flex" justifyContent="space-between" mb="10px">
-                <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
-                  {gender?.toUpperCase()} {subcategory?.toUpperCase()}{' '}
-                  <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
-                    ({total} products)
-                  </Typography>
+      <Box display="flex">
+        <Box flex="1 1 10%">
+          <PriceSlider />
+          <SaleFilter />
+          <BrandFilter />
+          <SizesFilter />
+        </Box>
+        <Box flex="1 1 80%">
+          {!mobile && (
+            <Box display="flex" justifyContent="space-between" mb="10px">
+              <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
+                {gender?.toUpperCase()} {subcategory?.toUpperCase()}{' '}
+                <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
+                  ({total} products)
                 </Typography>
-                <SortingByPriceAndName />
-              </Box>
-            )}
-            <ProductList gender={gender} category={category} />
-          </Box>
+              </Typography>
+              <SortingByPriceAndName />
+            </Box>
+          )}
+          <ProductList gender={gender} category={category} />
         </Box>
       </Box>
-    </Layout>
+    </Box>
   );
 };
 

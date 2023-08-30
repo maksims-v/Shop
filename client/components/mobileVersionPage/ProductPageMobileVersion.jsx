@@ -108,7 +108,6 @@ const ProductPageMobileVersion = ({
   };
 
   return (
-    <Layout>
       <Box width="100%" m="0px auto" p="0px 5px">
         <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '10px' }}>
           <Link underline="hover" color="inherit" href="/">
@@ -303,7 +302,6 @@ const ProductPageMobileVersion = ({
           </Snackbar>
         </Stack>
       </Box>
-    </Layout>
   );
 };
 

@@ -23,39 +23,19 @@
         }
       },
       "type": "string",
-      "required": true,
+      "required": false,
       "unique": true
     },
     "image": {
       "type": "media",
       "multiple": false,
       "required": true,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
+      "allowedTypes": ["images", "files", "videos", "audios"],
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
-    },
-    "category": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "all",
-        "men's",
-        "women's"
-      ],
-      "required": true,
-      "default": "all"
     },
     "subcategory": {
       "pluginOptions": {
@@ -74,7 +54,28 @@
         "headwear",
         "bags",
         "gloves"
-      ]
+      ],
+      "required": true
+    },
+    "gender": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": ["all", "men's", "women's"],
+      "required": true
+    },
+    "category": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": ["clothing", "footwear", "accessories", "activities"],
+      "required": true
     }
   }
 }

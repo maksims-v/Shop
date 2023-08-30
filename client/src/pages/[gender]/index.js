@@ -46,46 +46,44 @@ const PageCategory = ({ gender }) => {
   return mobile ? (
     <GenderMobileVersion clearFilters={clearFilters} gender={gender} />
   ) : (
-    <Layout>
-      <Box mt="50px">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
-          <Link underline="hover" color="inherit" href="/">
-            HOME
-          </Link>
-          <Link
-            underline="hover"
-            color="inherit"
-            style={{ pointerEvents: 'none', fontWeight: 'bold' }}
-            href={`/${gender}`}>
-            {gender?.toUpperCase()}
-          </Link>
-        </Breadcrumbs>
-        <Box display="flex">
-          <Box flex="1 1 10%">
-            <PriceSlider />
-            <SaleFilter handleChange={handleChange} />
-            <CategoryFilter />
-            <SubCategoryFilter />
-            <BrandFilter />
-            <SizesFilter />
-          </Box>
-          <Box flex="1 1 80%">
-            {!mobile && (
-              <Box display="flex" justifyContent="space-between" mb="10px">
-                <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
-                  {gender?.toUpperCase()}
-                  <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
-                    ({total} products)
-                  </Typography>
+    <Box mt="50px">
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
+        <Link underline="hover" color="inherit" href="/">
+          HOME
+        </Link>
+        <Link
+          underline="hover"
+          color="inherit"
+          style={{ pointerEvents: 'none', fontWeight: 'bold' }}
+          href={`/${gender}`}>
+          {gender?.toUpperCase()}
+        </Link>
+      </Breadcrumbs>
+      <Box display="flex">
+        <Box flex="1 1 10%">
+          <PriceSlider />
+          <SaleFilter handleChange={handleChange} />
+          <CategoryFilter />
+          <SubCategoryFilter />
+          <BrandFilter />
+          <SizesFilter />
+        </Box>
+        <Box flex="1 1 80%">
+          {!mobile && (
+            <Box display="flex" justifyContent="space-between" mb="10px">
+              <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
+                {gender?.toUpperCase()}
+                <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
+                  ({total} products)
                 </Typography>
-                <SortingByPriceAndName />
-              </Box>
-            )}
-            <ProductList gender={gender} />
-          </Box>
+              </Typography>
+              <SortingByPriceAndName />
+            </Box>
+          )}
+          <ProductList gender={gender} />
         </Box>
       </Box>
-    </Layout>
+    </Box>
   );
 };
 
