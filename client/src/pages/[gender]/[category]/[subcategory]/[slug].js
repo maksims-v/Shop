@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import {
   Box,
   Button,
@@ -23,7 +22,6 @@ import Link from 'next/link';
 import { addToBasket } from '@/state/shoppingCartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import Layout from 'components/Layout';
 import RelatedProductsSlider from 'components/RelatedProductsSlider';
 import DoneIcon from '@mui/icons-material/Done';
 import { getProductData } from '@/state/productPageSlice';

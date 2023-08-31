@@ -22,7 +22,7 @@ export async function getStaticProps() {
   return {
     props: {
       bannerData: data.data,
-      newProductsData: newData.data.attributes,
+      newProductsData: newData.data.attributes.sortedProducts,
     },
   };
 }

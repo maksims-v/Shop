@@ -6,7 +6,6 @@ import shoppingCartSlice from '@/state/shoppingCartSlice.js';
 import searchPageSlice from '@/state/searchPageSlice.js';
 import headerSlice from '@/state/headerSlice.js';
 import footerSlice from '@/state/footerSlice.js';
-import newArrivalsSliderSlice from '@/state/newArrivalsSliderSlice.js';
 import relatedProductsSliderSlice from '@/state/relatedProductsSliderSlice.js';
 import productPageSlice from '@/state/productPageSlice.js';
 import { ThemeProvider } from '@mui/material';
@@ -21,7 +20,6 @@ const store = configureStore({
     searchPageSlice,
     headerSlice,
     footerSlice,
-    newArrivalsSliderSlice,
     relatedProductsSliderSlice,
     productPageSlice,
   },

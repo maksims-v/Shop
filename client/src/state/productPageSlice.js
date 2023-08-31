@@ -18,7 +18,7 @@ export const getProductData = createAsyncThunk(
 
       const data = response.json();
 
-      data.then((product) => dispatch(getSimilarProductData(product)));
+      data.then((product) => dispatch(getSimilarProductData(product?.data[0].attributes)));
 
       return data;
     } catch (error) {
@@ -30,7 +30,7 @@ export const getProductData = createAsyncThunk(
 export const getSimilarProductData = createAsyncThunk(
   'productPage/getSimilarProductData',
   async function (product, { rejectWithValue }) {
-    const { title, slug } = product.data && product.data[0].attributes;
+    const { title, slug } = product;
 
     try {
       const query = qs.stringify({
@@ -89,6 +89,7 @@ export const productPageSlice = createSlice({
       state.similarProductsError = null;
     },
     [getSimilarProductData.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.similarProductData = action.payload;
       state.similarProductStatus = 'resolved';
     },

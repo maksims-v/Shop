@@ -1,9 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import ProductCard from './ProductCard';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { getNewArrivalsSliderData } from '@/state/newArrivalsSliderSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
@@ -14,6 +12,14 @@ const responsive = {
 };
 
 const NewArrivalsSlider = ({ newProductsData }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const data = newProductsData?.map((item) => <ProductCard key={item.id} item={item} />);
+
   return (
     <Box width="100%">
       <Link href="/newArrivals">
@@ -21,24 +27,20 @@ const NewArrivalsSlider = ({ newProductsData }) => {
           New Arrivals
         </Typography>{' '}
       </Link>
-      {/* <AliceCarousel
-        animationDuration={800}
-        disableDotsControls="true"
-        infinite
-        autoPlay
-        autoPlayInterval={2000}
-        items={newProductsData?.sortedProducts.map((item) => (
-          <ProductCard key={item.id} item={item} />
-        ))}
-        responsive={responsive}
-        controlsStrategy="alternate"
-      /> */}
-      {newProductsData?.sortedProducts?.map((item) => (
-        <ProductCard key={item.id} item={item} />
-      ))}
+      {isClient && (
+        <AliceCarousel
+          animationDuration={800}
+          disableDotsControls="true"
+          infinite
+          autoPlay
+          autoPlayInterval={2000}
+          items={data}
+          responsive={responsive}
+          controlsStrategy="alternate"
+        />
+      )}
     </Box>
   );
 };
-// {status === 'resolved' && data?.map((item) => <ProductCard key={item.id} item={item} />)}
 
 export default NewArrivalsSlider;

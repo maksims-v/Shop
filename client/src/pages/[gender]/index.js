@@ -1,7 +1,7 @@
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { search, clearAllFilters, setDiscounts, setSortValue } from '@/state/searchPageSlice';
+import { search, clearAllFilters, setDiscounts } from '@/state/searchPageSlice';
 import ProductList from 'components/ProductList';
 import SaleFilter from 'components/filtersComponents/SaleFilter';
 import CategoryFilter from 'components/filtersComponents/CategoryFilter';
@@ -9,7 +9,6 @@ import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
-import Layout from 'components/Layout';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import GenderMobileVersion from 'components/mobileVersionPage/GenderMobileVersion';
