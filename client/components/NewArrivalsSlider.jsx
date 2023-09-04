@@ -23,7 +23,7 @@ const NewArrivalsSlider = ({ newProductsData }) => {
   return (
     <Box width="100%">
       <Link href="/newArrivals">
-        <Typography variant="h3" sx={{ fontWeight: 'bold', fontSize: '20px' }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center' }}>
           New Arrivals
         </Typography>{' '}
       </Link>
@@ -32,7 +32,7 @@ const NewArrivalsSlider = ({ newProductsData }) => {
           animationDuration={800}
           disableDotsControls="true"
           infinite
-          autoPlay
+          // autoPlay
           autoPlayInterval={2000}
           items={data}
           responsive={responsive}

@@ -1,10 +1,12 @@
 import NewArrivalsSlider from 'components/NewArrivalsSlider';
 import SectionBanner from 'components/SectionBanner';
+import PopularCategorySection from 'components/PopularCategorySection';
 
 const Home = ({ bannerData, newProductsData }) => {
   return (
     <>
       <SectionBanner bannerData={bannerData} />
+      <PopularCategorySection />
       <NewArrivalsSlider newProductsData={newProductsData} />
     </>
   );
