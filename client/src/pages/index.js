@@ -1,13 +1,18 @@
+const qs = require('qs');
 import NewArrivalsSlider from 'components/NewArrivalsSlider';
 import SectionBanner from 'components/SectionBanner';
 import PopularCategorySection from 'components/PopularCategorySection';
+import ClearanseSlider from 'components/ClearanseSlider';
 
-const Home = ({ bannerData, newProductsData }) => {
+const Home = ({ bannerData, newProductsData, clearenceData }) => {
+  console.log(clearenceData);
+
   return (
     <>
       <SectionBanner bannerData={bannerData} />
       <PopularCategorySection />
       <NewArrivalsSlider newProductsData={newProductsData} />
+      <ClearanseSlider clearenceData={clearenceData} />
     </>
   );
 };
@@ -15,16 +20,26 @@ const Home = ({ bannerData, newProductsData }) => {
 export default Home;
 
 export async function getStaticProps() {
-  const bannerResponse = await fetch(`${process.env.API_URL}/api/section-banners?populate=*`);
-  const newProductsData = await fetch(`${process.env.API_URL}/api/products/newarrivals`);
+  const query = qs.stringify({
+    filters: {
+      clearance: true,
+    },
+    populate: { image: true },
+  });
 
-  const data = await bannerResponse.json();
-  const newData = await newProductsData.json();
+  const bannerResponse = await fetch(`${process.env.API_URL}/api/section-banners?populate=*`);
+  const newProductsResponse = await fetch(`${process.env.API_URL}/api/products/newarrivals`);
+  const clearenceResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
+
+  const bannerDataJson = await bannerResponse.json();
+  const newProductsJson = await newProductsResponse.json();
+  const clearenceDataJson = await clearenceResponse.json();
 
   return {
     props: {
-      bannerData: data.data,
-      newProductsData: newData.data.attributes.sortedProducts,
+      bannerData: bannerDataJson.data,
+      newProductsData: newProductsJson.data.attributes.sortedProducts,
+      clearenceData: clearenceDataJson.data,
     },
   };
 }

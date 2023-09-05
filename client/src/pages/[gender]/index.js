@@ -1,4 +1,5 @@
-import { Box, Breadcrumbs, Typography } from '@mui/material';
+const qs = require('qs');
+import { Box, Breadcrumbs, Typography, CardActionArea, CardMedia } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearAllFilters, setDiscounts } from '@/state/searchPageSlice';
@@ -13,7 +14,7 @@ import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import GenderMobileVersion from 'components/mobileVersionPage/GenderMobileVersion';
 
-const PageCategory = ({ gender }) => {
+const PageGender = ({ gender, pageBannerdata }) => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
   const currentPage = useSelector((state) => state.searchPageSlice.currentPage);
@@ -24,6 +25,8 @@ const PageCategory = ({ gender }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage, sortValue]);
+
+  console.log(pageBannerdata);
 
   useEffect(() => {
     dispatch(clearAllFilters());
@@ -79,6 +82,50 @@ const PageCategory = ({ gender }) => {
               <SortingByPriceAndName />
             </Box>
           )}
+          <Box
+            sx={{
+              height: '280px',
+              backgroundColor: '#f4f5f5',
+              display: 'flex',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <Box
+              sx={{
+                height: '100%',
+                width: '30%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f4f5f5',
+              }}>
+              <CardActionArea sx={{ height: '100%', backgroundColor: '#f4f5f5' }}>
+                <CardMedia
+                  sx={{ height: '100%' }}
+                  component="img"
+                  image={`${process.env.API_URL}${pageBannerdata?.image?.data?.attributes?.url}`}
+                  alt="img"
+                />
+              </CardActionArea>
+            </Box>
+            <Box
+              sx={{
+                height: '100%',
+                width: '30%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <CardActionArea sx={{ height: '100%' }}>
+                <CardMedia
+                  sx={{ height: '100%' }}
+                  component="img"
+                  image={`${process.env.API_URL}${pageBannerdata?.image?.data?.attributes?.url}`}
+                  alt="img"
+                />
+              </CardActionArea>
+            </Box>
+          </Box>
           <ProductList gender={gender} />
         </Box>
       </Box>
@@ -86,10 +133,32 @@ const PageCategory = ({ gender }) => {
   );
 };
 
-export default PageCategory;
+export default PageGender;
 
 export async function getServerSideProps({ params }) {
   const { gender } = params;
 
-  return { props: { gender } };
+  const query = qs.stringify(
+    {
+      populate: {
+        product: {
+          populate: ['gender', 'category', 'subcategory', 'image'],
+        },
+      },
+    },
+    {
+      encodeValuesOnly: true, // prettify URL
+    },
+  );
+
+  const pageBannerResponse = await fetch(`${process.env.API_URL}/api/mens-page-banners?${query}`);
+
+  const pageBannerResponseJson = await pageBannerResponse.json();
+
+  return {
+    props: {
+      gender,
+      pageBannerdata: pageBannerResponseJson?.data[0].attributes.product,
+    },
+  };
 }

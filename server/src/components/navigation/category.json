@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_navigation_categories",
+  "info": {
+    "displayName": "category"
+  },
+  "options": {},
+  "attributes": {
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "clothing",
+        "footwear",
+        "accessories",
+        "activities"
+      ]
+    }
+  }
+}

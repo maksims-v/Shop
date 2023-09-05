@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_page_banner_item_page_banner_items",
+  "info": {
+    "displayName": "PageBannerItem",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "brand": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.gender"
+    },
+    "category": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.category"
+    },
+    "subcategory": {
+      "type": "component",
+      "repeatable": false,
+      "component": "navigation.subcategory"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "isShow": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    }
+  }
+}

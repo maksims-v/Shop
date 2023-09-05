@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mens_page_banners",
+  "info": {
+    "singularName": "mens-page-banner",
+    "pluralName": "mens-page-banners",
+    "displayName": "MensPageBanner",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "product": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "page-banner-item.page-banner-item"
+    }
+  }
+}

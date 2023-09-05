@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_navigation_genders",
+  "info": {
+    "displayName": "Gender"
+  },
+  "options": {},
+  "attributes": {
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "men's",
+        "women's",
+        "all"
+      ],
+      "required": true
+    }
+  }
+}

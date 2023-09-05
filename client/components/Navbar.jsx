@@ -44,8 +44,8 @@ const Navbar = () => {
         sx={{
           width: '100%',
           height: '60px',
-          backgroundColor: '#262624',
           position: 'fixed',
+          backgroundColor: 'white',
           zIndex: '99',
         }}>
         <Container maxWidth="xl" sx={{ height: '100%', width: '100%' }}>
@@ -74,7 +74,11 @@ const Navbar = () => {
                 return (
                   <Link href={`${item.href}`} key={item.label}>
                     <Box
-                      sx={{ '&:hover': { cursor: 'pointer', color: '#ffde00' } }}
+                      sx={{
+                        color: 'black',
+                        fontWeight: '600',
+                        '&:hover': { cursor: 'pointer', color: '#ffde00' },
+                      }}
                       onMouseEnter={() => openMenu(item.link)}>
                       {item.label}
                     </Box>
@@ -94,7 +98,14 @@ const Navbar = () => {
               }}>
               <Paper
                 component="form"
-                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 200 }}>
+                sx={{
+                  p: '2px 4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: 250,
+                  height: 40,
+                  mr: '10px',
+                }}>
                 <InputBase
                   onChange={(e) => setSearchValue(e.target.value)}
                   value={searchValue}
@@ -109,7 +120,7 @@ const Navbar = () => {
                     type="button"
                     sx={{ p: '10px' }}
                     aria-label="search">
-                    <SearchIcon />
+                    <SearchIcon fontSize="small" />
                   </IconButton>
                 </Link>
               </Paper>
@@ -128,7 +139,7 @@ const Navbar = () => {
                         minWidth: '13px',
                       },
                     }}>
-                    <IconButton sx={{ color: 'white' }}>
+                    <IconButton>
                       <ShoppingBagOutlined />
                     </IconButton>
                   </Badge>
@@ -137,21 +148,17 @@ const Navbar = () => {
                 {isAuth ? (
                   <>
                     <Link href="/userdashboard">
-                      <IconButton sx={{ color: 'white' }}>
+                      <IconButton>
                         <SettingsIcon />
                       </IconButton>
                     </Link>
 
-                    <IconButton onClick={logout} sx={{ color: 'white' }}>
+                    <IconButton onClick={logout}>
                       <LogoutIcon />
                     </IconButton>
                   </>
                 ) : (
-                  <IconButton
-                    onClick={() => setOpenModalAuth(!openModalAuth)}
-                    sx={{
-                      color: 'white',
-                    }}>
+                  <IconButton onClick={() => setOpenModalAuth(!openModalAuth)} sx={{}}>
                     <PersonOutline />
                   </IconButton>
                 )}
@@ -161,38 +168,42 @@ const Navbar = () => {
         </Container>
 
         {subHeaderOpenLink.length !== 0 && (
-          <Box
-            position="absolute"
-            pr="25px"
-            top="60px"
-            height="50px"
-            width="100%"
-            display={subHeaderMenuOpen ? 'flex' : 'none'}
-            justifyContent="center"
-            alignItems="center"
-            color="black"
-            backgroundColor="gray"
-            onMouseLeave={() => setSubHeaderMenuOpen(false)}>
-            <Box display="flex" gap="20px">
-              {subHeaderOpenLink &&
-                subHeaderOpenLink.map((item) => {
-                  return (
-                    <Link key={item.href} href={item.href}>
-                      <Box
-                        sx={{
-                          color: 'white',
-                          '&:hover': { cursor: 'pointer', color: '#ffde00' },
-                        }}>
-                        {item.label}
-                      </Box>
-                    </Link>
-                  );
-                })}
+          <>
+            <Box
+              borderTop="1px solid #aeaeae"
+              position="absolute"
+              pr="25px"
+              top="60px"
+              height="50px"
+              width="100%"
+              display={subHeaderMenuOpen ? 'flex' : 'none'}
+              justifyContent="center"
+              alignItems="center"
+              color="black"
+              backgroundColor="white"
+              onMouseLeave={() => setSubHeaderMenuOpen(false)}>
+              <Box display="flex" gap="20px">
+                {subHeaderOpenLink &&
+                  subHeaderOpenLink.map((item) => {
+                    return (
+                      <Link key={item.href} href={item.href}>
+                        <Box
+                          sx={{
+                            color: 'black',
+                            fontWeight: '600',
+                            '&:hover': { cursor: 'pointer', color: '#ffde00' },
+                          }}>
+                          {item.label}
+                        </Box>
+                      </Link>
+                    );
+                  })}
+              </Box>
             </Box>
-          </Box>
+          </>
         )}
+        <Divider color="#aeaeae" />
       </Box>
-
       <AuthModal setOpenModalAuth={setOpenModalAuth} openModalAuth={openModalAuth} />
     </>
   );

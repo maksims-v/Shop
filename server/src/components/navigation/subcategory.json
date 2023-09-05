@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_navigation_subcategories",
+  "info": {
+    "displayName": "subcategory"
+  },
+  "options": {},
+  "attributes": {
+    "subcategory": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "shoes",
+        "socks",
+        "sandals",
+        "jackets",
+        "shirts",
+        "headwear",
+        "bags",
+        "gloves"
+      ]
+    }
+  }
+}

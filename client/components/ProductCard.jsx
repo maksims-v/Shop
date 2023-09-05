@@ -12,7 +12,7 @@ import FiberNewIcon from '@mui/icons-material/FiberNew';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-const ProductCard = ({ item }) => {
+const ProductCard = ({ item, clearence }) => {
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
   const status = useSelector((state) => state.searchPageSlice.status);
 
@@ -27,7 +27,13 @@ const ProductCard = ({ item }) => {
       <Link href={`/${item?.gender}/${item?.category}/${item?.subcategory}/${item?.slug}`}>
         {/* {status || status2 || status3 === 'resolved' ? ( */}
         <CardActionArea sx={{ minHeight: mobile ? '213px' : '283px' }}>
-          <CardMedia component="img" image={`${process.env.API_URL}${item?.image}`} alt="img" />
+          <CardMedia
+            component="img"
+            image={`${process.env.API_URL}${
+              clearence ? item.image?.data[0]?.attributes?.formats?.medium?.url : item?.image
+            }`}
+            alt="img"
+          />
 
           {item.new && (
             <FiberNewIcon
