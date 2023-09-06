@@ -222,6 +222,24 @@
       "relation": "manyToOne",
       "target": "api::order.order",
       "inversedBy": "variation"
+    },
+    "showOnBanner": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean",
+      "default": false
+    },
+    "showOnCategoryBanner": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean",
+      "default": false
     }
   }
 }

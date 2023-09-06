@@ -72,7 +72,7 @@ const Navbar = () => {
             {headerFetchData &&
               headerFetchData.map((item) => {
                 return (
-                  <Link href={`${item.href}`} key={item.label}>
+                  <Link key={item.label} href={`${item.href}`}>
                     <Box
                       sx={{
                         color: 'black',
@@ -186,7 +186,7 @@ const Navbar = () => {
                 {subHeaderOpenLink &&
                   subHeaderOpenLink.map((item) => {
                     return (
-                      <Link key={item.href} href={item.href}>
+                      <Link key={item.href} href={`${item.href}`}>
                         <Box
                           sx={{
                             color: 'black',

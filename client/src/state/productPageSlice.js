@@ -18,7 +18,7 @@ export const getProductData = createAsyncThunk(
 
       const data = response.json();
 
-      data.then((product) => dispatch(getSimilarProductData(product?.data[0].attributes)));
+      data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
 
       return data;
     } catch (error) {

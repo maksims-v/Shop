@@ -4,7 +4,6 @@ import Filters from 'components/Filters';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearAllFilters } from '@/state/searchPageSlice';
-import Layout from 'components/Layout';
 import SearchMobileVersion from 'components/mobileVersionPage/SearchMobileVersion';
 
 const Index = () => {

@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { search, clearAllFilters, inputValue } from '@/state/searchPageSlice';
 import NewSearchMobileVesersion from 'components/mobileVersionPage/NewSearchMobileVesersion';
-import Layout from 'components/Layout';
 
 const Search = ({ newSearch }) => {
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);

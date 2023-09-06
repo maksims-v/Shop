@@ -18,10 +18,11 @@ export const search = createAsyncThunk(
     const getCategoryValue = value?.category ? value.category : categoryChecked;
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';
+
     try {
       let response = '';
 
-      if (value.gender == 'sale') {
+      if (value?.gender == 'sale') {
         response = await fetch(
           `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=Sale&category=${getCategoryValue}&gender=men's,women's&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
         );

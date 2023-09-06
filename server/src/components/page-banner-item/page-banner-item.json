@@ -39,6 +39,22 @@
       "type": "boolean",
       "default": false,
       "required": true
+    },
+    "sale": {
+      "type": "boolean",
+      "default": false
+    },
+    "price": {
+      "type": "decimal",
+      "required": false
+    },
+    "oldPrice": {
+      "type": "decimal"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": false
     }
   }
 }

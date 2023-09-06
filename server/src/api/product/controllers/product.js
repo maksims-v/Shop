@@ -94,7 +94,16 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           },
           $and: [
             {
-              title: { $startsWith: searchItem },
+              $or: [
+                { title: { $startsWith: searchItem } },
+                {
+                  subproductcategory: {
+                    subproductcategory: {
+                      $startsWith: searchItem,
+                    },
+                  },
+                },
+              ],
             },
             {
               $or: [{ price: { $between: [priceMin, priceMax] } }],
@@ -150,7 +159,16 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           },
           $and: [
             {
-              title: { $startsWith: searchItem },
+              $or: [
+                { title: { $startsWith: searchItem } },
+                {
+                  subproductcategory: {
+                    subproductcategory: {
+                      $startsWith: searchItem,
+                    },
+                  },
+                },
+              ],
             },
             {
               $or: [{ price: { $between: [priceMin, priceMax] } }],

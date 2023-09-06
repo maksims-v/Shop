@@ -19,8 +19,6 @@ const ClearanseSlider = ({ clearenceData }) => {
     setIsClient(true);
   }, []);
 
-  console.log(clearenceData);
-
   const data = clearenceData?.map((item) => (
     <ProductCard key={item.id} item={item.attributes} clearence={clearence} />
   ));
