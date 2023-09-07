@@ -73,8 +73,8 @@ const PageGender = ({ gender, pageBannerdata }) => {
 
         <Box flex="1 1 80%">
           {!mobile && (
-            <Box display="flex" justifyContent="space-between" mb="10px">
-              <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
+            <Box display="flex" justifyContent="space-between" mb="20px">
+              <Typography variant="h3" sx={{ fontSize: '22px', fontWeight: '600' }}>
                 {gender?.toUpperCase()}
                 <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
                   ({total} products)
@@ -98,19 +98,6 @@ export async function getServerSideProps({ params }) {
 
   const query = qs.stringify(
     {
-      populate: {
-        product: {
-          populate: ['gender', 'category', 'subcategory', 'image'],
-        },
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    },
-  );
-
-  const bannerQuery = qs.stringify(
-    {
       filters: {
         gender: gender,
         showOnBanner: true,
@@ -124,10 +111,9 @@ export async function getServerSideProps({ params }) {
     },
   );
 
-  const pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${bannerQuery}`);
+  const pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
   const pageBannerResponseJson = await pageBannerResponse.json();
 
-  console.log(pageBannerResponseJson);
   return {
     props: {
       gender,

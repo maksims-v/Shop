@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "products",
+  "collectionName": "equipments",
   "info": {
-    "singularName": "product",
-    "pluralName": "products",
-    "displayName": "Product",
+    "singularName": "equipment",
+    "pluralName": "equipments",
+    "displayName": "Equipment",
     "description": ""
   },
   "options": {
@@ -17,15 +17,16 @@
   },
   "attributes": {
     "title": {
-      "type": "string",
-      "required": true,
-      "maxLength": 71,
-      "minLength": 3,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "string",
+      "required": true,
+      "maxLength": 71,
+      "minLength": 3,
+      "unique": false
     },
     "image": {
       "type": "media",
@@ -41,67 +42,67 @@
       }
     },
     "category": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "type": "enumeration",
       "enum": [
-        "clothing",
-        "footwear",
-        "accessories",
-        "activities"
+        "Lamps-Lanterns",
+        "Tools-Gear",
+        "Camp-Sleep",
+        "Other Categories"
       ],
-      "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "required": true
     },
     "price": {
-      "type": "decimal",
-      "required": true,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "decimal",
+      "required": true
     },
     "new": {
-      "type": "boolean",
-      "default": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "boolean",
+      "default": false
     },
     "sale": {
-      "type": "boolean",
-      "default": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "boolean",
+      "default": false
     },
     "oldPrice": {
-      "type": "decimal",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "decimal"
     },
     "brand": {
-      "type": "string",
-      "required": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "string",
+      "required": true
     },
     "color": {
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -118,22 +119,6 @@
         }
       },
       "component": "size.size"
-    },
-    "gender": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "all",
-        "men's",
-        "women's",
-        "equipment"
-      ],
-      "required": true,
-      "default": "all"
     },
     "clearance": {
       "pluginOptions": {
@@ -170,42 +155,6 @@
       "targetField": "title",
       "required": true
     },
-    "subproductcategory": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "subproductcategory.subproductcategory"
-    },
-    "subcategory": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "all",
-        "shoes",
-        "socks",
-        "sandals",
-        "jackets",
-        "shirts",
-        "headwear",
-        "bags",
-        "gloves"
-      ],
-      "required": true
-    },
-    "product": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::order.order",
-      "inversedBy": "variation"
-    },
     "showOnBanner": {
       "pluginOptions": {
         "i18n": {
@@ -215,7 +164,7 @@
       "type": "boolean",
       "default": false
     },
-    "showOnCategoryBanner": {
+    "showOnCattegoryBanner": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -223,6 +172,97 @@
       },
       "type": "boolean",
       "default": false
+    },
+    "lampsLanternsCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Headlamps",
+        "Flashlights",
+        "Lantern",
+        "Bike lights",
+        "Hunting Headlamps-Flashlights",
+        "Hunting Flashlights",
+        "Bait Lights",
+        "Accessories Lamps-Lanterns"
+      ],
+      "required": true,
+      "default": "null"
+    },
+    "campSleepCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Tents",
+        "Shelters",
+        "Sleeping Bags",
+        "Sleeping Pads",
+        "Hammocks-Accessories",
+        "Camping Furniture",
+        "Pillows"
+      ],
+      "default": "null",
+      "required": true
+    },
+    "toolsGearCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Axes",
+        "Multi-tool",
+        "Saws",
+        "Sharpeners",
+        "Lighters-Firesteel"
+      ],
+      "required": true,
+      "default": "null"
+    },
+    "otherCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Binoculars",
+        "Crashpads",
+        "Chalk-Chalk Bags",
+        "Brushes-Accessories",
+        "Climbing Packages",
+        "Climbing Harnesses",
+        "Climbing Ropes-Slings",
+        "Climbing Packs",
+        "Climbing Helmets",
+        "Carabiners-Quickdraws",
+        "Belay-Rapel Devices",
+        "Protection",
+        "Climbing Footwear",
+        "Portaledges",
+        "Training Equipment Climbing",
+        "Climbing Books",
+        "Bouldering",
+        "Via Ferrata",
+        "Ice Climbing"
+      ],
+      "default": "null",
+      "required": true
     }
   }
 }

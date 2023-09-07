@@ -37,7 +37,6 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
   };
 
   useEffect(() => {
-    console.log('hai');
     dispatch(inputValue(newSearch));
   }, [newSearch]);
 

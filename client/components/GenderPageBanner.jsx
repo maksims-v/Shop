@@ -2,8 +2,6 @@ import { Box, CardActionArea, CardMedia, CardContent, Typography, Card } from '@
 import Link from 'next/link';
 
 const GenderPageBanner = ({ pageBannerdata }) => {
-  console.log(pageBannerdata);
-
   const bannerItems = pageBannerdata?.map((item) => {
     return (
       <Box
@@ -14,7 +12,8 @@ const GenderPageBanner = ({ pageBannerdata }) => {
           display: 'flex',
           justifyContent: 'center',
         }}>
-        <Link href={`/search/${item.attributes.title}`}>
+        <Link
+          href={`/shop/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`}>
           <CardActionArea sx={{ display: 'flex' }}>
             <CardMedia
               sx={{ height: '100%', maxWidth: '220px' }}

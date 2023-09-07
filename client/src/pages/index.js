@@ -5,8 +5,6 @@ import PopularCategorySection from 'components/PopularCategorySection';
 import ClearanseSlider from 'components/ClearanseSlider';
 
 const Home = ({ bannerData, newProductsData, clearenceData }) => {
-  console.log(clearenceData);
-
   return (
     <>
       <SectionBanner bannerData={bannerData} />

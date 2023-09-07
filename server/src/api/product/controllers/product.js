@@ -55,7 +55,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     if (gender == "all") genderSplitArr.push("women's", "men's");
     if (gender == "men's" || gender == "women's") genderSplitArr.push("all");
-    console.log(genderSplitArr);
 
     let sizeArr = [];
     if (

@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryChecked } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
+import { useRouter } from 'next/router';
 
 const CategoryFilter = () => {
   const dispatch = useDispatch();
   const category = useSelector((state) => state.searchPageSlice.category);
   const status = useSelector((state) => state.searchPageSlice.status);
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
+
+  const router = useRouter();
+
+  const { pathname } = router;
 
   const handleChange = (event) => {
     dispatch(setCategoryChecked(event.target.name));
@@ -15,7 +20,7 @@ const CategoryFilter = () => {
   return (
     <Box mb="10px">
       <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
-        {mobile ? null : 'CLOTHING & SHOES'}
+        {mobile ? null : pathname == '/equipmentshop' ? 'Equipment' : 'CLOTHING & SHOES'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

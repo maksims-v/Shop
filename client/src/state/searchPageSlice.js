@@ -19,29 +19,52 @@ export const search = createAsyncThunk(
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';
 
-    try {
-      let response = '';
+    console.log(value);
 
-      if (value?.gender == 'sale') {
+    if (value.path == '/equipments') {
+      try {
+        let response = '';
+
         response = await fetch(
-          `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=Sale&category=${getCategoryValue}&gender=men's,women's&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
+          `${process.env.API_URL}/api/equipments/shop?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
         );
-      } else {
-        response = await fetch(
-          `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
-        );
+
+        if (!response.ok) {
+          throw new Error('Server Error!');
+        }
+
+        const data = response.json();
+        dispatch(getAllSizes());
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
       }
+    } else {
+      try {
+        let response = '';
 
-      if (!response.ok) {
-        throw new Error('Server Error!');
+        if (value?.gender == 'sale') {
+          response = await fetch(
+            `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=Sale&category=${getCategoryValue}&gender=men's,women's&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
+          );
+        } else {
+          response = await fetch(
+            `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
+          );
+        }
+
+        if (!response.ok) {
+          throw new Error('Server Error!');
+        }
+
+        const data = response.json();
+        dispatch(getAllSizes());
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
       }
-
-      const data = response.json();
-      dispatch(getAllSizes());
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
     }
   },
 );
