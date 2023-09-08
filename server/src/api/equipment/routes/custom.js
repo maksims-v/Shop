@@ -5,5 +5,10 @@ module.exports = {
       path: "/equipments/shop",
       handler: "equipment.search",
     },
+    {
+      method: "GET",
+      path: "/equipments/relatedproducts",
+      handler: "equipment.relatedProducts",
+    },
   ],
 };

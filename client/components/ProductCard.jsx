@@ -28,14 +28,13 @@ const ProductCard = ({ item, clearence }) => {
         href={
           item?.gender
             ? `/shop/${item?.gender}/${item?.category}/${item?.subcategory}/${item?.slug}`
-            : `/equipmentshop/${item?.category}/${
-                (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory,
-                item?.otherCategory !== 'null' && item?.otherCategory,
-                item?.lampsLanternsCategory !== 'null' && item?.lampsLanternsCategory,
-                item?.campSleepCategory !== 'null' && item?.campSleepCategory)
+            : `/shop/equipments/${item?.category}/${
+                (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
+                (item?.campSleepCategory !== 'null' && item?.campSleepCategory) ||
+                (item?.lampsLanternsCategory !== 'null' && item?.lampsLanternsCategory) ||
+                (item?.otherCategory !== 'null' && item?.otherCategory)
               }/${item?.slug}`
         }>
-        {/* {status || status2 || status3 === 'resolved' ? ( */}
         <CardActionArea sx={{ minHeight: mobile ? '213px' : '283px' }}>
           <CardMedia
             component="img"

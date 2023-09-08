@@ -13,7 +13,7 @@ import SizesFilter from 'components/filtersComponents/SizesFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import GenderMobileVersion from 'components/mobileVersionPage/GenderMobileVersion';
-import GenderPageBanner from 'components/GenderPageBanner';
+import ProductPageBanner from 'components/ProductPageBanner';
 
 const PageGender = ({ gender, pageBannerdata }) => {
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ const PageGender = ({ gender, pageBannerdata }) => {
               <SortingByPriceAndName />
             </Box>
           )}
-          <GenderPageBanner pageBannerdata={pageBannerdata} />
+          <ProductPageBanner pageBannerdata={pageBannerdata} />
           <ProductList gender={gender} />
         </Box>
       </Box>
@@ -95,6 +95,8 @@ export default PageGender;
 
 export async function getServerSideProps({ params }) {
   const { gender } = params;
+
+  let pageBannerResponse;
 
   const query = qs.stringify(
     {
@@ -111,7 +113,26 @@ export async function getServerSideProps({ params }) {
     },
   );
 
-  const pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
+  const equpmentsQuery = qs.stringify(
+    {
+      filters: {
+        showOnBanner: true,
+      },
+      populate: {
+        image: true,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    },
+  );
+
+  if (gender == 'equipments') {
+    pageBannerResponse = await fetch(`${process.env.API_URL}/api/equipments?${equpmentsQuery}`);
+  } else {
+    pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
+  }
+
   const pageBannerResponseJson = await pageBannerResponse.json();
 
   return {

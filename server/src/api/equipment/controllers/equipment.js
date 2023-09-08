@@ -24,7 +24,7 @@ module.exports = createCoreController(
         sorting,
       } = sanitizedQueryParams;
 
-      console.log(subcat);
+      console.log(category);
 
       let howToSort = sorting;
 
@@ -55,7 +55,7 @@ module.exports = createCoreController(
       const categorySplitToArr = category ? category.split(",") : [];
       const subCategoryArr = subcat ? subcat.split(",") : [];
 
-      console.log(subCategoryArr);
+      console.log(categorySplitToArr);
 
       let sizeArr = [];
       if (
@@ -250,10 +250,6 @@ module.exports = createCoreController(
       const getUniqOtherSubCategory = allOtherSubCategory.filter(
         (item, id) => allOtherSubCategory.indexOf(item) === id
       );
-      console.log(getUniqLampsLanternsSubCategory);
-      console.log(getUniqCampSleepSubCategory);
-      console.log(getUniqToolsGearSubCategory);
-      console.log(getUniqOtherSubCategory);
 
       conCatSubCategory = [
         ...getUniqLampsLanternsSubCategory,
@@ -265,7 +261,6 @@ module.exports = createCoreController(
       const removeNullFromSubCategoryArr = conCatSubCategory.filter((item) => {
         if (item !== "null") return item;
       });
-      console.log(removeNullFromSubCategoryArr);
       //---------------
 
       // get brands
@@ -328,6 +323,58 @@ module.exports = createCoreController(
       );
 
       return this.transformResponse(sanitizedEntity, sanitizedPagination);
+    },
+
+    async relatedProducts(ctx) {
+      const { category, subcat, id } = ctx.query;
+
+      const productId = id;
+      console.log(productId);
+
+      const entity = await strapi.entityService.findMany(
+        "api::equipment.equipment",
+        {
+          limit: 20,
+          filters: {
+            publishedAt: {
+              $ne: null,
+            },
+            $not: {
+              id: productId,
+            },
+            $and: [
+              {
+                category: {
+                  $eqi: category,
+                },
+              },
+              {
+                $or: [
+                  { lampsLanternsCategory: { $eqi: subcat } },
+                  { campSleepCategory: { $eqi: subcat } },
+                  { toolsGearCategory: { $eqi: subcat } },
+                  { otherCategory: { $eqi: subcat } },
+                ],
+              },
+            ],
+          },
+
+          populate: { image: true },
+        }
+      );
+
+      //sortedProductsImages
+      const sortedProducts = entity.map((item) => ({
+        ...item,
+        image: item.image[0].formats.small.url,
+      }));
+
+      const sanitizedEntity = await this.sanitizeOutput(
+        { sortedProducts },
+        ctx
+      );
+
+      return this.transformResponse(sanitizedEntity);
     },
   })
 );

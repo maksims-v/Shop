@@ -19,9 +19,7 @@ export const search = createAsyncThunk(
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';
 
-    console.log(value);
-
-    if (value.path == '/equipments') {
+    if (value.gender == 'equipments') {
       try {
         let response = '';
 

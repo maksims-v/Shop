@@ -4,53 +4,102 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getProductData = createAsyncThunk(
   'productPage/getProductData',
   async function (value, { rejectWithValue, dispatch }) {
-    try {
-      const slugQuery = qs.stringify({
-        filters: { slug: value },
-        populate: { image: true, size: true, color: true },
-      });
+    console.log(value);
 
-      const response = await fetch(`${process.env.API_URL}/api/products?${slugQuery}`);
+    if (value.gender == 'equipments') {
+      try {
+        const slugQuery = qs.stringify({
+          filters: { slug: value.slug },
+          populate: { image: true, size: true, color: true, id: true },
+        });
 
-      if (!response.ok) {
-        throw new Error('Server Error!');
+        const response = await fetch(`${process.env.API_URL}/api/equipments?${slugQuery}`);
+
+        if (!response.ok) {
+          throw new Error('Server Error!');
+        }
+
+        const data = response.json();
+
+        data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
       }
+    } else {
+      try {
+        const slugQuery = qs.stringify({
+          filters: { slug: value.slug },
+          populate: { image: true, size: true, color: true, id: true },
+        });
 
-      const data = response.json();
+        const response = await fetch(`${process.env.API_URL}/api/products?${slugQuery}`);
 
-      data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
+        if (!response.ok) {
+          throw new Error('Server Error!');
+        }
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
+        const data = response.json();
+
+        data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
     }
   },
 );
 
 export const getSimilarProductData = createAsyncThunk(
   'productPage/getSimilarProductData',
-  async function (product, { rejectWithValue }) {
-    const { title, slug } = product;
+  async function (value, { rejectWithValue }) {
+    const { title, slug, gender } = value;
 
-    try {
-      const query = qs.stringify({
-        filters: {
-          $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
-        },
-        populate: { image: true, size: true },
-      });
+    console.log(gender);
+    if (!gender) {
+      try {
+        const query = qs.stringify({
+          filters: {
+            $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
+          },
+          populate: { image: true, size: true },
+        });
 
-      const response = await fetch(`${process.env.API_URL}/api/products?${query}`);
+        const response = await fetch(`${process.env.API_URL}/api/equipments?${query}`);
 
-      if (!response.ok) {
-        throw new Error('Server Error!');
+        if (!response.ok) {
+          throw new Error('Server Error!');
+        }
+
+        const data = response.json();
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
       }
+    } else {
+      try {
+        const query = qs.stringify({
+          filters: {
+            $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
+          },
+          populate: { image: true, size: true },
+        });
 
-      const data = response.json();
+        const response = await fetch(`${process.env.API_URL}/api/products?${query}`);
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
+        if (!response.ok) {
+          throw new Error('Server Error!');
+        }
+
+        const data = response.json();
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
     }
   },
 );
@@ -78,7 +127,7 @@ export const productPageSlice = createSlice({
       state.error = null;
     },
     [getProductData.fulfilled]: (state, action) => {
-      state.productData = action.payload?.data[0]?.attributes;
+      state.productData = action.payload?.data[0];
       state.status = 'resolved';
     },
 

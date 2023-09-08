@@ -1,7 +1,7 @@
 import { Box, CardActionArea, CardMedia, CardContent, Typography, Card } from '@mui/material';
 import Link from 'next/link';
 
-const GenderPageBanner = ({ pageBannerdata }) => {
+const ProductPageBanner = ({ pageBannerdata }) => {
   const bannerItems = pageBannerdata?.map((item) => {
     return (
       <Box
@@ -13,10 +13,22 @@ const GenderPageBanner = ({ pageBannerdata }) => {
           justifyContent: 'center',
         }}>
         <Link
-          href={`/shop/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`}>
+          href={
+            item?.attributes?.gender
+              ? `/shop/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
+              : `/shop/equipments/${item?.attributes?.category}/${
+                  (item?.attributes?.toolsGearCategory !== 'null' &&
+                    item?.attributes?.toolsGearCategory) ||
+                  (item?.attributes?.campSleepCategory !== 'null' &&
+                    item?.attributes?.campSleepCategory) ||
+                  (item?.attributes?.lampsLanternsCategory !== 'null' &&
+                    item?.attributes?.lampsLanternsCategory) ||
+                  (item?.attributes?.otherCategory !== 'null' && item?.attributes?.otherCategory)
+                }/${item?.attributes?.slug}`
+          }>
           <CardActionArea sx={{ display: 'flex' }}>
             <CardMedia
-              sx={{ height: '100%', maxWidth: '220px' }}
+              sx={{ height: '100%', width: '220px' }}
               component="img"
               image={`${process.env.API_URL}${item?.attributes?.image?.data[0]?.attributes?.formats?.medium?.url}`}
               alt="img"
@@ -83,4 +95,4 @@ const GenderPageBanner = ({ pageBannerdata }) => {
   );
 };
 
-export default GenderPageBanner;
+export default ProductPageBanner;

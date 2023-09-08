@@ -46,7 +46,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const [changeSizeColor, setChangeSizeColor] = useState('black');
 
   useEffect(() => {
-    dispatch(getProductData(slug));
+    dispatch(getProductData({ slug, gender }));
     setSize(null);
   }, [slug]);
 
@@ -71,15 +71,15 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const addToBag = () => {
     if (size && productQnty !== 0) {
       const item = {
-        item: productData,
-        name: productData.slug,
+        item: productData.attributes,
+        name: productData.attributes.slug,
         qnty: count,
         productSize: size,
         id: productData.id,
       };
-
+      console.log(item);
       const product = basket
-        .filter((item) => item.id === productData.id)
+        .filter((item) => item.id === productData.attributes.id)
         .filter((item) => item.productSize === size);
 
       if (product.length === 0) {
@@ -104,8 +104,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
     setViewerIsOpen(false);
   };
 
-  const galleryArr = productData?.image?.data
-    ? productData?.image?.data?.map((item) => ({
+  const galleryArr = productData.attributes?.image?.data
+    ? productData.attributes?.image?.data?.map((item) => ({
         src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
         width: 1,
         height: 1,
@@ -147,14 +147,14 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
             }}>
             <img
               onClick={() => setViewerIsOpen(true)}
-              alt={productData?.name}
+              alt={'alt'}
               width="100%"
               height="500px"
-              src={`http://localhost:1337${productData?.image?.data[currentImage]?.attributes?.url}`}
+              src={`http://localhost:1337${productData?.attributes?.image?.data[currentImage]?.attributes?.url}`}
               style={{ objectFit: 'contain' }}
             />
             <Box>
-              <Box width={productData?.image?.data?.length <= 2 ? '40%' : '100%'}>
+              <Box width={productData?.attributes?.image?.data?.length <= 2 ? '40%' : '100%'}>
                 {status == 'resolved' && (
                   <Gallery
                     targetRowHeight={20}
@@ -170,8 +170,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                     <ItemCarousel
                       currentIndex={currentImage}
                       views={
-                        productData?.image?.data
-                          ? productData.image.data?.map((item, i) => ({
+                        productData?.attributes.image?.data
+                          ? productData.attributes.image.data?.map((item, i) => ({
                               src: `http://localhost:1337${item?.attributes?.url}`,
                             }))
                           : [{ src: '' }]
@@ -187,26 +187,29 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
         <Box flex="1 1 45%" mb="40px">
           <Box m="20px 0 25px 0">
             <Typography sx={{ mb: '8px', fontSize: '24px', fontWeight: 'bold' }} variant="h3">
-              {productData?.title}
+              {productData?.attributes?.title}
             </Typography>
 
             <Divider sx={{ mb: '10px' }} color="yellow" />
 
             <Typography sx={{ fontSize: '38px', fontWeight: 'bold' }}>
-              {productData?.price} $
+              {productData?.attributes?.price} $
             </Typography>
 
             <Typography sx={{ fontSize: '12px', pl: '5px', color: productData?.oldPrice && 'red' }}>
-              {productData?.sale &&
+              {productData?.attributes?.sale &&
                 `Save:
-              ${productData?.sale && (productData?.price - productData?.oldPrice).toFixed(2)}
+              ${
+                productData?.attributes?.sale &&
+                (productData?.attributes?.price - productData?.attributes?.oldPrice).toFixed(2)
+              }
               $`}
             </Typography>
             <Divider sx={{ mb: '10px', mt: '10px' }} color="yellow" />
             <Box sx={{ fontSize: '15px', fontWeight: 'bold', mb: '10px' }}>
               Choose color:{' '}
               <Typography component="span">
-                {productData?.color && productData.color[0].color}
+                {productData?.attributes?.color && productData.attributes.color.color}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', mb: '10px' }}>
@@ -216,7 +219,20 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                     key={item.id}
                     underline="hover"
                     color="inherit"
-                    href={`/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`}>
+                    href={
+                      item?.attributes?.gender
+                        ? `/shop/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
+                        : `/shop/equipments/${item?.attributes?.category}/${
+                            (item?.attributes?.toolsGearCategory !== 'null' &&
+                              item?.attributes?.toolsGearCategory) ||
+                            (item?.attributes?.campSleepCategory !== 'null' &&
+                              item?.attributes?.campSleepCategory) ||
+                            (item?.attributes?.lampsLanternsCategory !== 'null' &&
+                              item?.attributes?.lampsLanternsCategory) ||
+                            (item?.attributes?.otherCategory !== 'null' &&
+                              item?.attributes?.otherCategory)
+                          }/${item?.attributes?.slug}`
+                    }>
                     <CardActionArea sx={{ p: '0 15px' }}>
                       <CardMedia
                         component="img"
@@ -262,7 +278,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                 exclusive
                 onChange={sizeHandleChange}
                 aria-label="Platform">
-                {productData?.size?.map((item, index) => {
+                {productData?.attributes?.size?.map((item, index) => {
                   return (
                     <ToggleButton
                       key={index}
@@ -275,7 +291,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                 })}
               </ToggleButtonGroup>
             </Box>
-            <ReactMarkdown>{productData?.description}</ReactMarkdown>
+            <ReactMarkdown>{productData?.attributes?.description}</ReactMarkdown>
+            {productData?.attributes?.techDescription}
           </Box>
 
           <Divider sx={{ mb: '10px' }} color="yellow" />
@@ -321,7 +338,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
         gender={gender}
         category={category}
         subcategory={subcategory}
-        id={productData && productData.id}
+        id={productData?.id && productData.id}
       />
 
       <Stack>

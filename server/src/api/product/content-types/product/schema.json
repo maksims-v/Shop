@@ -101,7 +101,7 @@
     },
     "color": {
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -117,7 +117,8 @@
           "localized": true
         }
       },
-      "component": "size.size"
+      "component": "size.size",
+      "required": true
     },
     "gender": {
       "pluginOptions": {

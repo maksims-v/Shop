@@ -1,3 +1,4 @@
+const qs = require('qs');
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,10 +11,10 @@ import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
-import Layout from 'components/Layout';
 import CategoryMobileVersion from '../../../../../components/mobileVersionPage/CategoryMobileVersion';
+import ProductPageBanner from 'components/ProductPageBanner';
 
-const Category = ({ gender, category }) => {
+const Category = ({ gender, category, pageBannerData }) => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
   const currentPage = useSelector((state) => state.searchPageSlice.currentPage);
@@ -87,6 +88,7 @@ const Category = ({ gender, category }) => {
               <SortingByPriceAndName />
             </Box>
           )}
+          <ProductPageBanner pageBannerdata={pageBannerData} />
           <ProductList gender={gender} category={category} />
         </Box>
       </Box>
@@ -99,5 +101,48 @@ export default Category;
 export async function getServerSideProps({ params }) {
   const { gender, category } = params;
 
-  return { props: { gender, category } };
+  let pageBannerResponse;
+
+  console.log(category);
+
+  const query = qs.stringify(
+    {
+      filters: {
+        gender: gender,
+        category: category,
+        showOnCategoryBanner: true,
+      },
+      populate: {
+        image: true,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    },
+  );
+
+  const equipmentsQuery = qs.stringify(
+    {
+      filters: {
+        showOnCattegoryBanner: true,
+        category: { $startsWith: category },
+      },
+      populate: {
+        image: true,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    },
+  );
+
+  if (gender == 'equipments') {
+    pageBannerResponse = await fetch(`${process.env.API_URL}/api/equipments?${equipmentsQuery}`);
+  } else {
+    pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
+  }
+
+  const pageBannerResponseJson = await pageBannerResponse.json();
+
+  return { props: { gender, category, pageBannerData: pageBannerResponseJson.data } };
 }

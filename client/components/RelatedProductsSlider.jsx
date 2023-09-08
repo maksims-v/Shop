@@ -13,13 +13,15 @@ const responsive = {
 };
 
 const RelatedProductsSlider = (query) => {
+  console.log(query);
+
   const relatedProductsData = useSelector((state) => state.relatedProductsSliderSlice.data);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getRelatedProductsSliderData(query));
-  }, [query.slug]);
+  }, [query.id]);
 
   return (
     <Box sx={{ width: '100%' }}>

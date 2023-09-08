@@ -17,8 +17,7 @@ const config = {
   notifications: { releases: false },
 };
 
-const bootstrap = (app) => {
-};
+const bootstrap = (app) => {};
 
 export default {
   config,

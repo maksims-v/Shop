@@ -52,7 +52,7 @@
         "Lamps-Lanterns",
         "Tools-Gear",
         "Camp-Sleep",
-        "Other Categories"
+        "Other-Categories"
       ],
       "required": true
     },
@@ -118,7 +118,8 @@
           "localized": true
         }
       },
-      "component": "size.size"
+      "component": "size.size",
+      "required": true
     },
     "clearance": {
       "pluginOptions": {
@@ -128,14 +129,6 @@
       },
       "type": "boolean",
       "default": false
-    },
-    "techDescription": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "richtext"
     },
     "description": {
       "pluginOptions": {
