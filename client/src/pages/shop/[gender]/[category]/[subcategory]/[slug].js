@@ -36,7 +36,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const status = useSelector((state) => state.productPageSlice.status);
   const similarProductData = useSelector((state) => state.productPageSlice.similarProductData);
 
-  const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setError] = useState(false);
 
   const [count, setCount] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
@@ -44,6 +45,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const [size, setSize] = useState(null);
   const [productQnty, setProductQnty] = useState(null);
   const [changeSizeColor, setChangeSizeColor] = useState('black');
+  const [leftQnty, setLeftQnty] = useState('none');
 
   useEffect(() => {
     dispatch(getProductData({ slug, gender }));
@@ -60,7 +62,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
       return;
     }
 
-    setOpen(false);
+    setOpenSuccess(false);
+    setError(false);
   };
 
   useEffect(() => {
@@ -77,7 +80,6 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
         productSize: size,
         id: productData.id,
       };
-      console.log(item);
       const product = basket
         .filter((item) => item.id === productData.attributes.id)
         .filter((item) => item.productSize === size);
@@ -85,8 +87,9 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
       if (product.length === 0) {
         dispatch(addToBasket([...basket, item]));
       }
-      setOpen(true);
+      setOpenSuccess(true);
     } else if (!size) {
+      setError(true);
       setChangeSizeColor('red');
     }
   };
@@ -104,7 +107,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
     setViewerIsOpen(false);
   };
 
-  const galleryArr = productData.attributes?.image?.data
+  const galleryArr = productData?.attributes?.image?.data
     ? productData.attributes?.image?.data?.map((item) => ({
         src: `http://localhost:1337${item?.attributes?.formats?.small?.url}`,
         width: 1,
@@ -127,13 +130,43 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}`}>
+        <Link
+          underline="hover"
+          color="inherit"
+          href={
+            productData?.attributes?.gender
+              ? `/shop/${productData?.attributes?.gender}`
+              : `/shop/equipments`
+          }>
           {gender.toUpperCase()}
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
+        <Link
+          underline="hover"
+          color="inherit"
+          href={
+            productData?.attributes?.gender
+              ? `/shop/${productData?.attributes?.gender}/${productData?.attributes?.category}`
+              : `/shop/equipments/${productData?.attributes?.category}/`
+          }>
           {category.toUpperCase()}
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}/${category}/${subcategory}`}>
+        <Link
+          underline="hover"
+          color="inherit"
+          href={
+            productData?.attributes?.gender
+              ? `/shop/${productData?.attributes?.gender}/${productData?.attributes?.category}/${productData?.attributes?.subcategory}`
+              : `/shop/equipments/${productData?.attributes?.category}/${
+                  (productData?.attributes?.toolsGearCategory !== 'null' &&
+                    productData?.attributes?.toolsGearCategory) ||
+                  (productData?.attributes?.campSleepCategory !== 'null' &&
+                    productData?.attributes?.campSleepCategory) ||
+                  (productData?.attributes?.lampsLanternsCategory !== 'null' &&
+                    productData?.attributes?.lampsLanternsCategory) ||
+                  (productData?.attributes?.otherCategory !== 'null' &&
+                    productData?.attributes?.otherCategory)
+                }`
+          }>
           {subcategory.toUpperCase()}
         </Link>
       </Breadcrumbs>
@@ -196,7 +229,12 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
               {productData?.attributes?.price} $
             </Typography>
 
-            <Typography sx={{ fontSize: '12px', pl: '5px', color: productData?.oldPrice && 'red' }}>
+            <Typography
+              sx={{
+                fontSize: '12px',
+                pl: '5px',
+                color: productData?.attributes?.oldPrice && 'red',
+              }}>
               {productData?.attributes?.sale &&
                 `Save:
               ${
@@ -291,6 +329,23 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                 })}
               </ToggleButtonGroup>
             </Box>
+            {productQnty <= 5 ? (
+              <Box
+                sx={{
+                  display: productQnty === null ? 'none' : 'block',
+                  color: '#f07186',
+                }}>
+                Only {productQnty} units left
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: productQnty === null ? 'none' : 'block',
+                  color: '#5cb85b',
+                }}>
+                In stock {productQnty} units
+              </Box>
+            )}
             <ReactMarkdown>{productData?.attributes?.description}</ReactMarkdown>
             {productData?.attributes?.techDescription}
           </Box>
@@ -342,9 +397,17 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
       />
 
       <Stack>
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Snackbar open={openSuccess} autoHideDuration={2000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            Produkts veiksmīgi pievienots iepirkumu grozam!
+            The product has been placed in the cart
+          </Alert>
+        </Snackbar>
+      </Stack>
+
+      <Stack>
+        <Snackbar open={openError} autoHideDuration={2000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            Please choose the size.
           </Alert>
         </Snackbar>
       </Stack>

@@ -56,14 +56,14 @@ const Category = ({ gender, category, pageBannerData }) => {
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}`}>
+        <Link underline="hover" color="inherit" href={`/shop/${gender}`}>
           {gender?.toUpperCase()}
         </Link>
         <Link
           style={{ pointerEvents: 'none', fontWeight: 'bold' }}
           underline="hover"
           color="inherit"
-          href={`/${gender}/${category}`}>
+          href={`/shop/${gender}/${category}`}>
           {category?.toUpperCase()}
         </Link>
       </Breadcrumbs>
@@ -102,8 +102,6 @@ export async function getServerSideProps({ params }) {
   const { gender, category } = params;
 
   let pageBannerResponse;
-
-  console.log(category);
 
   const query = qs.stringify(
     {

@@ -3,8 +3,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getRelatedProductsSliderData = createAsyncThunk(
   'relatedProductsSlider/getRelatedProductsSliderData',
   async function (query, { rejectWithValue }) {
-    console.log(query);
-
     if (query.gender == 'equipments') {
       try {
         const response =

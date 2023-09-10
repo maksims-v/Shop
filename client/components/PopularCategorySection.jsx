@@ -17,10 +17,18 @@ const PopularCategorySection = () => {
         Shop By Section
       </Typography>
       <Box mb="20px" display="flex" justifyContent="space-between">
-        <PopularCategorySectionItem img={clothingImg} title={'Clothing'} path={'/all/clothing'} />
-        <PopularCategorySectionItem img={bagsImg} title={'Bags'} path={'/all/accessories/bags'} />
-        <PopularCategorySectionItem img={tentsImg} title={'Camping'} path={'/all/camp-sleep'} />
-        <PopularCategorySectionItem img={shoesImg} title={'Footwear'} path={'/all/footwear'} />
+        <PopularCategorySectionItem
+          img={clothingImg}
+          title={'Clothing'}
+          path={'shop/all/clothing'}
+        />
+        <PopularCategorySectionItem
+          img={bagsImg}
+          title={'Bags'}
+          path={'shop/all/accessories/bags'}
+        />
+        <PopularCategorySectionItem img={tentsImg} title={'Camping'} path={'shop/all/camp-sleep'} />
+        <PopularCategorySectionItem img={shoesImg} title={'Footwear'} path={'shop/all/footwear'} />
       </Box>
     </Box>
   );

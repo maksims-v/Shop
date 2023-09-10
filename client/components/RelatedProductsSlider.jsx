@@ -13,8 +13,6 @@ const responsive = {
 };
 
 const RelatedProductsSlider = (query) => {
-  console.log(query);
-
   const relatedProductsData = useSelector((state) => state.relatedProductsSliderSlice.data);
 
   const dispatch = useDispatch();

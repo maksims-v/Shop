@@ -9,7 +9,6 @@ import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
-import Layout from 'components/Layout';
 import SubCategoryMobileVersion from 'components/mobileVersionPage/SubCategoryMobileVersion';
 
 const SubCategory = ({ gender, category, subcategory }) => {
@@ -50,17 +49,17 @@ const SubCategory = ({ gender, category, subcategory }) => {
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}`}>
+        <Link underline="hover" color="inherit" href={`/shop/${gender}`}>
           {gender?.toUpperCase()}
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}/${category}`}>
+        <Link underline="hover" color="inherit" href={`/shop/${gender}/${category}`}>
           {category?.toUpperCase()}
         </Link>
         <Link
           underline="hover"
           style={{ pointerEvents: 'none', fontWeight: 'bold' }}
           color="inherit"
-          href={`/${gender}/${category}/${subcategory}`}>
+          href={`/shop/${gender}/${category}/${subcategory}`}>
           {subcategory.toUpperCase()}
         </Link>
       </Breadcrumbs>

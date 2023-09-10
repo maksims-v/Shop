@@ -1,3 +1,5 @@
+const qs = require('qs');
+
 import Filters from 'components/Filters';
 import ProductList from 'components/ProductList';
 import { Box, Typography } from '@mui/material';
@@ -6,16 +8,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { search, clearAllFilters, inputValue } from '@/state/searchPageSlice';
 import NewSearchMobileVesersion from 'components/mobileVersionPage/NewSearchMobileVesersion';
 
-const Search = ({ newSearch }) => {
+const Search = ({ newSearch, searchData }) => {
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
   const total = useSelector((state) => state.searchPageSlice.metaData.total);
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const dispatch = useDispatch();
 
+  console.log(newSearch);
+  console.log(searchData);
+
   useEffect(() => {
     if (newSearch.length !== 0) {
       dispatch(clearAllFilters());
+
       dispatch(inputValue(newSearch));
     }
   }, [newSearch]);
@@ -61,5 +67,44 @@ export default Search;
 export async function getServerSideProps({ query }) {
   const { newSearch } = query;
 
-  return { props: { newSearch } };
+  const productQuery = qs.stringify(
+    {
+      filters: {
+        title: { $startsWith: newSearch },
+      },
+      populate: {
+        image: true,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    },
+  );
+
+  const equpmentsQuery = qs.stringify(
+    {
+      filters: {
+        title: { $startsWith: newSearch },
+      },
+      populate: {
+        image: true,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    },
+  );
+
+  const productResponse = await fetch(`${process.env.API_URL}/api/products?${productQuery}`);
+  const equipmentsResponse = await fetch(`${process.env.API_URL}/api/equipments?${equpmentsQuery}`);
+
+  let productResponseJson = [];
+  let equipmentsResponseJson = [];
+
+  productResponseJson = await productResponse.json();
+  equipmentsResponseJson = await equipmentsResponse.json();
+
+  const itemsArr = [...productResponseJson.data, ...equipmentsResponseJson.data];
+
+  return { props: { newSearch, searchData: itemsArr } };
 }
