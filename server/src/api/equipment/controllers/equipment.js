@@ -55,8 +55,6 @@ module.exports = createCoreController(
       const categorySplitToArr = category ? category.split(",") : [];
       const subCategoryArr = subcat ? subcat.split(",") : [];
 
-      console.log(categorySplitToArr);
-
       let sizeArr = [];
       if (
         size === "false" ||

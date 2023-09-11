@@ -1,18 +1,18 @@
 {
   "collectionName": "components_navigation_genders",
   "info": {
-    "displayName": "Gender"
+    "displayName": "pageCategory",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "gender": {
+    "pageCategory": {
       "type": "enumeration",
       "enum": [
+        "all",
         "men's",
-        "women's",
-        "all"
-      ],
-      "required": true
+        "women's"
+      ]
     }
   }
 }

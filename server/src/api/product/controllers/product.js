@@ -13,7 +13,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       sale,
       brands,
       category,
-      gender,
+      pageCategory,
       subcat,
       size,
       search,
@@ -50,11 +50,12 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const salesSplitToArr = sale ? sale.split(",") : [];
     const brandsSplitToArr = brands ? brands.split(",") : [];
     const categorySplitToArr = category ? category.split(",") : [];
-    const genderSplitArr = gender ? gender.split(",") : [];
+    const pageCategorySplitArr = pageCategory ? pageCategory.split(",") : [];
     const subCategoryArr = subcat ? subcat.split(",") : [];
 
-    if (gender == "all") genderSplitArr.push("women's", "men's");
-    if (gender == "men's" || gender == "women's") genderSplitArr.push("all");
+    if (pageCategory == "all") pageCategorySplitArr.push("women's", "men's");
+    if (pageCategory == "men's" || pageCategory == "women's")
+      pageCategorySplitArr.push("all");
 
     let sizeArr = [];
     if (
@@ -93,16 +94,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           },
           $and: [
             {
-              $or: [
-                { title: { $startsWith: searchItem } },
-                {
-                  subproductcategory: {
-                    subproductcategory: {
-                      $startsWith: searchItem,
-                    },
-                  },
-                },
-              ],
+              $or: [{ title: { $startsWith: searchItem } }],
             },
             {
               $or: [{ price: { $between: [priceMin, priceMax] } }],
@@ -113,20 +105,37 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               },
             },
             {
-              gender: {
-                $eqi: genderSplitArr,
+              pageCategory: {
+                $eqi: pageCategorySplitArr,
               },
             },
             {
-              category: {
-                $eqi: categorySplitToArr,
-              },
+              $or: [
+                {
+                  category: {
+                    $eqi: categorySplitToArr,
+                  },
+                },
+                {
+                  equipmentCategory: {
+                    $eqi: categorySplitToArr,
+                  },
+                },
+              ],
             },
             {
-              subcategory: {
-                $eqi: subCategoryArr,
-              },
+              $or: [
+                { lampsLanternsCategory: { $eqi: subCategoryArr } },
+                { campSleepCategory: { $eqi: subCategoryArr } },
+                { toolsGearCategory: { $eqi: subCategoryArr } },
+                { otherCategory: { $eqi: subCategoryArr } },
+                { clothingCategory: { $eqi: subCategoryArr } },
+                { footwearCategory: { $eqi: subCategoryArr } },
+                { accessoriesCategory: { $eqi: subCategoryArr } },
+                { activityCategory: { $eqi: subCategoryArr } },
+              ],
             },
+
             {
               $or: [
                 { sale: saleItem ? true : true },
@@ -158,16 +167,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           },
           $and: [
             {
-              $or: [
-                { title: { $startsWith: searchItem } },
-                {
-                  subproductcategory: {
-                    subproductcategory: {
-                      $startsWith: searchItem,
-                    },
-                  },
-                },
-              ],
+              $or: [{ title: { $startsWith: searchItem } }],
             },
             {
               $or: [{ price: { $between: [priceMin, priceMax] } }],
@@ -178,19 +178,37 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               },
             },
             {
-              gender: {
-                $eqi: genderSplitArr,
+              pageCategory: {
+                $eqi: pageCategorySplitArr,
               },
             },
+
             {
-              category: {
-                $eqi: categorySplitToArr,
-              },
+              $or: [
+                {
+                  category: {
+                    $eqi: categorySplitToArr,
+                  },
+                },
+                {
+                  equipmentCategory: {
+                    $eqi: categorySplitToArr,
+                  },
+                },
+              ],
             },
+
             {
-              subcategory: {
-                $eqi: subCategoryArr,
-              },
+              $or: [
+                { lampsLanternsCategory: { $eqi: subCategoryArr } },
+                { campSleepCategory: { $eqi: subCategoryArr } },
+                { toolsGearCategory: { $eqi: subCategoryArr } },
+                { otherCategory: { $eqi: subCategoryArr } },
+                { clothingCategory: { $eqi: subCategoryArr } },
+                { footwearCategory: { $eqi: subCategoryArr } },
+                { accessoriesCategory: { $eqi: subCategoryArr } },
+                { activityCategory: { $eqi: subCategoryArr } },
+              ],
             },
             {
               $or: [
@@ -230,31 +248,113 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const pages = Math.ceil(paginationLength / 21);
     //---------------
 
-    // get gendre
-    const allGender = pagination.map((item) => {
-      return item.gender.toLowerCase();
+    // get pageCategory
+    const allPageCategory = pagination.map((item) => {
+      return item.pageCategory.toLowerCase();
     });
-    const getUniqGendre = allGender.filter(
-      (item, id) => allGender.indexOf(item) === id
+    const getUniqPageCategory = allPageCategory.filter(
+      (item, id) => allPageCategory.indexOf(item) === id
     );
     //---------------
 
     // get category
+    let conCatCategory;
+
     const allCategory = pagination.map((item) => {
       return item.category.toLowerCase();
     });
     const getUniqCategory = allCategory.filter(
       (item, id) => allCategory.indexOf(item) === id
     );
+
+    const allEquipmentCategory = pagination.map((item) => {
+      return item.equipmentCategory.toLowerCase();
+    });
+    const getEquipmentCategory = allEquipmentCategory.filter(
+      (item, id) => allEquipmentCategory.indexOf(item) === id
+    );
+
+    conCatCategory = [...getUniqCategory, ...getEquipmentCategory];
+
+    const removeNullFromCategoryArr = conCatCategory.filter((item) => {
+      if (item !== "null") return item;
+    });
     //---------------
 
     // get subCategory
-    const allSubCategory = pagination.map((item) => {
-      return item.subcategory.toLowerCase();
+
+    let conCatSubCategory = [];
+
+    const allClothingSubCategory = pagination.map((item) => {
+      return item.clothingCategory.toLowerCase();
     });
-    const getUniqSubCategory = allSubCategory.filter(
-      (item, id) => allSubCategory.indexOf(item) === id
+    const getUniqClothingSubCategory = allClothingSubCategory.filter(
+      (item, id) => allClothingSubCategory.indexOf(item) === id
     );
+
+    const allAccessoriesSubCategory = pagination.map((item) => {
+      return item.accessoriesCategory.toLowerCase();
+    });
+    const getAccessoriesSubCategory = allAccessoriesSubCategory.filter(
+      (item, id) => allAccessoriesSubCategory.indexOf(item) === id
+    );
+
+    const allFootwearSubCategory = pagination.map((item) => {
+      return item.footwearCategory.toLowerCase();
+    });
+    const getFootwearSubCategory = allFootwearSubCategory.filter(
+      (item, id) => allFootwearSubCategory.indexOf(item) === id
+    );
+
+    const allActivitySubCategory = pagination.map((item) => {
+      return item.activityCategory.toLowerCase();
+    });
+    const getActivitySubCategory = allActivitySubCategory.filter(
+      (item, id) => allActivitySubCategory.indexOf(item) === id
+    );
+
+    const allLampsLanternsSubCategory = pagination.map((item) => {
+      return item.lampsLanternsCategory.toLowerCase();
+    });
+    const getUniqLampsLanternsSubCategory = allLampsLanternsSubCategory.filter(
+      (item, id) => allLampsLanternsSubCategory.indexOf(item) === id
+    );
+
+    const allCampSleepSubCategory = pagination.map((item) => {
+      return item.campSleepCategory.toLowerCase();
+    });
+    const getUniqCampSleepSubCategory = allCampSleepSubCategory.filter(
+      (item, id) => allCampSleepSubCategory.indexOf(item) === id
+    );
+
+    const allToolsGearSubCategory = pagination.map((item) => {
+      return item.toolsGearCategory.toLowerCase();
+    });
+    const getUniqToolsGearSubCategory = allToolsGearSubCategory.filter(
+      (item, id) => allToolsGearSubCategory.indexOf(item) === id
+    );
+
+    const allOtherSubCategory = pagination.map((item) => {
+      return item.otherCategory.toLowerCase();
+    });
+    const getUniqOtherSubCategory = allOtherSubCategory.filter(
+      (item, id) => allOtherSubCategory.indexOf(item) === id
+    );
+
+    conCatSubCategory = [
+      ...getUniqLampsLanternsSubCategory,
+      ...getUniqCampSleepSubCategory,
+      ...getUniqToolsGearSubCategory,
+      ...getUniqOtherSubCategory,
+      ...getUniqClothingSubCategory,
+      ...getFootwearSubCategory,
+      ...getAccessoriesSubCategory,
+      ...getActivitySubCategory,
+    ];
+
+    const removeNullFromSubCategoryArr = conCatSubCategory.filter((item) => {
+      if (item !== "null") return item;
+    });
     //---------------
 
     // get brands
@@ -305,9 +405,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         priceMax,
         total: paginationLength,
         pages,
-        category: getUniqCategory,
-        genders: getUniqGendre,
-        subCategory: getUniqSubCategory,
+        category: removeNullFromCategoryArr,
+        pageCategory: getUniqPageCategory,
+        subCategory: removeNullFromSubCategoryArr,
         brands: getUniqBrands,
         sizes: getUniqSize,
       },
@@ -341,7 +441,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   },
 
   async relatedProducts(ctx) {
-    const { gender, category, subcat, id } = ctx.query;
+    const { pageCategory, category, subcat, id } = ctx.query;
 
     const productId = id;
 
@@ -356,19 +456,35 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         },
         $and: [
           {
-            gender: {
-              $eqi: gender,
+            pageCategory: {
+              $eqi: pageCategory,
             },
           },
           {
-            category: {
-              $eqi: category,
-            },
+            $or: [
+              {
+                category: {
+                  $eqi: category,
+                },
+              },
+              {
+                equipmentCategory: {
+                  $eqi: category,
+                },
+              },
+            ],
           },
           {
-            subcategory: {
-              $eqi: subcat,
-            },
+            $or: [
+              { lampsLanternsCategory: { $eqi: subcat } },
+              { campSleepCategory: { $eqi: subcat } },
+              { toolsGearCategory: { $eqi: subcat } },
+              { otherCategory: { $eqi: subcat } },
+              { clothingCategory: { $eqi: subcat } },
+              { footwearCategory: { $eqi: subcat } },
+              { accessoriesCategory: { $eqi: subcat } },
+              { activityCategory: { $eqi: subcat } },
+            ],
           },
         ],
       },

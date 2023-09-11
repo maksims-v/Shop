@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 
-import GenderFilter from './filtersComponents/GenderFilter';
+import PageCategoryFilter from './filtersComponents/PageCategoryFilter';
 import SaleFilter from './filtersComponents/SaleFilter';
 import CategoryFilter from './filtersComponents/CategoryFilter';
 import SubCategoryFilter from './filtersComponents/SubCategoryFilter';
@@ -11,7 +11,7 @@ import SizesFilter from './filtersComponents/SizesFilter';
 const Filters = () => {
   return (
     <Box maxWidth="195px">
-      <GenderFilter />
+      <PageCategoryFilter />
       <PriceSlider />
       <SaleFilter />
       <CategoryFilter />

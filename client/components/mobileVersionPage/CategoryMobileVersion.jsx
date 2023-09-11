@@ -5,21 +5,21 @@ import Layout from 'components/Layout';
 import MobileFilters from 'components/filtersComponents/MobileFilters';
 import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
-const CategoryMobileVersion = ({ gender, category, clearFilters }) => {
+const CategoryMobileVersion = ({ page, category, clearFilters }) => {
   return (
     <Box mt="0px">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '5px', pl: '20px' }}>
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${gender}`}>
-          {gender?.toUpperCase()}
+        <Link underline="hover" color="inherit" href={`/${page}`}>
+          {page?.toUpperCase()}
         </Link>
         <Link
           style={{ fontWeight: 'bold' }}
           underline="hover"
           color="inherit"
-          href={`/${gender}/${category}`}>
+          href={`/${page}/${category}`}>
           {category?.toUpperCase()}
         </Link>
       </Breadcrumbs>

@@ -9,7 +9,7 @@
     "brand": {
       "type": "string"
     },
-    "gender": {
+    "pageCategory": {
       "type": "component",
       "repeatable": false,
       "component": "navigation.gender"

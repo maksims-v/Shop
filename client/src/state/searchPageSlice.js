@@ -8,61 +8,32 @@ export const search = createAsyncThunk(
     const { brandsChecked } = getState().searchPageSlice;
     const { sale } = getState().searchPageSlice;
     const { categoryChecked } = getState().searchPageSlice;
-    const { genderChecked } = getState().searchPageSlice;
+    const { pageCategoryChecked } = getState().searchPageSlice;
     const { subCategoryChecked } = getState().searchPageSlice;
     const { sizesChecked } = getState().searchPageSlice;
     const { currentPage } = getState().searchPageSlice;
     const { sortValue } = getState().searchPageSlice;
 
-    const getGenderValue = value?.gender ? value.gender : genderChecked;
+    const getPageCategoryValue = value?.page ? value.page : pageCategoryChecked;
     const getCategoryValue = value?.category ? value.category : categoryChecked;
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';
 
-    if (value.gender == 'equipments') {
-      try {
-        let response = '';
+    try {
+      const response = await fetch(
+        `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&pageCategory=${getPageCategoryValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
+      );
 
-        response = await fetch(
-          `${process.env.API_URL}/api/equipments/shop?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
-        );
-
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
-
-        const data = response.json();
-        dispatch(getAllSizes());
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
+      if (!response.ok) {
+        throw new Error('Server Error!');
       }
-    } else {
-      try {
-        let response = '';
 
-        if (value?.gender == 'sale') {
-          response = await fetch(
-            `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=Sale&category=${getCategoryValue}&gender=men's,women's&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
-          );
-        } else {
-          response = await fetch(
-            `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&gender=${getGenderValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
-          );
-        }
+      const data = response.json();
+      dispatch(getAllSizes());
 
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
-
-        const data = response.json();
-        dispatch(getAllSizes());
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
-      }
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -95,8 +66,8 @@ const initialState = {
   metaData: [],
   inputSearchValue: '',
   newSearch: true,
-  genders: [],
-  genderChecked: [],
+  pageCategory: [],
+  pageCategoryChecked: [],
   sale: false,
   category: [],
   categoryChecked: [],
@@ -130,12 +101,12 @@ export const searchPageSlice = createSlice({
       state.newSearch = true;
     },
 
-    setGenderChecked(state, action) {
-      const itemSearch = state.genderChecked.includes(action.payload);
+    setPageCategoryChecked(state, action) {
+      const itemSearch = state.pageCategoryChecked.includes(action.payload);
 
       !itemSearch
-        ? state.genderChecked.push(action.payload)
-        : (state.genderChecked = state.genderChecked.filter((item) => {
+        ? state.pageCategoryChecked.push(action.payload)
+        : (state.pageCategoryChecked = state.pageCategoryChecked.filter((item) => {
             return item !== action.payload;
           }));
 
@@ -226,8 +197,8 @@ export const searchPageSlice = createSlice({
       state.metaData = [];
       state.inputSearchValue = '';
       state.newSearch = true;
-      state.genders = [];
-      state.genderChecked = [];
+      state.pageCategory = [];
+      state.pageCategoryChecked = [];
       state.sale = false;
       state.category = [];
       state.categoryChecked = [];
@@ -250,10 +221,9 @@ export const searchPageSlice = createSlice({
       state.error = null;
     },
     [search.fulfilled]: (state, action) => {
-      state.status = 'resolved';
       state.data = action.payload.data.attributes.sortedProducts;
       state.metaData = action.payload.meta;
-      state.genders = state.newSearch ? action.payload.meta.genders : state.genders;
+      state.pageCategory = state.newSearch ? action.payload.meta.pageCategory : state.pageCategory;
       state.brands = state.newSearch ? action.payload.meta.brands : state.brands;
       state.category = state.newSearch ? action.payload.meta.category : state.category;
       state.subCategory = state.newSearch ? action.payload.meta.subCategory : state.subCategory;
@@ -262,6 +232,7 @@ export const searchPageSlice = createSlice({
         : state.priceMinAndMax;
 
       state.sizes = state.newSearch ? action.payload.meta.sizes : state.sizes;
+      state.status = 'resolved';
     },
     [search.rejected]: setError,
 
@@ -286,7 +257,7 @@ export const {
   inputValue,
   setBrandsChecked,
   setCategoryChecked,
-  setGenderChecked,
+  setpageCategoryChecked,
   setSubCategoryChecked,
   setSale,
   setSizesChecked,

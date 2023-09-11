@@ -14,8 +14,8 @@ const ProductPageBanner = ({ pageBannerdata }) => {
         }}>
         <Link
           href={
-            item?.attributes?.gender
-              ? `/shop/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
+            item?.attributes?.pageCategory
+              ? `/shop/${item?.attributes?.pageCategory}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
               : `/shop/equipments/${item?.attributes?.category}/${
                   (item?.attributes?.toolsGearCategory !== 'null' &&
                     item?.attributes?.toolsGearCategory) ||

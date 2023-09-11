@@ -4,15 +4,15 @@ import Link from 'next/link';
 import MobileFilters from 'components/filtersComponents/MobileFilters';
 import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
-const GenderMobileVersion = ({ clearFilters, gender }) => {
+const PageCategoryMobileVersion = ({ clearFilters, page }) => {
   return (
     <Box mt="0px">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '5px', pl: '20px' }}>
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" style={{ fontWeight: 'bold' }} color="inherit" href={`/${gender}`}>
-          {gender?.toUpperCase()}
+        <Link underline="hover" style={{ fontWeight: 'bold' }} color="inherit" href={`/${page}`}>
+          {page?.toUpperCase()}
         </Link>
       </Breadcrumbs>
       <Box display="flex" alignContent="center" flexDirection="column">
@@ -24,4 +24,4 @@ const GenderMobileVersion = ({ clearFilters, gender }) => {
   );
 };
 
-export default GenderMobileVersion;
+export default PageCategoryMobileVersion;

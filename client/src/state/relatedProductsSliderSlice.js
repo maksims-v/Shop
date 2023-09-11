@@ -3,42 +3,22 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getRelatedProductsSliderData = createAsyncThunk(
   'relatedProductsSlider/getRelatedProductsSliderData',
   async function (query, { rejectWithValue }) {
-    if (query.gender == 'equipments') {
-      try {
-        const response =
-          query &&
-          (await fetch(
-            `${process.env.API_URL}/api/equipments/relatedproducts?category=${query.category}&subcat=${query.subcategory}&id=${query.id}`,
-          ));
-        console.log('hai');
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
+    try {
+      const response =
+        query &&
+        (await fetch(
+          `${process.env.API_URL}/api/products/relatedproducts?pageCategory=${query.pageCategory}&category=${query.category}&subcat=${query.subcategory}&id=${query.id}`,
+        ));
 
-        const data = response.json();
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
+      if (!response.ok) {
+        throw new Error('Server Error!');
       }
-    } else {
-      try {
-        const response =
-          query &&
-          (await fetch(
-            `${process.env.API_URL}/api/products/relatedproducts?gender=${query.gender}&category=${query.category}&subcat=${query.subcategory}&id=${query.id}`,
-          ));
 
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
+      const data = response.json();
 
-        const data = response.json();
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
-      }
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   },
 );

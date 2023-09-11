@@ -1,20 +1,17 @@
-const qs = require('qs');
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { search, clearAllFilters, setDiscounts } from '@/state/searchPageSlice';
+import { search, clearAllFilters } from '@/state/searchPageSlice';
 import ProductList from 'components/ProductList';
 import SaleFilter from 'components/filtersComponents/SaleFilter';
-import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
-import CategoryMobileVersion from '../../../../../components/mobileVersionPage/CategoryMobileVersion';
-import ProductPageBanner from 'components/ProductPageBanner';
+import SubCategoryMobileVersion from 'components/mobileVersionPage/SubCategoryMobileVersion';
 
-const Category = ({ gender, category, pageBannerData }) => {
+const SubCategory = ({ pageCategory, category, subcategory }) => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
   const currentPage = useSelector((state) => state.searchPageSlice.currentPage);
@@ -28,26 +25,22 @@ const Category = ({ gender, category, pageBannerData }) => {
 
   useEffect(() => {
     dispatch(clearAllFilters());
-  }, [gender]);
+  }, [pageCategory]);
 
   useEffect(() => {
-    dispatch(search({ gender, category }));
-  }, [searchFlag, gender, category]);
-
-  const handleChange = (event) => {
-    dispatch(setDiscounts(event.target.name));
-  };
+    dispatch(search({ pageCategory, category, subcategory }));
+  }, [searchFlag, pageCategory, category, subcategory]);
 
   const clearFilters = () => {
     dispatch(clearAllFilters());
-    dispatch(search({ gender, category }));
+    dispatch(search({ pageCategory, category, subcategory }));
   };
 
   return mobile ? (
-    <CategoryMobileVersion
-      gender={gender}
+    <SubCategoryMobileVersion
+      pageCategory={pageCategory}
       category={category}
-      handleChange={handleChange}
+      subcategory={subcategory}
       clearFilters={clearFilters}
     />
   ) : (
@@ -56,23 +49,25 @@ const Category = ({ gender, category, pageBannerData }) => {
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/shop/${gender}`}>
-          {gender?.toUpperCase()}
+        <Link underline="hover" color="inherit" href={`/shop/${pageCategory}`}>
+          {pageCategory?.toUpperCase()}
+        </Link>
+        <Link underline="hover" color="inherit" href={`/shop/${pageCategory}/${category}`}>
+          {category?.toUpperCase()}
         </Link>
         <Link
-          style={{ pointerEvents: 'none', fontWeight: 'bold' }}
           underline="hover"
+          style={{ pointerEvents: 'none', fontWeight: 'bold' }}
           color="inherit"
-          href={`/shop/${gender}/${category}`}>
-          {category?.toUpperCase()}
+          href={`/shop/${pageCategory}/${category}/${subcategory}`}>
+          {subcategory.toUpperCase()}
         </Link>
       </Breadcrumbs>
 
       <Box display="flex">
         <Box flex="1 1 10%">
           <PriceSlider />
-          <SaleFilter handleChange={handleChange} />
-          <SubCategoryFilter />
+          <SaleFilter />
           <BrandFilter />
           <SizesFilter />
         </Box>
@@ -80,7 +75,7 @@ const Category = ({ gender, category, pageBannerData }) => {
           {!mobile && (
             <Box display="flex" justifyContent="space-between" mb="10px">
               <Typography variant="h1" sx={{ fontSize: '22px', fontWeight: '600' }}>
-                {gender?.toUpperCase()} {category?.toUpperCase()}{' '}
+                {pageCategory?.toUpperCase()} {subcategory?.toUpperCase()}{' '}
                 <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
                   ({total} products)
                 </Typography>
@@ -88,59 +83,17 @@ const Category = ({ gender, category, pageBannerData }) => {
               <SortingByPriceAndName />
             </Box>
           )}
-          <ProductPageBanner pageBannerdata={pageBannerData} />
-          <ProductList gender={gender} category={category} />
+          <ProductList />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Category;
+export default SubCategory;
 
 export async function getServerSideProps({ params }) {
-  const { gender, category } = params;
+  const { pageCategory, category, subcategory } = params;
 
-  let pageBannerResponse;
-
-  const query = qs.stringify(
-    {
-      filters: {
-        gender: gender,
-        category: category,
-        showOnCategoryBanner: true,
-      },
-      populate: {
-        image: true,
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    },
-  );
-
-  const equipmentsQuery = qs.stringify(
-    {
-      filters: {
-        showOnCattegoryBanner: true,
-        category: { $startsWith: category },
-      },
-      populate: {
-        image: true,
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    },
-  );
-
-  if (gender == 'equipments') {
-    pageBannerResponse = await fetch(`${process.env.API_URL}/api/equipments?${equipmentsQuery}`);
-  } else {
-    pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
-  }
-
-  const pageBannerResponseJson = await pageBannerResponse.json();
-
-  return { props: { gender, category, pageBannerData: pageBannerResponseJson.data } };
+  return { props: { pageCategory, category, subcategory } };
 }

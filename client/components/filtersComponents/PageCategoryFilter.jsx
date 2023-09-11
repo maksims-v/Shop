@@ -1,26 +1,26 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setGenderChecked } from '@/state/searchPageSlice';
+import { setpageChecked } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
-const GenderFilter = () => {
+const PageCategoryFilter = () => {
   const dispatch = useDispatch();
-  const genders = useSelector((state) => state.searchPageSlice.genders);
+  const pageCategory = useSelector((state) => state.searchPageSlice.pageCategory);
   const status = useSelector((state) => state.searchPageSlice.status);
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const handleChange = (event) => {
-    dispatch(setGenderChecked(event.target.name));
+    dispatch(setpageChecked(event.target.name));
   };
 
   return (
     <Box mb="10px">
       <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
-        {mobile ? null : 'Gender'}
+        {mobile ? null : 'page'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>
-          {genders &&
-            genders?.map((item, index) => {
+          {pageCategory &&
+            pageCategory?.map((item, index) => {
               if (item !== 'all') {
                 return (
                   <FormControlLabel
@@ -44,4 +44,4 @@ const GenderFilter = () => {
   );
 };
 
-export default GenderFilter;
+export default PageCategoryFilter;

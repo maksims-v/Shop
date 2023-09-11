@@ -27,7 +27,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { getProductData } from '@/state/productPageSlice';
 import ProductPageMobileVersion from 'components/mobileVersionPage/ProductPageMobileVersion';
 
-const ItemDetails = ({ slug, gender, category, subcategory }) => {
+const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.shoppingCartSlice.basket);
@@ -48,7 +48,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   const [leftQnty, setLeftQnty] = useState('none');
 
   useEffect(() => {
-    dispatch(getProductData({ slug, gender }));
+    dispatch(getProductData({ slug, pageCategory }));
     setSize(null);
   }, [slug]);
 
@@ -80,8 +80,9 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
         productSize: size,
         id: productData.id,
       };
+
       const product = basket
-        .filter((item) => item.id === productData.attributes.id)
+        .filter((item) => item.id === productData.id)
         .filter((item) => item.productSize === size);
 
       if (product.length === 0) {
@@ -118,7 +119,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
   return mobile ? (
     <ProductPageMobileVersion
       product={product}
-      gender={gender}
+      pageCategory={pageCategory}
       category={category}
       subcategory={subcategory}
       slug={slug}
@@ -134,18 +135,18 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
           underline="hover"
           color="inherit"
           href={
-            productData?.attributes?.gender
-              ? `/shop/${productData?.attributes?.gender}`
+            productData?.attributes?.pageCategory
+              ? `/shop/${productData?.attributes?.pageCategory}`
               : `/shop/equipments`
           }>
-          {gender.toUpperCase()}
+          {pageCategory.toUpperCase()}
         </Link>
         <Link
           underline="hover"
           color="inherit"
           href={
-            productData?.attributes?.gender
-              ? `/shop/${productData?.attributes?.gender}/${productData?.attributes?.category}`
+            productData?.attributes?.pageCategory
+              ? `/shop/${productData?.attributes?.pageCategory}/${productData?.attributes?.category}`
               : `/shop/equipments/${productData?.attributes?.category}/`
           }>
           {category.toUpperCase()}
@@ -154,8 +155,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
           underline="hover"
           color="inherit"
           href={
-            productData?.attributes?.gender
-              ? `/shop/${productData?.attributes?.gender}/${productData?.attributes?.category}/${productData?.attributes?.subcategory}`
+            productData?.attributes?.pageCategory
+              ? `/shop/${productData?.attributes?.pageCategory}/${productData?.attributes?.category}/${productData?.attributes?.subcategory}`
               : `/shop/equipments/${productData?.attributes?.category}/${
                   (productData?.attributes?.toolsGearCategory !== 'null' &&
                     productData?.attributes?.toolsGearCategory) ||
@@ -258,8 +259,8 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
                     underline="hover"
                     color="inherit"
                     href={
-                      item?.attributes?.gender
-                        ? `/shop/${item?.attributes?.gender}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
+                      item?.attributes?.pageCategory
+                        ? `/shop/${item?.attributes?.pageCategory}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
                         : `/shop/equipments/${item?.attributes?.category}/${
                             (item?.attributes?.toolsGearCategory !== 'null' &&
                               item?.attributes?.toolsGearCategory) ||
@@ -390,7 +391,7 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
 
       <RelatedProductsSlider
         slug={slug}
-        gender={gender}
+        pageCategory={pageCategory}
         category={category}
         subcategory={subcategory}
         id={productData?.id && productData.id}
@@ -418,9 +419,9 @@ const ItemDetails = ({ slug, gender, category, subcategory }) => {
 export default ItemDetails;
 
 export async function getServerSideProps({ params, query }) {
-  const { slug, gender, category, subcategory } = params;
+  const { slug, pageCategory, category, subcategory } = params;
 
-  return { props: { slug, gender, category, subcategory } };
+  return { props: { slug, pageCategory, category, subcategory } };
 }
 
 const Alert = forwardRef(function Alert(props, ref) {

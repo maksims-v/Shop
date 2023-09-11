@@ -43,6 +43,7 @@
     "category": {
       "type": "enumeration",
       "enum": [
+        "null",
         "clothing",
         "footwear",
         "accessories",
@@ -53,7 +54,8 @@
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "default": "null"
     },
     "price": {
       "type": "decimal",
@@ -120,7 +122,7 @@
       "component": "size.size",
       "required": true
     },
-    "gender": {
+    "pageCategory": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -171,36 +173,6 @@
       "targetField": "title",
       "required": true
     },
-    "subproductcategory": {
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "subproductcategory.subproductcategory"
-    },
-    "subcategory": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "all",
-        "shoes",
-        "socks",
-        "sandals",
-        "jackets",
-        "shirts",
-        "headwear",
-        "bags",
-        "gloves"
-      ],
-      "required": true
-    },
     "product": {
       "type": "relation",
       "relation": "manyToOne",
@@ -224,6 +196,174 @@
       },
       "type": "boolean",
       "default": false
+    },
+    "equipmentCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Lamps-Lanterns",
+        "Tools-Gear",
+        "Camp-Sleep",
+        "Other-Categories"
+      ],
+      "required": false,
+      "default": "null"
+    },
+    "lampsLanternsCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Headlamps",
+        "Flashlights",
+        "Lantern",
+        "Bike lights",
+        "Hunting Headlamps-Flashlights",
+        "Hunting Flashlights",
+        "Bait Lights",
+        "Accessories Lamps-Lantern"
+      ],
+      "default": "null",
+      "required": false
+    },
+    "campSleepCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Tents",
+        "Shelters",
+        "Sleeping Bags",
+        "Sleeping Pads",
+        "Hammocks-Accessories",
+        "Camping Furniture",
+        "Pillows"
+      ],
+      "default": "null",
+      "required": false
+    },
+    "toolsGearCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Axes",
+        "Multi-tool",
+        "Saws",
+        "Sharpeners",
+        "Lighters-Firesteel"
+      ],
+      "default": "null",
+      "required": false
+    },
+    "otherCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "Binoculars",
+        "Crashpads",
+        "Chalk-Chalk Bags",
+        "Brushes-Accessories",
+        "Climbing Packages",
+        "Climbing Harnesses",
+        "Climbing Ropes-Slings",
+        "Climbing Packs",
+        "Climbing Helmets",
+        "Carabiners-Quickdraws",
+        "Belay-Rapel Devices",
+        "Protection",
+        "Climbing Footwear",
+        "Portaledges",
+        "Training Equipment Climbing",
+        "Climbing Books",
+        "Bouldering",
+        "Via Ferrata",
+        "Ice Climbing"
+      ],
+      "default": "null",
+      "required": false
+    },
+    "clothingCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "jackets",
+        "shirts",
+        "headwear"
+      ],
+      "default": "null",
+      "required": false
+    },
+    "footwearCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "shoes",
+        "socks",
+        "sandals"
+      ],
+      "required": false,
+      "default": "null"
+    },
+    "accessoriesCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "bags",
+        "gloves"
+      ],
+      "default": "null",
+      "required": false
+    },
+    "activityCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null"
+      ],
+      "default": "null",
+      "required": false
     }
   }
 }

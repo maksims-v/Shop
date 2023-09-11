@@ -12,10 +12,10 @@ import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
-import GenderMobileVersion from 'components/mobileVersionPage/GenderMobileVersion';
+import PageCategoryMobileVersion from 'components/mobileVersionPage/PageCategoryMobileVersion';
 import ProductPageBanner from 'components/ProductPageBanner';
 
-const PageGender = ({ gender, pageBannerdata }) => {
+const Index = ({ pageCategory, pageBannerdata }) => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
   const currentPage = useSelector((state) => state.searchPageSlice.currentPage);
@@ -29,11 +29,11 @@ const PageGender = ({ gender, pageBannerdata }) => {
 
   useEffect(() => {
     dispatch(clearAllFilters());
-  }, [gender]);
+  }, [pageCategory]);
 
   useEffect(() => {
-    dispatch(search({ gender }));
-  }, [searchFlag, gender]);
+    dispatch(search({ page: pageCategory }));
+  }, [searchFlag, pageCategory]);
 
   const handleChange = (event) => {
     dispatch(setDiscounts(event.target.name));
@@ -41,11 +41,11 @@ const PageGender = ({ gender, pageBannerdata }) => {
 
   const clearFilters = () => {
     dispatch(clearAllFilters());
-    dispatch(search({ gender }));
+    dispatch(search({ pageCategory }));
   };
 
   return mobile ? (
-    <GenderMobileVersion clearFilters={clearFilters} gender={gender} />
+    <PageCategoryMobileVersion clearFilters={clearFilters} pageCategory={pageCategory} />
   ) : (
     <Box mt="50px">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
@@ -56,8 +56,8 @@ const PageGender = ({ gender, pageBannerdata }) => {
           underline="hover"
           color="inherit"
           style={{ pointerEvents: 'none', fontWeight: 'bold' }}
-          href={`/${gender}`}>
-          {gender?.toUpperCase()}
+          href={`/${pageCategory}`}>
+          {pageCategory?.toUpperCase()}
         </Link>
       </Breadcrumbs>
 
@@ -75,7 +75,7 @@ const PageGender = ({ gender, pageBannerdata }) => {
           {!mobile && (
             <Box display="flex" justifyContent="space-between" mb="20px">
               <Typography variant="h3" sx={{ fontSize: '22px', fontWeight: '600' }}>
-                {gender?.toUpperCase()}
+                {pageCategory?.toUpperCase()}
                 <Typography component="span" sx={{ pl: '5px', color: '#989c9b' }}>
                   ({total} products)
                 </Typography>
@@ -84,24 +84,22 @@ const PageGender = ({ gender, pageBannerdata }) => {
             </Box>
           )}
           <ProductPageBanner pageBannerdata={pageBannerdata} />
-          <ProductList gender={gender} />
+          <ProductList />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default PageGender;
+export default Index;
 
 export async function getServerSideProps({ params }) {
-  const { gender } = params;
-
-  let pageBannerResponse;
+  const { pageCategory } = params;
 
   const query = qs.stringify(
     {
       filters: {
-        gender: gender,
+        pageCategory: pageCategory,
         showOnBanner: true,
       },
       populate: {
@@ -113,31 +111,13 @@ export async function getServerSideProps({ params }) {
     },
   );
 
-  const equpmentsQuery = qs.stringify(
-    {
-      filters: {
-        showOnBanner: true,
-      },
-      populate: {
-        image: true,
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    },
-  );
-
-  if (gender == 'equipments') {
-    pageBannerResponse = await fetch(`${process.env.API_URL}/api/equipments?${equpmentsQuery}`);
-  } else {
-    pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
-  }
+  const pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
 
   const pageBannerResponseJson = await pageBannerResponse.json();
 
   return {
     props: {
-      gender,
+      pageCategory,
       pageBannerdata: pageBannerResponseJson.data,
     },
   };

@@ -71,8 +71,7 @@ const Basket = () => {
     dispatch(basketReset());
   };
 
-  const buyProducts = async () => {
-  };
+  const buyProducts = async () => {};
 
   return (
     <Box
@@ -151,7 +150,7 @@ const Basket = () => {
                 </IconButton>
                 {mediumScreen ? null : (
                   <Link
-                    href={`/${item.item.gender}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
+                    href={`/${item.item.page}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
                     <img
                       src={`http://localhost:1337` + item.item.image.data[0].formats.small.url}
                       alt="alt"
@@ -166,7 +165,7 @@ const Basket = () => {
                   ml={mediumScreen ? '0px' : '10px'}
                   sx={{ '&:hover': { cursor: 'pointer', color: 'black' }, color: '#1976d2' }}>
                   <Link
-                    href={`/${item.item.gender}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
+                    href={`/${item.item.page}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
                     {item.item.title}
                   </Link>
                 </Box>

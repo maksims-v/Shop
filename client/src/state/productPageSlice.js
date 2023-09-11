@@ -4,50 +4,25 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getProductData = createAsyncThunk(
   'productPage/getProductData',
   async function (value, { rejectWithValue, dispatch }) {
-    console.log(value);
+    try {
+      const slugQuery = qs.stringify({
+        filters: { slug: value.slug },
+        populate: { image: true, size: true, color: true, id: true },
+      });
 
-    if (value.gender == 'equipments') {
-      try {
-        const slugQuery = qs.stringify({
-          filters: { slug: value.slug },
-          populate: { image: true, size: true, color: true, id: true },
-        });
+      const response = await fetch(`${process.env.API_URL}/api/products?${slugQuery}`);
 
-        const response = await fetch(`${process.env.API_URL}/api/equipments?${slugQuery}`);
-
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
-
-        const data = response.json();
-
-        data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
+      if (!response.ok) {
+        throw new Error('Server Error!');
       }
-    } else {
-      try {
-        const slugQuery = qs.stringify({
-          filters: { slug: value.slug },
-          populate: { image: true, size: true, color: true, id: true },
-        });
 
-        const response = await fetch(`${process.env.API_URL}/api/products?${slugQuery}`);
+      const data = response.json();
 
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
+      data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
 
-        const data = response.json();
-
-        data.then((product) => dispatch(getSimilarProductData(product?.data[0]?.attributes)));
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
-      }
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   },
 );
@@ -55,51 +30,27 @@ export const getProductData = createAsyncThunk(
 export const getSimilarProductData = createAsyncThunk(
   'productPage/getSimilarProductData',
   async function (value, { rejectWithValue }) {
-    const { title, slug, gender } = value;
+    const { title, slug, pageCategory } = value;
 
-    console.log(gender);
-    if (!gender) {
-      try {
-        const query = qs.stringify({
-          filters: {
-            $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
-          },
-          populate: { image: true, size: true },
-        });
+    try {
+      const query = qs.stringify({
+        filters: {
+          $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
+        },
+        populate: { image: true, size: true },
+      });
 
-        const response = await fetch(`${process.env.API_URL}/api/equipments?${query}`);
+      const response = await fetch(`${process.env.API_URL}/api/products?${query}`);
 
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
-
-        const data = response.json();
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
+      if (!response.ok) {
+        throw new Error('Server Error!');
       }
-    } else {
-      try {
-        const query = qs.stringify({
-          filters: {
-            $and: [{ title: { $eqi: title } }, { slug: { $ne: slug } }],
-          },
-          populate: { image: true, size: true },
-        });
 
-        const response = await fetch(`${process.env.API_URL}/api/products?${query}`);
+      const data = response.json();
 
-        if (!response.ok) {
-          throw new Error('Server Error!');
-        }
-
-        const data = response.json();
-
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.message);
-      }
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   },
 );

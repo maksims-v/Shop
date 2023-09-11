@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import GenderFilter from './GenderFilter';
+import PageCategoryFilter from './PageCategoryFilter';
 import CategoryFilter from './CategoryFilter';
 import BrandFilter from './BrandFilter';
 import CustomButton from 'components/ui/CustomButton';
@@ -95,10 +95,10 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header">
-              <Typography fontWeight="bold">GENDER</Typography>
+              <Typography fontWeight="bold">page</Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-              <GenderFilter />
+              <pageFilter />
             </AccordionDetails>
           </Accordion>
 

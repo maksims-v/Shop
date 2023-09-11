@@ -256,6 +256,66 @@
       ],
       "default": "null",
       "required": true
+    },
+    "clothingCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "jackets",
+        "shirts",
+        "headwear"
+      ],
+      "default": "null",
+      "required": true
+    },
+    "footwearCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "shoes",
+        "socks",
+        "sandals"
+      ],
+      "default": "null",
+      "required": true
+    },
+    "accessoriesCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null",
+        "bags",
+        "gloves"
+      ],
+      "default": "null",
+      "required": true
+    },
+    "activityCategory": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "null"
+      ],
+      "default": "null",
+      "required": true
     }
   }
 }

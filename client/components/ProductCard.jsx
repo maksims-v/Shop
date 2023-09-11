@@ -25,16 +25,19 @@ const ProductCard = ({ item, clearence }) => {
         boxShadow: 'none',
       }}>
       <Link
-        href={
-          item?.gender
-            ? `/shop/${item?.gender}/${item?.category}/${item?.subcategory}/${item?.slug}`
-            : `/shop/equipments/${item?.category}/${
-                (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
-                (item?.campSleepCategory !== 'null' && item?.campSleepCategory) ||
-                (item?.lampsLanternsCategory !== 'null' && item?.lampsLanternsCategory) ||
-                (item?.otherCategory !== 'null' && item?.otherCategory)
-              }/${item?.slug}`
-        }>
+        href={`/shop/${item?.pageCategory}/${
+          (item?.category !== 'null' && item?.category) ||
+          (item?.equipmentCategory !== 'null' && item?.equipmentCategory)
+        }/${
+          (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
+          (item?.campSleepCategory !== 'null' && item?.campSleepCategory) ||
+          (item?.lampsLanternsCategory !== 'null' && item?.lampsLanternsCategory) ||
+          (item?.footwearCategory !== 'null' && item?.footwearCategory) ||
+          (item?.clothingCategory !== 'null' && item?.clothingCategory) ||
+          (item?.otherCategory !== 'null' && item?.otherCategory) ||
+          (item?.activityCategory !== 'null' && item?.activityCategory) ||
+          (item?.accessoriesCategory !== 'null' && item?.accessoriesCategory)
+        }/${item?.slug}`}>
         <CardActionArea sx={{ minHeight: mobile ? '213px' : '283px' }}>
           <CardMedia
             component="img"
