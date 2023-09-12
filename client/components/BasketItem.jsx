@@ -17,7 +17,19 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
       <FlexBox p="15px 0 15px 0">
         <Box flex="1 1 40%">
           <Link
-            href={`/${item.item.page}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
+            href={`/shop/${item?.item?.pageCategory}/${
+              (item?.item?.category !== 'null' && item?.item?.category) ||
+              (item?.item?.equipmentCategory !== 'null' && item?.item?.equipmentCategory)
+            }/${
+              (item?.item?.campSleepCategory !== 'null' && item?.item?.campSleepCategory) ||
+              (item?.item?.lampsLanternsCategory !== 'null' && item?.item?.lampsLanternsCategory) ||
+              (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
+              (item?.item?.footwearCategory !== 'null' && item?.item?.footwearCategory) ||
+              (item?.item?.clothingCategory !== 'null' && item?.item?.clothingCategory) ||
+              (item?.item?.otherCategory !== 'null' && item?.item?.otherCategory) ||
+              (item?.item?.activityCategory !== 'null' && item?.item?.activityCategory) ||
+              (item?.item?.accessoriesCategory !== 'null' && item?.item?.accessoriesCategory)
+            }/${item?.item?.slug}`}>
             <img
               src={`http://localhost:1337` + item.item.image.data[0].attributes.formats.small.url}
               alt="alt"
@@ -29,7 +41,20 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
         <Box flex="1 1 60%">
           <FlexBox mb="10px">
             <Link
-              href={`/${item.item.page}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
+              href={`/shop/${item?.item?.pageCategory}/${
+                (item?.item?.category !== 'null' && item?.item?.category) ||
+                (item?.item?.equipmentCategory !== 'null' && item?.item?.equipmentCategory)
+              }/${
+                (item?.item?.campSleepCategory !== 'null' && item?.item?.campSleepCategory) ||
+                (item?.item?.lampsLanternsCategory !== 'null' &&
+                  item?.item?.lampsLanternsCategory) ||
+                (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
+                (item?.item?.footwearCategory !== 'null' && item?.item?.footwearCategory) ||
+                (item?.item?.clothingCategory !== 'null' && item?.item?.clothingCategory) ||
+                (item?.item?.otherCategory !== 'null' && item?.item?.otherCategory) ||
+                (item?.item?.activityCategory !== 'null' && item?.item?.activityCategory) ||
+                (item?.item?.accessoriesCategory !== 'null' && item?.item?.accessoriesCategory)
+              }/${item?.item?.slug}`}>
               <Typography
                 sx={{
                   '&:hover': { cursor: 'pointer', color: 'black' },
@@ -57,7 +82,7 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
             </Box>
             <Box pl="10px" pt="5px">
               <Box pb="0px" display="flex" alignItems="center">
-                <Box>Cena par vienību: </Box>
+                <Box>Price: </Box>
 
                 <Box display="flex" flexDirection="column" pl="5px">
                   {item.item.sale ? (
@@ -65,12 +90,12 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
                       <Box
                         fontWeight="bold"
                         color="red"
-                        lineHeight="13px">{` €${item.item.oldPrice}`}</Box>
+                        lineHeight="13px">{` €${item.item.price}`}</Box>
                       <Box
                         sx={{
                           textDecorationLine: 'line-through',
-                          fontSize: '10px',
-                        }}>{` €${item.item.price}`}</Box>
+                          fontSize: '11px',
+                        }}>{` €${item.item.oldPrice}`}</Box>
                     </>
                   ) : (
                     <Box fontWeight="bold">{` €${item.item.price}`}</Box>
@@ -78,7 +103,7 @@ const BasketItem = ({ item, deleteProduct, increase, decrease }) => {
                 </Box>
               </Box>
               <Box>
-                Izmērs:
+                Size:
                 <Box component="span" sx={{ fontWeight: 'bold' }}>
                   {` ${item.productSize.toUpperCase()}`}
                 </Box>

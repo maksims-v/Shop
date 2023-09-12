@@ -32,8 +32,8 @@ const NewArrivalsSlider = ({ newProductsData }) => {
           animationDuration={800}
           disableDotsControls="true"
           infinite
-          // autoPlay
-          autoPlayInterval={2000}
+          autoPlay
+          autoPlayInterval={3000}
           items={data}
           responsive={responsive}
           controlsStrategy="alternate"

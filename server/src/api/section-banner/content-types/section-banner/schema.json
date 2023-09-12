@@ -72,7 +72,8 @@
       "enum": [
         "all",
         "men's",
-        "women's"
+        "women's",
+        "equipment"
       ],
       "required": true
     },
@@ -87,7 +88,11 @@
         "clothing",
         "footwear",
         "accessories",
-        "activities"
+        "activities",
+        "Lamps-Lanterns",
+        "Tools-Gear",
+        "Camp-Sleep",
+        "Other-Categories"
       ],
       "required": true
     }

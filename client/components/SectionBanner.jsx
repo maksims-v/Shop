@@ -6,7 +6,7 @@ const SectionBanner = ({ bannerData }) => {
     bannerData.length !== 0 && (
       <Box sx={{ mb: '50px' }}>
         <Link
-          href={`${bannerData[0]?.attributes?.page}/${bannerData[0]?.attributes?.category}/${bannerData[0]?.attributes?.subcategory}`}>
+          href={`shop/${bannerData[0]?.attributes?.pageCategory}/${bannerData[0]?.attributes?.category}/${bannerData[0]?.attributes?.subcategory}`}>
           <img
             alt="banner"
             width="100%"

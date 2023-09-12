@@ -13,19 +13,23 @@ const ProductPageBanner = ({ pageBannerdata }) => {
           justifyContent: 'center',
         }}>
         <Link
-          href={
-            item?.attributes?.pageCategory
-              ? `/shop/${item?.attributes?.pageCategory}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
-              : `/shop/equipments/${item?.attributes?.category}/${
-                  (item?.attributes?.toolsGearCategory !== 'null' &&
-                    item?.attributes?.toolsGearCategory) ||
-                  (item?.attributes?.campSleepCategory !== 'null' &&
-                    item?.attributes?.campSleepCategory) ||
-                  (item?.attributes?.lampsLanternsCategory !== 'null' &&
-                    item?.attributes?.lampsLanternsCategory) ||
-                  (item?.attributes?.otherCategory !== 'null' && item?.attributes?.otherCategory)
-                }/${item?.attributes?.slug}`
-          }>
+          href={`/shop/${item?.attributes?.pageCategory}/${
+            (item?.attributes?.category !== 'null' && item?.attributes?.category) ||
+            (item?.attributes?.equipmentCategory !== 'null' && item?.attributes?.equipmentCategory)
+          }/${
+            (item?.attributes?.toolsGearCategory !== 'null' &&
+              item?.attributes?.toolsGearCategory) ||
+            (item?.attributes?.campSleepCategory !== 'null' &&
+              item?.attributes?.campSleepCategory) ||
+            (item?.attributes?.lampsLanternsCategory !== 'null' &&
+              item?.attributes?.lampsLanternsCategory) ||
+            (item?.attributes?.footwearCategory !== 'null' && item?.attributes?.footwearCategory) ||
+            (item?.attributes?.clothingCategory !== 'null' && item?.attributes?.clothingCategory) ||
+            (item?.attributes?.otherCategory !== 'null' && item?.attributes?.otherCategory) ||
+            (item?.attributes?.activityCategory !== 'null' && item?.attributes?.activityCategory) ||
+            (item?.attributes?.accessoriesCategory !== 'null' &&
+              item?.attributes?.accessoriesCategory)
+          }/${item?.attributes?.slug}`}>
           <CardActionArea sx={{ display: 'flex' }}>
             <CardMedia
               sx={{ height: '100%', width: '220px' }}
@@ -67,7 +71,6 @@ const ProductPageBanner = ({ pageBannerdata }) => {
                     sx={{
                       fontSize: '20px',
                       fontWeight: 'bold',
-                      color: '#bb3142',
                       width: '100%',
                     }}>
                     {item?.attributes.price}$

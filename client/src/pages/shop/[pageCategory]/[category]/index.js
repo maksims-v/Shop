@@ -30,6 +30,8 @@ const Category = ({ pageCategory, category, pageBannerData }) => {
     dispatch(clearAllFilters());
   }, [pageCategory]);
 
+  console.log(pageCategory, category);
+
   useEffect(() => {
     dispatch(search({ pageCategory, category }));
   }, [searchFlag, pageCategory, category]);
@@ -101,13 +103,22 @@ export default Category;
 export async function getServerSideProps({ params }) {
   const { pageCategory, category } = params;
 
-  let pageBannerResponse;
-
   const query = qs.stringify(
     {
       filters: {
         pageCategory: pageCategory,
-        category: category,
+        $or: [
+          {
+            category: {
+              $eqi: category,
+            },
+          },
+          {
+            equipmentCategory: {
+              $eqi: category,
+            },
+          },
+        ],
         showOnCategoryBanner: true,
       },
       populate: {
@@ -119,26 +130,7 @@ export async function getServerSideProps({ params }) {
     },
   );
 
-  const equipmentsQuery = qs.stringify(
-    {
-      filters: {
-        showOnCattegoryBanner: true,
-        category: { $startsWith: category },
-      },
-      populate: {
-        image: true,
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    },
-  );
-
-  if (pageCategory == 'equipments') {
-    pageBannerResponse = await fetch(`${process.env.API_URL}/api/equipments?${equipmentsQuery}`);
-  } else {
-    pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
-  }
+  const pageBannerResponse = await fetch(`${process.env.API_URL}/api/products?${query}`);
 
   const pageBannerResponseJson = await pageBannerResponse.json();
 

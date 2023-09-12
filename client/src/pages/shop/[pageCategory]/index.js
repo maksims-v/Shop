@@ -32,7 +32,7 @@ const Index = ({ pageCategory, pageBannerdata }) => {
   }, [pageCategory]);
 
   useEffect(() => {
-    dispatch(search({ page: pageCategory }));
+    dispatch(search({ pageCategory }));
   }, [searchFlag, pageCategory]);
 
   const handleChange = (event) => {
@@ -95,6 +95,8 @@ export default Index;
 
 export async function getServerSideProps({ params }) {
   const { pageCategory } = params;
+
+  console.log(pageCategory);
 
   const query = qs.stringify(
     {

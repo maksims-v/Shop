@@ -53,7 +53,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const pageCategorySplitArr = pageCategory ? pageCategory.split(",") : [];
     const subCategoryArr = subcat ? subcat.split(",") : [];
 
-    if (pageCategory == "all") pageCategorySplitArr.push("women's", "men's");
+    if (pageCategory == "all")
+      pageCategorySplitArr.push("women's", "men's", "equipment");
     if (pageCategory == "men's" || pageCategory == "women's")
       pageCategorySplitArr.push("all");
 

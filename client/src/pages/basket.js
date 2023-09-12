@@ -8,11 +8,23 @@ import { addToBasket, basketReset } from '@/state/shoppingCartSlice';
 import { Fragment } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Layout from 'components/Layout';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Basket = () => {
   const basket = useSelector((state) => state.shoppingCartSlice.basket);
+  const [totalPrice, setTotalPrice] = useState();
+
+  useEffect(() => {
+    setTotalPrice(
+      basket.reduce(function (summ, item) {
+        const summItem = item.item.sale
+          ? item.qnty * item.item.oldPrice
+          : item.qnty * item.item.price;
+        return summ + summItem;
+      }, 0),
+    );
+  }, [basket]);
 
   const dispatch = useDispatch();
 
@@ -79,7 +91,7 @@ const Basket = () => {
       justifyContent={largeScreen ? 'space-around' : mediumScreen ? 'space-between' : 'center'}
       p={largeScreen ? '20px 0px' : '10px 20px'}
       width="100%">
-      <Box width="40%" minWidth="415px" display={mediumScreen ? 'block' : 'none'}>
+      <Box width="50%" minWidth="415px" display={mediumScreen ? 'block' : 'none'}>
         {basket.map((item, index) => (
           <BasketItem
             item={item}
@@ -91,7 +103,7 @@ const Basket = () => {
         ))}
       </Box>
       <Box
-        width={mediumScreen ? '30%' : '60%'}
+        width={mediumScreen ? '40%' : '60%'}
         minWidth="350px"
         minHeight="200px"
         bgcolor="#edf5fc"
@@ -102,7 +114,7 @@ const Basket = () => {
         textAlign="left"
         borderRadius="5px">
         <Typography fontWeight="bold" fontSize="16px" textAlign="center" pb="10px">
-          Groza saturs:
+          YOUR CART:
         </Typography>
         <Box flexGrow="1" mb="10px">
           <Box
@@ -111,7 +123,7 @@ const Basket = () => {
             pb="5px"
             borderBottom="1px solid black">
             <Box width={mediumScreen ? '55%' : '80%'} fontWeight="bold">
-              Nosaukums
+              Product
             </Box>
             <Box
               pl="3px"
@@ -119,7 +131,7 @@ const Basket = () => {
               textAlign="center"
               fontWeight="bold"
               fontSize={!mediumScreen && '10px'}>
-              Skaits:
+              Qnty:
             </Box>
             <Box
               pl={!mediumScreen && '3px'}
@@ -127,7 +139,7 @@ const Basket = () => {
               textAlign="center"
               fontWeight="bold"
               fontSize={!mediumScreen && '10px'}>
-              Izmērs:
+              Size:
             </Box>
             <Box
               pl={!mediumScreen && '3px'}
@@ -135,7 +147,7 @@ const Basket = () => {
               textAlign="center"
               fontWeight="bold"
               fontSize={!mediumScreen && '10px'}>
-              Summa:
+              Subtotal:
             </Box>
           </Box>
           {basket.map((item, index) => (
@@ -150,7 +162,21 @@ const Basket = () => {
                 </IconButton>
                 {mediumScreen ? null : (
                   <Link
-                    href={`/${item.item.page}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
+                    href={`/shop/${item?.item?.pageCategory}/${
+                      (item?.item?.category !== 'null' && item?.item?.category) ||
+                      (item?.item?.equipmentCategory !== 'null' && item?.item?.equipmentCategory)
+                    }/${
+                      (item?.item?.campSleepCategory !== 'null' && item?.item?.campSleepCategory) ||
+                      (item?.item?.lampsLanternsCategory !== 'null' &&
+                        item?.item?.lampsLanternsCategory) ||
+                      (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
+                      (item?.item?.footwearCategory !== 'null' && item?.item?.footwearCategory) ||
+                      (item?.item?.clothingCategory !== 'null' && item?.item?.clothingCategory) ||
+                      (item?.item?.otherCategory !== 'null' && item?.item?.otherCategory) ||
+                      (item?.item?.activityCategory !== 'null' && item?.item?.activityCategory) ||
+                      (item?.item?.accessoriesCategory !== 'null' &&
+                        item?.item?.accessoriesCategory)
+                    }/${item?.item?.slug}`}>
                     <img
                       src={`http://localhost:1337` + item.item.image.data[0].formats.small.url}
                       alt="alt"
@@ -165,7 +191,21 @@ const Basket = () => {
                   ml={mediumScreen ? '0px' : '10px'}
                   sx={{ '&:hover': { cursor: 'pointer', color: 'black' }, color: '#1976d2' }}>
                   <Link
-                    href={`/${item.item.page}/${item.item.category}/${item.item.subcategory}/${item.item.slug}`}>
+                    href={`/shop/${item?.item?.pageCategory}/${
+                      (item?.item?.category !== 'null' && item?.item?.category) ||
+                      (item?.item?.equipmentCategory !== 'null' && item?.item?.equipmentCategory)
+                    }/${
+                      (item?.item?.campSleepCategory !== 'null' && item?.item?.campSleepCategory) ||
+                      (item?.item?.lampsLanternsCategory !== 'null' &&
+                        item?.item?.lampsLanternsCategory) ||
+                      (item?.toolsGearCategory !== 'null' && item?.toolsGearCategory) ||
+                      (item?.item?.footwearCategory !== 'null' && item?.item?.footwearCategory) ||
+                      (item?.item?.clothingCategory !== 'null' && item?.item?.clothingCategory) ||
+                      (item?.item?.otherCategory !== 'null' && item?.item?.otherCategory) ||
+                      (item?.item?.activityCategory !== 'null' && item?.item?.activityCategory) ||
+                      (item?.item?.accessoriesCategory !== 'null' &&
+                        item?.item?.accessoriesCategory)
+                    }/${item?.item?.slug}`}>
                     {item.item.title}
                   </Link>
                 </Box>
@@ -193,10 +233,7 @@ const Basket = () => {
                       {item?.productSize?.toUpperCase()}
                     </Box>
                     <Box textAlign="center" width="15%" fontWeight="bold">
-                      €
-                      {item.item.oldPrice
-                        ? item.item.oldPrice * item.qnty
-                        : item.item.price * item.qnty}
+                      €{(item.item.price * item.qnty)?.toFixed(2)}
                     </Box>
                   </>
                 ) : (
@@ -205,10 +242,7 @@ const Basket = () => {
                       {item.productSize.toUpperCase()}
                     </Box>
                     <Box textAlign="center" fontWeight="bold">
-                      €
-                      {item.item.oldPrice
-                        ? item.item.oldPrice * item.qnty
-                        : item.item.price * item.qnty}
+                      €{(item.item.price * item.qnty)?.toFixed(2)}
                     </Box>
                   </Box>
                 )}
@@ -219,19 +253,18 @@ const Basket = () => {
         </Box>
         <Box display="flex" justifyContent="space-between" width="100%" alignItems="center">
           <Typography fontSize="16px" fontWeight="bold">
-            Kopā: €
-            {basket.reduce(function (summ, item) {
-              const summItem = item.item.sale
-                ? item.qnty * item.item.oldPrice
-                : item.qnty * item.item.price;
-              return summ + summItem;
-            }, 0)}
+            Total: €{totalPrice?.toFixed(2)}
           </Typography>
-          <Button onClick={cleanBasket} variant="outlined" color="error" size="large">
-            Dzest grozu
+          <Button
+            onClick={cleanBasket}
+            sx={{ width: '120px' }}
+            variant="outlined"
+            color="error"
+            size="large">
+            Clear
           </Button>
           <Button onClick={buyProducts} variant="outlined" size="large">
-            Talak
+            Continue
           </Button>
         </Box>
       </Box>

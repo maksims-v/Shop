@@ -14,7 +14,9 @@ export const search = createAsyncThunk(
     const { currentPage } = getState().searchPageSlice;
     const { sortValue } = getState().searchPageSlice;
 
-    const getPageCategoryValue = value?.page ? value.page : pageCategoryChecked;
+    console.log(value);
+
+    const getPageCategoryValue = value?.pageCategory ? value.pageCategory : pageCategoryChecked;
     const getCategoryValue = value?.category ? value.category : categoryChecked;
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';

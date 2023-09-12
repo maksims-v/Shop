@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "mens_page_banners",
+  "collectionName": "section_categories",
   "info": {
-    "singularName": "mens-page-banner",
-    "pluralName": "mens-page-banners",
-    "displayName": "MensPageBanner",
+    "singularName": "section-category",
+    "pluralName": "section-categories",
+    "displayName": "sectionCategory",
     "description": ""
   },
   "options": {
@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "product": {
+    "category": {
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
@@ -24,7 +24,7 @@
           "localized": true
         }
       },
-      "component": "page-banner-item.page-banner-item"
+      "component": "sections-path.sections-links"
     }
   }
 }

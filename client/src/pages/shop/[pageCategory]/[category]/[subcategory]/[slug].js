@@ -45,7 +45,6 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
   const [size, setSize] = useState(null);
   const [productQnty, setProductQnty] = useState(null);
   const [changeSizeColor, setChangeSizeColor] = useState('black');
-  const [leftQnty, setLeftQnty] = useState('none');
 
   useEffect(() => {
     dispatch(getProductData({ slug, pageCategory }));
@@ -134,40 +133,44 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
         <Link
           underline="hover"
           color="inherit"
-          href={
-            productData?.attributes?.pageCategory
-              ? `/shop/${productData?.attributes?.pageCategory}`
-              : `/shop/equipments`
-          }>
+          href={`/shop/${productData?.attributes?.pageCategory}`}>
           {pageCategory.toUpperCase()}
         </Link>
         <Link
           underline="hover"
           color="inherit"
-          href={
-            productData?.attributes?.pageCategory
-              ? `/shop/${productData?.attributes?.pageCategory}/${productData?.attributes?.category}`
-              : `/shop/equipments/${productData?.attributes?.category}/`
-          }>
+          href={`/shop/${productData?.attributes?.pageCategory}/${
+            (productData?.attributes?.equipmentCategory !== 'null' &&
+              productData?.attributes?.equipmentCategory) ||
+            (productData?.attributes?.category !== 'null' && productData?.attributes?.category)
+          }`}>
           {category.toUpperCase()}
         </Link>
         <Link
           underline="hover"
           color="inherit"
-          href={
-            productData?.attributes?.pageCategory
-              ? `/shop/${productData?.attributes?.pageCategory}/${productData?.attributes?.category}/${productData?.attributes?.subcategory}`
-              : `/shop/equipments/${productData?.attributes?.category}/${
-                  (productData?.attributes?.toolsGearCategory !== 'null' &&
-                    productData?.attributes?.toolsGearCategory) ||
-                  (productData?.attributes?.campSleepCategory !== 'null' &&
-                    productData?.attributes?.campSleepCategory) ||
-                  (productData?.attributes?.lampsLanternsCategory !== 'null' &&
-                    productData?.attributes?.lampsLanternsCategory) ||
-                  (productData?.attributes?.otherCategory !== 'null' &&
-                    productData?.attributes?.otherCategory)
-                }`
-          }>
+          href={`/shop/${productData?.attributes?.pageCategory}/${
+            (productData?.attributes?.equipmentCategory !== 'null' &&
+              productData?.attributes?.equipmentCategory) ||
+            (productData?.attributes?.category !== 'null' && productData?.attributes?.category)
+          }/${
+            (productData?.attributes?.toolsGearCategory !== 'null' &&
+              productData?.attributes?.toolsGearCategory) ||
+            (productData?.attributes?.campSleepCategory !== 'null' &&
+              productData?.attributes?.campSleepCategory) ||
+            (productData?.attributes?.lampsLanternsCategory !== 'null' &&
+              productData?.attributes?.lampsLanternsCategory) ||
+            (productData?.attributes?.otherCategory !== 'null' &&
+              productData?.attributes?.otherCategory) ||
+            (productData?.attributes?.footwearCategory !== 'null' &&
+              productData?.attributes?.footwearCategory) ||
+            (productData?.attributes?.clothingCategory !== 'null' &&
+              productData?.attributes?.clothingCategory) ||
+            (productData?.attributes?.activityCategory !== 'null' &&
+              productData?.attributes?.activityCategory) ||
+            (productData?.attributes?.accessoriesCategory !== 'null' &&
+              productData?.attributes?.accessoriesCategory)
+          }`}>
           {subcategory.toUpperCase()}
         </Link>
       </Breadcrumbs>

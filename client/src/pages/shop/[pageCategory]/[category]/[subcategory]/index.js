@@ -56,11 +56,11 @@ const SubCategory = ({ pageCategory, category, subcategory }) => {
           {category?.toUpperCase()}
         </Link>
         <Link
-          underline="hover"
           style={{ pointerEvents: 'none', fontWeight: 'bold' }}
+          underline="hover"
           color="inherit"
           href={`/shop/${pageCategory}/${category}/${subcategory}`}>
-          {subcategory.toUpperCase()}
+          {subcategory?.toUpperCase()}
         </Link>
       </Breadcrumbs>
 
