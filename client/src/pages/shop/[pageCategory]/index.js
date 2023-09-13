@@ -10,10 +10,33 @@ import SubCategoryFilter from 'components/filtersComponents/SubCategoryFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
+import PageCategoryFilter from 'components/filtersComponents/PageCategoryFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import PageCategoryMobileVersion from 'components/mobileVersionPage/PageCategoryMobileVersion';
 import ProductPageBanner from 'components/ProductPageBanner';
+
+const onHoverLine = {
+  display: 'inline-block',
+  position: 'relative',
+  fontWeight: '600',
+  '&:after': {
+    content: "''",
+    position: 'absolute',
+    width: '100%',
+    transform: 'scaleX(0)',
+    height: '2px',
+    bottom: '0',
+    left: '0',
+    backgroundColor: '#f5b950',
+    transformOrigin: 'bottom right',
+    transition: 'transform 0.25s ease-out',
+  },
+  '&:hover:after': {
+    transform: 'scaleX(1)',
+    transformOrigin: 'bottom left',
+  },
+};
 
 const Index = ({ pageCategory, pageBannerdata }) => {
   const dispatch = useDispatch();
@@ -49,8 +72,8 @@ const Index = ({ pageCategory, pageBannerdata }) => {
   ) : (
     <Box mt="50px">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
-        <Link underline="hover" color="inherit" href="/">
-          HOME
+        <Link color="inherit" href="/">
+          <Box sx={onHoverLine}> HOME</Box>
         </Link>
         <Link
           underline="hover"
@@ -63,6 +86,7 @@ const Index = ({ pageCategory, pageBannerdata }) => {
 
       <Box display="flex">
         <Box flex="1 1 10%">
+          <PageCategoryFilter />
           <PriceSlider />
           <SaleFilter handleChange={handleChange} />
           <CategoryFilter />
@@ -95,8 +119,6 @@ export default Index;
 
 export async function getServerSideProps({ params }) {
   const { pageCategory } = params;
-
-  console.log(pageCategory);
 
   const query = qs.stringify(
     {

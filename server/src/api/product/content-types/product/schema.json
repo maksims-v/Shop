@@ -135,8 +135,7 @@
         "women's",
         "equipment"
       ],
-      "required": true,
-      "default": "all"
+      "required": true
     },
     "clearance": {
       "pluginOptions": {

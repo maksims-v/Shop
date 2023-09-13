@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setpageChecked } from '@/state/searchPageSlice';
+import { setPageCategoryChecked } from '@/state/searchPageSlice';
 import { Box, Typography, FormControl, FormControlLabel, Checkbox, FormGroup } from '@mui/material';
 
 const PageCategoryFilter = () => {
@@ -9,13 +9,13 @@ const PageCategoryFilter = () => {
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   const handleChange = (event) => {
-    dispatch(setpageChecked(event.target.name));
+    dispatch(setPageCategoryChecked(event.target.name));
   };
 
   return (
     <Box mb="10px">
       <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
-        {mobile ? null : 'page'}
+        {mobile ? null : 'GENDER'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

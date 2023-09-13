@@ -45,7 +45,7 @@ const Navbar = () => {
           width: '100%',
           height: '60px',
           position: 'fixed',
-          backgroundColor: 'white',
+          backgroundColor: '#ebebeb',
           zIndex: '99',
         }}>
         <Container maxWidth="xl" sx={{ height: '100%', width: '100%' }}>
@@ -76,8 +76,25 @@ const Navbar = () => {
                     <Box
                       sx={{
                         color: 'black',
+                        display: 'inline-block',
+                        position: 'relative',
                         fontWeight: '600',
-                        '&:hover': { cursor: 'pointer', color: '#ffde00' },
+                        '&:after': {
+                          content: "''",
+                          position: 'absolute',
+                          width: '100%',
+                          transform: 'scaleX(0)',
+                          height: '2px',
+                          bottom: '0',
+                          left: '0',
+                          backgroundColor: '#f5b950',
+                          transformOrigin: 'bottom right',
+                          transition: 'transform 0.25s ease-out',
+                        },
+                        '&:hover:after': {
+                          transform: 'scaleX(1)',
+                          transformOrigin: 'bottom left',
+                        },
                       }}
                       onMouseEnter={() => openMenu(item.link)}>
                       {item.label}
@@ -118,7 +135,7 @@ const Navbar = () => {
                   <IconButton
                     onClick={() => setSearchValue('')}
                     type="button"
-                    sx={{ p: '10px' }}
+                    sx={{ p: '10px', color: '#f5b950' }}
                     aria-label="search">
                     <SearchIcon fontSize="small" />
                   </IconButton>
@@ -171,6 +188,7 @@ const Navbar = () => {
           <>
             <Box
               borderTop="1px solid #aeaeae"
+              borderBottom="1px solid #aeaeae"
               position="absolute"
               pr="25px"
               top="60px"
@@ -180,7 +198,7 @@ const Navbar = () => {
               justifyContent="center"
               alignItems="center"
               color="black"
-              backgroundColor="white"
+              backgroundColor="#ebebeb"
               onMouseLeave={() => setSubHeaderMenuOpen(false)}>
               <Box display="flex" gap="20px">
                 {subHeaderOpenLink &&
@@ -191,7 +209,23 @@ const Navbar = () => {
                           sx={{
                             color: 'black',
                             fontWeight: '600',
-                            '&:hover': { cursor: 'pointer', color: '#ffde00' },
+                            position: 'relative',
+                            '&:after': {
+                              content: "''",
+                              position: 'absolute',
+                              width: '100%',
+                              transform: 'scaleX(0)',
+                              height: '2px',
+                              bottom: '0',
+                              left: '0',
+                              backgroundColor: '#f5b950',
+                              transformOrigin: 'bottom right',
+                              transition: 'transform 0.25s ease-out',
+                            },
+                            '&:hover:after': {
+                              transform: 'scaleX(1)',
+                              transformOrigin: 'bottom left',
+                            },
                           }}>
                           {item.label}
                         </Box>
@@ -202,7 +236,7 @@ const Navbar = () => {
             </Box>
           </>
         )}
-        <Divider color="#aeaeae" />
+        {/* <Divider color="#aeaeae" /> */}
       </Box>
       <AuthModal setOpenModalAuth={setOpenModalAuth} openModalAuth={openModalAuth} />
     </>

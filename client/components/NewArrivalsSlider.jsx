@@ -23,7 +23,9 @@ const NewArrivalsSlider = ({ newProductsData }) => {
   return (
     <Box width="100%">
       <Link href="/newArrivals">
-        <Typography variant="h3" sx={{ fontWeight: 'bold', fontSize: '20px', textAlign: 'center' }}>
+        <Typography
+          variant="h3"
+          sx={{ fontWeight: 'bold', fontSize: '32px', textAlign: 'center', mb: '20px' }}>
           New Arrivals
         </Typography>{' '}
       </Link>

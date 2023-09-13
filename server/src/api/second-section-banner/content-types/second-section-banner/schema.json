@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "section_banners",
+  "collectionName": "second_section_banners",
   "info": {
-    "singularName": "section-banner",
-    "pluralName": "section-banners",
-    "displayName": "SectionBanner",
+    "singularName": "second-section-banner",
+    "pluralName": "second-section-banners",
+    "displayName": "secondSectionBanner",
     "description": ""
   },
   "options": {
@@ -22,25 +22,15 @@
           "localized": true
         }
       },
-      "type": "string",
-      "required": false,
-      "unique": true
+      "type": "string"
     },
-    "image": {
-      "type": "media",
-      "multiple": false,
-      "required": true,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
+    "subtitle": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "type": "string"
     },
     "subcategory": {
       "pluginOptions": {
@@ -60,7 +50,8 @@
         "bags",
         "gloves"
       ],
-      "required": true
+      "required": true,
+      "default": "all"
     },
     "pageCategory": {
       "pluginOptions": {
@@ -75,7 +66,8 @@
         "women's",
         "equipment"
       ],
-      "required": true
+      "required": true,
+      "default": "all"
     },
     "category": {
       "pluginOptions": {
@@ -95,6 +87,54 @@
         "Other-Categories"
       ],
       "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "textColor": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "customField",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+      "required": false,
+      "customField": "plugin::color-picker.color"
+    },
+    "textTopPosition": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "min": 0,
+      "max": 100,
+      "required": true,
+      "default": 50
+    },
+    "textPositionLeft": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "default": 50,
+      "required": true,
+      "max": 100,
+      "min": 0
     },
     "isShow": {
       "pluginOptions": {

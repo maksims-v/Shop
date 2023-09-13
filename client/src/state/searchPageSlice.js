@@ -14,16 +14,27 @@ export const search = createAsyncThunk(
     const { currentPage } = getState().searchPageSlice;
     const { sortValue } = getState().searchPageSlice;
 
-    console.log(value);
-
-    const getPageCategoryValue = value?.pageCategory ? value.pageCategory : pageCategoryChecked;
+    const getPageCategoryValue =
+      value?.pageCategory !== 'all' ? value.pageCategory : pageCategoryChecked;
     const getCategoryValue = value?.category ? value.category : categoryChecked;
     const getSubCategoryValue = value?.subcategory ? value.subcategory : subCategoryChecked;
     const saleproducts = sale ? 'Sale' : '';
 
     try {
       const response = await fetch(
-        `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${changePrice[0]}&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${saleproducts}&category=${getCategoryValue}&pageCategory=${getPageCategoryValue}&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}`,
+        `${process.env.API_URL}/api/products/search?search=${inputSearchValue}&pmin=${
+          changePrice[0]
+        }&pmax=${changePrice[1]}&brands=${brandsChecked}&sale=${
+          value.pageCategory === 'sale' ? 'Sale' : saleproducts
+        }&category=${getCategoryValue}&pageCategory=${
+          value.pageCategory === 'sale' ||
+          value.pageCategory === 'clearance' ||
+          value.pageCategory === 'new'
+            ? 'all'
+            : getPageCategoryValue
+        }&subcat=${getSubCategoryValue}&size=${sizesChecked}&currentPage=${currentPage}&sorting=${sortValue}&clearance=${
+          value.pageCategory === 'clearance' && true
+        }&newproduct=${value.pageCategory === 'new' && true}`,
       );
 
       if (!response.ok) {
@@ -259,7 +270,7 @@ export const {
   inputValue,
   setBrandsChecked,
   setCategoryChecked,
-  setpageCategoryChecked,
+  setPageCategoryChecked,
   setSubCategoryChecked,
   setSale,
   setSizesChecked,

@@ -11,6 +11,28 @@ import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import SubCategoryMobileVersion from 'components/mobileVersionPage/SubCategoryMobileVersion';
 
+const onHoverLine = {
+  display: 'inline-block',
+  position: 'relative',
+  fontWeight: '600',
+  '&:after': {
+    content: "''",
+    position: 'absolute',
+    width: '100%',
+    transform: 'scaleX(0)',
+    height: '2px',
+    bottom: '0',
+    left: '0',
+    backgroundColor: '#f5b950',
+    transformOrigin: 'bottom right',
+    transition: 'transform 0.25s ease-out',
+  },
+  '&:hover:after': {
+    transform: 'scaleX(1)',
+    transformOrigin: 'bottom left',
+  },
+};
+
 const SubCategory = ({ pageCategory, category, subcategory }) => {
   const dispatch = useDispatch();
   const searchFlag = useSelector((state) => state.searchPageSlice.searchFlag);
@@ -47,13 +69,13 @@ const SubCategory = ({ pageCategory, category, subcategory }) => {
     <Box mt="50px">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px' }}>
         <Link underline="hover" color="inherit" href="/">
-          HOME
+          <Box sx={onHoverLine}>HOME</Box>
         </Link>
         <Link underline="hover" color="inherit" href={`/shop/${pageCategory}`}>
-          {pageCategory?.toUpperCase()}
+          <Box sx={onHoverLine}>{pageCategory?.toUpperCase()}</Box>
         </Link>
         <Link underline="hover" color="inherit" href={`/shop/${pageCategory}/${category}`}>
-          {category?.toUpperCase()}
+          <Box sx={onHoverLine}>{category?.toUpperCase()}</Box>
         </Link>
         <Link
           style={{ pointerEvents: 'none', fontWeight: 'bold' }}

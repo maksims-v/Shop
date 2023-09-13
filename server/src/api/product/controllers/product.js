@@ -21,6 +21,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       pmax,
       currentPage,
       sorting,
+      clearance,
+      newproduct,
     } = sanitizedQueryParams;
 
     let howToSort = sorting;
@@ -136,13 +138,14 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                 { activityCategory: { $eqi: subCategoryArr } },
               ],
             },
-
             {
               $or: [
                 { sale: saleItem ? true : true },
                 { sale: saleItem ? true : false },
               ],
             },
+            { clearance: clearance == "false" ? { $eqi: [] } : true },
+            { new: newproduct == "false" ? { $eqi: [] } : true },
             {
               size: {
                 size: {
@@ -217,6 +220,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                 { sale: saleItem ? true : false },
               ],
             },
+            { clearance: clearance == "false" ? { $eqi: [] } : true },
+            { new: newproduct == "false" ? { $eqi: [] } : true },
             {
               size: {
                 size: {

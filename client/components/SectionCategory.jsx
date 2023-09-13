@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Box, Typography, ImageListItem, ImageList } from '@mui/material';
-import ProductCard from './ProductCard';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import Image from 'next/image';
 
 const responsive = {
   0: { items: 1 },
@@ -27,7 +25,8 @@ const SectionCategory = ({ sectionCategoryData }) => {
           width: 200,
           height: 200,
           position: 'relative',
-          p: '0px 1px',
+          mb: '60px',
+          p: '0 0.5px',
         }}>
         <Link href={`/shop/${item.pageCategory}/${item.category}`}>
           <Box
@@ -44,15 +43,14 @@ const SectionCategory = ({ sectionCategoryData }) => {
             }}>
             {item.title}
           </Box>
-
-          <ImageListItem key={item.img} sx={{ '&:hover': { scale: '1.3', transition: '1.5s' } }}>
+          <Box key={item.img} sx={{ '&:hover': { scale: '1.3', transition: '1.5s' } }}>
             <img
-              src={`${process.env.API_URL}${item.image?.data?.attributes?.url}?w=200&fit=crop&auto=format`}
+              src={`${process.env.API_URL}${item.image?.data?.attributes?.url}`}
               alt={item.title}
               style={{ height: '200px', width: '200px', objectFit: 'cover' }}
               loading="lazy"
             />
-          </ImageListItem>
+          </Box>
         </Link>
       </Box>
     );
@@ -60,6 +58,12 @@ const SectionCategory = ({ sectionCategoryData }) => {
 
   return (
     <Box sx={{ mb: '50px' }}>
+      <Typography
+        variant="h3"
+        sx={{ fontWeight: 'bold', fontSize: '32px', textAlign: 'center', mb: '20px' }}>
+        {' '}
+        Shop By Section
+      </Typography>
       {isClient && (
         <AliceCarousel
           animationDuration={800}

@@ -27,6 +27,28 @@ import DoneIcon from '@mui/icons-material/Done';
 import { getProductData } from '@/state/productPageSlice';
 import ProductPageMobileVersion from 'components/mobileVersionPage/ProductPageMobileVersion';
 
+const onHoverLine = {
+  display: 'inline-block',
+  position: 'relative',
+  fontWeight: '600',
+  '&:after': {
+    content: "''",
+    position: 'absolute',
+    width: '100%',
+    transform: 'scaleX(0)',
+    height: '2px',
+    bottom: '0',
+    left: '0',
+    backgroundColor: '#f5b950',
+    transformOrigin: 'bottom right',
+    transition: 'transform 0.25s ease-out',
+  },
+  '&:hover:after': {
+    transform: 'scaleX(1)',
+    transformOrigin: 'bottom left',
+  },
+};
+
 const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
   const dispatch = useDispatch();
 
@@ -128,13 +150,13 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
     <Box width="100%" m="50px auto 10px auto">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '20px', mt: '20px' }}>
         <Link underline="hover" color="inherit" href="/">
-          HOME
+          <Box sx={onHoverLine}>HOME</Box>
         </Link>
         <Link
           underline="hover"
           color="inherit"
           href={`/shop/${productData?.attributes?.pageCategory}`}>
-          {pageCategory.toUpperCase()}
+          <Box sx={onHoverLine}> {pageCategory.toUpperCase()}</Box>
         </Link>
         <Link
           underline="hover"
@@ -144,7 +166,7 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
               productData?.attributes?.equipmentCategory) ||
             (productData?.attributes?.category !== 'null' && productData?.attributes?.category)
           }`}>
-          {category.toUpperCase()}
+          <Box sx={onHoverLine}>{category.toUpperCase()}</Box>
         </Link>
         <Link
           underline="hover"
@@ -171,7 +193,7 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
             (productData?.attributes?.accessoriesCategory !== 'null' &&
               productData?.attributes?.accessoriesCategory)
           }`}>
-          {subcategory.toUpperCase()}
+          <Box sx={onHoverLine}>{subcategory.toUpperCase()}</Box>
         </Link>
       </Breadcrumbs>
       <Box display="flex" flexWrap="wrap" columnGap="40px">
