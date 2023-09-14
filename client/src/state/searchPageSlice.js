@@ -71,7 +71,7 @@ export const getAllSizes = createAsyncThunk(
 );
 
 const initialState = {
-  mobile: false,
+  mobile: true,
   allSizesFromApi: [],
   status: null,
   error: null,

@@ -30,7 +30,7 @@ import ProductPageMobileVersion from 'components/mobileVersionPage/ProductPageMo
 const onHoverLine = {
   display: 'inline-block',
   position: 'relative',
-  fontWeight: '600',
+  fontWeight: '400',
   '&:after': {
     content: "''",
     position: 'absolute',
@@ -139,12 +139,12 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
 
   return mobile ? (
     <ProductPageMobileVersion
-      product={product}
+      productData={productData}
       pageCategory={pageCategory}
       category={category}
       subcategory={subcategory}
       slug={slug}
-      similarProducts={similarProductData}
+      similarProductData={similarProductData}
     />
   ) : (
     <Box width="100%" m="50px auto 10px auto">
@@ -280,23 +280,28 @@ const ItemDetails = ({ slug, pageCategory, category, subcategory }) => {
               {similarProductData &&
                 similarProductData.data?.map((item, index) => (
                   <Link
-                    key={item.id}
-                    underline="hover"
-                    color="inherit"
-                    href={
-                      item?.attributes?.pageCategory
-                        ? `/shop/${item?.attributes?.pageCategory}/${item?.attributes?.category}/${item?.attributes?.subcategory}/${item?.attributes?.slug}`
-                        : `/shop/equipments/${item?.attributes?.category}/${
-                            (item?.attributes?.toolsGearCategory !== 'null' &&
-                              item?.attributes?.toolsGearCategory) ||
-                            (item?.attributes?.campSleepCategory !== 'null' &&
-                              item?.attributes?.campSleepCategory) ||
-                            (item?.attributes?.lampsLanternsCategory !== 'null' &&
-                              item?.attributes?.lampsLanternsCategory) ||
-                            (item?.attributes?.otherCategory !== 'null' &&
-                              item?.attributes?.otherCategory)
-                          }/${item?.attributes?.slug}`
-                    }>
+                    href={`/shop/${item?.attributes?.pageCategory}/${
+                      (item?.attributes?.category !== 'null' && item?.attributes?.category) ||
+                      (item?.attributes?.equipmentCategory !== 'null' &&
+                        item?.attributes?.equipmentCategory)
+                    }/${
+                      (item?.attributes?.toolsGearCategory !== 'null' &&
+                        item?.attributes?.toolsGearCategory) ||
+                      (item?.attributes?.campSleepCategory !== 'null' &&
+                        item?.attributes?.campSleepCategory) ||
+                      (item?.attributes?.lampsLanternsCategory !== 'null' &&
+                        item?.attributes?.lampsLanternsCategory) ||
+                      (item?.attributes?.footwearCategory !== 'null' &&
+                        item?.attributes?.footwearCategory) ||
+                      (item?.attributes?.clothingCategory !== 'null' &&
+                        item?.attributes?.clothingCategory) ||
+                      (item?.attributes?.otherCategory !== 'null' &&
+                        item?.attributes?.otherCategory) ||
+                      (item?.attributes?.activityCategory !== 'null' &&
+                        item?.attributes?.activityCategory) ||
+                      (item?.attributes?.accessoriesCategory !== 'null' &&
+                        item?.attributes?.accessoriesCategory)
+                    }/${item?.attributes?.slug}`}>
                     <CardActionArea sx={{ p: '0 15px' }}>
                       <CardMedia
                         component="img"

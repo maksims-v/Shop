@@ -4,15 +4,19 @@ import Link from 'next/link';
 import MobileFilters from 'components/filtersComponents/MobileFilters';
 import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
-const PageCategoryMobileVersion = ({ clearFilters, page }) => {
+const PageCategoryMobileVersion = ({ clearFilters, pageCategory }) => {
   return (
-    <Box mt="0px">
-      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '5px', pl: '20px' }}>
+    <Box>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '10px', mt: '20px', pl: '5px' }}>
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" style={{ fontWeight: 'bold' }} color="inherit" href={`/${page}`}>
-          {page?.toUpperCase()}
+        <Link
+          underline="hover"
+          style={{ fontWeight: 'bold' }}
+          color="inherit"
+          href={`/shop/${pageCategory}`}>
+          {pageCategory?.toUpperCase()}
         </Link>
       </Breadcrumbs>
       <Box display="flex" alignContent="center" flexDirection="column">

@@ -14,7 +14,6 @@ import SubCategoryMobileVersion from 'components/mobileVersionPage/SubCategoryMo
 const onHoverLine = {
   display: 'inline-block',
   position: 'relative',
-  fontWeight: '600',
   '&:after': {
     content: "''",
     position: 'absolute',

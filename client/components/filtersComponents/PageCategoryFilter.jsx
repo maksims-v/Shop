@@ -13,34 +13,36 @@ const PageCategoryFilter = () => {
   };
 
   return (
-    <Box mb="10px">
-      <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
-        {mobile ? null : 'GENDER'}
-      </Typography>
-      <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
-        <FormGroup>
-          {pageCategory &&
-            pageCategory?.map((item, index) => {
-              if (item !== 'all') {
-                return (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        disabled={status === 'resolved' ? false : true}
-                        sx={{ p: '2px' }}
-                        onChange={handleChange}
-                        name={item.toLowerCase()}
-                      />
-                    }
-                    label={item.charAt(0).toUpperCase() + item.slice(1)}
-                    key={item}
-                  />
-                );
-              }
-            })}
-        </FormGroup>
-      </FormControl>
-    </Box>
+    pageCategory.filter((item) => item !== 'all').length !== 1 && (
+      <Box mb="10px">
+        <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
+          {mobile ? null : 'GENDER'}
+        </Typography>
+        <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
+          <FormGroup>
+            {pageCategory &&
+              pageCategory?.map((item, index) => {
+                if (item !== 'all') {
+                  return (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          disabled={status === 'resolved' ? false : true}
+                          sx={{ p: '2px' }}
+                          onChange={handleChange}
+                          name={item.toLowerCase()}
+                        />
+                      }
+                      label={item.charAt(0).toUpperCase() + item.slice(1)}
+                      key={item}
+                    />
+                  );
+                }
+              })}
+          </FormGroup>
+        </FormControl>
+      </Box>
+    )
   );
 };
 

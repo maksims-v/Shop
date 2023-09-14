@@ -18,9 +18,7 @@ const Basket = () => {
   useEffect(() => {
     setTotalPrice(
       basket.reduce(function (summ, item) {
-        const summItem = item.item.sale
-          ? item.qnty * item.item.oldPrice
-          : item.qnty * item.item.price;
+        const summItem = item.qnty * item.item.price;
         return summ + summItem;
       }, 0),
     );
@@ -178,7 +176,7 @@ const Basket = () => {
                         item?.item?.accessoriesCategory)
                     }/${item?.item?.slug}`}>
                     <img
-                      src={`http://localhost:1337` + item.item.image.data[0].formats.small.url}
+                      src={`http://localhost:1337` + item.item.image.data[0].formats?.small.url}
                       alt="alt"
                       width="70px"
                       height="84px"

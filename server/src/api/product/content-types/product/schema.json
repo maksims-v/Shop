@@ -363,6 +363,16 @@
       ],
       "default": "null",
       "required": false
+    },
+    "searchKeyWord": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "search-word.search-word"
     }
   }
 }

@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}>
       <Navbar />
-      <Box sx={{ mt: '60px', flex: '1 1 auto' }}>
+      <Box sx={{ mt: mobile ? '40px' : '60px', flex: '1 1 auto' }}>
         <Container maxWidth="lg" sx={{ p: mobile && '3px' }}>
           {children}
         </Container>

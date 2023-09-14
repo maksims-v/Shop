@@ -11,7 +11,7 @@ const CategoryFilter = () => {
 
   const router = useRouter();
 
-  const { pathname } = router;
+  const { query } = router;
 
   const handleChange = (event) => {
     dispatch(setCategoryChecked(event.target.name));
@@ -20,7 +20,7 @@ const CategoryFilter = () => {
   return (
     <Box mb="10px">
       <Typography sx={{ mb: mobile ? '-5px' : '2px' }} fontWeight="bold">
-        {mobile ? null : pathname == '/equipmentshop' ? 'Equipment' : 'CLOTHING & SHOES'}
+        {mobile ? null : query.pageCategory == 'equipment' ? 'EQUIPMENT' : 'CLOTHING & SHOES'}
       </Typography>
       <FormControl sx={{ pl: '8px' }} component="fieldset" variant="standard">
         <FormGroup>

@@ -1,25 +1,24 @@
 import { Box, Breadcrumbs } from '@mui/material';
 import ProductList from 'components/ProductList';
 import Link from 'next/link';
-import Layout from 'components/Layout';
 import MobileFilters from 'components/filtersComponents/MobileFilters';
 import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
-const CategoryMobileVersion = ({ page, category, clearFilters }) => {
+const CategoryMobileVersion = ({ pageCategory, category, clearFilters }) => {
+  console.log('hai');
   return (
-    <Box mt="0px">
-      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '5px', pl: '20px' }}>
+    <Box>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: '10px', mt: '20px', pl: '5px' }}>
         <Link underline="hover" color="inherit" href="/">
           HOME
         </Link>
-        <Link underline="hover" color="inherit" href={`/${page}`}>
-          {page?.toUpperCase()}
+        <Link underline="hover" color="inherit" href={`/shop/${pageCategory}`}>
+          {pageCategory?.toUpperCase()}
         </Link>
         <Link
           style={{ fontWeight: 'bold' }}
-          underline="hover"
           color="inherit"
-          href={`/${page}/${category}`}>
+          href={`/shop/${pageCategory}/${category}`}>
           {category?.toUpperCase()}
         </Link>
       </Breadcrumbs>

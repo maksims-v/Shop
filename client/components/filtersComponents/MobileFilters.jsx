@@ -98,7 +98,7 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
               <Typography fontWeight="bold">page</Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-              <pageFilter />
+              <PageCategoryFilter />
             </AccordionDetails>
           </Accordion>
 

@@ -17,7 +17,6 @@ import ProductPageBanner from 'components/ProductPageBanner';
 const onHoverLine = {
   display: 'inline-block',
   position: 'relative',
-  fontWeight: '600',
   '&:after': {
     content: "''",
     position: 'absolute',
@@ -51,8 +50,6 @@ const Category = ({ pageCategory, category, pageBannerData }) => {
   useEffect(() => {
     dispatch(clearAllFilters());
   }, [pageCategory]);
-
-  console.log(pageCategory, category);
 
   useEffect(() => {
     dispatch(search({ pageCategory, category }));

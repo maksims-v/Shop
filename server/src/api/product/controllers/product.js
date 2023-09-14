@@ -97,7 +97,17 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           },
           $and: [
             {
-              $or: [{ title: { $startsWith: searchItem } }],
+              $or: [
+                { title: { $startsWith: searchItem } },
+                { brand: { $startsWith: searchItem } },
+                {
+                  searchKeyWord: {
+                    keyWord: {
+                      $startsWith: searchItem,
+                    },
+                  },
+                },
+              ],
             },
             {
               $or: [{ price: { $between: [priceMin, priceMax] } }],
@@ -171,7 +181,17 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           },
           $and: [
             {
-              $or: [{ title: { $startsWith: searchItem } }],
+              $or: [
+                { title: { $startsWith: searchItem } },
+                { brand: { $startsWith: searchItem } },
+                {
+                  searchKeyWord: {
+                    keyWord: {
+                      $startsWith: searchItem,
+                    },
+                  },
+                },
+              ],
             },
             {
               $or: [{ price: { $between: [priceMin, priceMax] } }],
@@ -406,7 +426,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const sanitizedEntity = await this.sanitizeOutput({ sortedProducts }, ctx);
     const sanitizedPagination = await this.sanitizeOutput(
       {
-        data: pagination,
         priceMin,
         priceMax,
         total: paginationLength,
