@@ -315,7 +315,10 @@
         "null",
         "jackets",
         "shirts",
-        "headwear"
+        "headwear",
+        "pants",
+        "underwear",
+        "rainwear"
       ],
       "default": "null",
       "required": false
@@ -346,7 +349,9 @@
       "enum": [
         "null",
         "bags",
-        "gloves"
+        "gloves",
+        "belts",
+        "gaiters"
       ],
       "default": "null",
       "required": false

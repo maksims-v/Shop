@@ -24,7 +24,7 @@ const BrandFilter = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    sx={{ p: '2px' }}
+                    sx={{ p: mobile ? '1px' : '2px' }}
                     disabled={status === 'resolved' ? false : true}
                     onChange={handleChange}
                     name={item.toLowerCase()}

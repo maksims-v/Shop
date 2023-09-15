@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Box,
+  Drawer,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import PageCategoryFilter from './PageCategoryFilter';
@@ -18,22 +25,25 @@ import { useRouter } from 'next/router';
 const disableMarginInAccordion = true;
 
 const MobileFilters = ({ newSearch, clearFilters }) => {
-  const [toggle, setToggle] = useState(false);
+  const [mobileSearchMenuOpen, setMobileSearchMenuOpen] = useState(false);
 
   const total = useSelector((state) => state.searchPageSlice.metaData.total);
+  const pageCategory = useSelector((state) => state.searchPageSlice.pageCategory);
+
   const [resetPriceSlider, setResetPriceSlider] = useState(false);
 
-  const { asPath } = useRouter();
+  const router = useRouter();
+  const { query, asPath } = router;
 
   const dispatch = useDispatch();
-
-  const toggleButton = () => {
-    setToggle(!toggle);
-  };
 
   const clear = () => {
     clearFilters();
     setResetPriceSlider(!resetPriceSlider);
+  };
+
+  const handleDrawerToggle = () => {
+    setMobileSearchMenuOpen((prevState) => !prevState);
   };
 
   useEffect(() => {
@@ -43,7 +53,7 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: '17px' }}>
-        <CustomButton toggleButton={toggleButton}>SHOW FILTERS</CustomButton>
+        <CustomButton toggleButton={handleDrawerToggle}>SHOW FILTERS</CustomButton>
         <Link href={asPath}>
           <CustomButton toggleButton={clear}>CLEAR FILTERS</CustomButton>
         </Link>
@@ -60,16 +70,19 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
         </Box>
         <SortingByPriceAndName />
       </Box>
-      <Box
+
+      <Drawer
+        variant="temporary"
+        open={mobileSearchMenuOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
         sx={{
-          display: toggle ? 'block' : 'none',
-          position: 'absolute',
-          top: '0px',
-          left: '0px',
-          zIndex: '99',
-          height: '100%',
-          width: '100%',
-          backgroundColor: 'white',
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: '100%',
+          },
         }}>
         <Box sx={{ mb: '50px' }}>
           <Box>
@@ -85,20 +98,33 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
             </Typography>
             <CloseIcon
               fontSize="large"
-              onClick={toggleButton}
+              onClick={handleDrawerToggle}
               sx={{ position: 'absolute', top: '17px', right: '15px' }}
             />
           </Box>
+          {pageCategory.filter((item) => item !== 'all').length !== 1 && (
+            <Accordion disableGutters={disableMarginInAccordion}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
+                <Typography fontWeight="bold">GENDER</Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
+                <PageCategoryFilter />
+              </AccordionDetails>
+            </Accordion>
+          )}
 
           <Accordion disableGutters={disableMarginInAccordion}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header">
-              <Typography fontWeight="bold">page</Typography>
+              aria-controls="panel2a-content"
+              id="panel2a-header">
+              <Typography fontWeight="bold">CATEGORIES</Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-              <PageCategoryFilter />
+              <CategoryFilter />
             </AccordionDetails>
           </Accordion>
 
@@ -107,10 +133,12 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel2a-content"
               id="panel2a-header">
-              <Typography fontWeight="bold">CLOTHING & SHOES</Typography>
+              <Typography fontWeight="bold">
+                {query.pageCategory == 'equipment' ? 'EQUIPMENT' : 'CLOTHING & SHOES'}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-              <CategoryFilter />
+              <SubCategoryFilter />
             </AccordionDetails>
           </Accordion>
 
@@ -137,23 +165,11 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
               <SizesFilter />
             </AccordionDetails>
           </Accordion>
-
-          <Accordion disableGutters={disableMarginInAccordion}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-              id="panel2a-header">
-              <Typography fontWeight="bold">CATEGORIES</Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ p: '0px 0px 0px 17px' }}>
-              <SubCategoryFilter />
-            </AccordionDetails>
-          </Accordion>
         </Box>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', pb: '55px' }}>
-          <CustomButton toggleButton={toggleButton}>SHOW</CustomButton>
+          <CustomButton toggleButton={handleDrawerToggle}>SHOW</CustomButton>
         </Box>
-      </Box>
+      </Drawer>
     </>
   );
 };

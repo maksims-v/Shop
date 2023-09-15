@@ -28,7 +28,7 @@ const PageCategoryFilter = () => {
                       control={
                         <Checkbox
                           disabled={status === 'resolved' ? false : true}
-                          sx={{ p: '2px' }}
+                          sx={{ p: mobile ? '1px' : '2px' }}
                           onChange={handleChange}
                           name={item.toLowerCase()}
                         />

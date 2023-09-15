@@ -7,6 +7,7 @@ import SaleFilter from 'components/filtersComponents/SaleFilter';
 import BrandFilter from 'components/filtersComponents/BrandFilter';
 import PriceSlider from 'components/filtersComponents/PriceSlider';
 import SizesFilter from 'components/filtersComponents/SizesFilter';
+import PageCategoryFilter from 'components/filtersComponents/PageCategoryFilter';
 import SortingByPriceAndName from 'components/SortingByPriceAndName';
 import Link from 'next/link';
 import SubCategoryMobileVersion from 'components/mobileVersionPage/SubCategoryMobileVersion';
@@ -87,6 +88,7 @@ const SubCategory = ({ pageCategory, category, subcategory }) => {
 
       <Box display="flex">
         <Box flex="1 1 10%">
+          <PageCategoryFilter />
           <PriceSlider />
           <SaleFilter />
           <BrandFilter />

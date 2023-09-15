@@ -87,36 +87,6 @@ const MobileSideBarMenu = ({ mobileOpen, handleDrawerToggle }) => {
                   </AccordionDetails>
                 </Accordion>
               ))}
-
-            {/* <Accordion
-              sx={{
-                color: 'black',
-                textAlign: 'left',
-              }}
-              disableGutters={disable}
-              expanded={expanded === 'panel1'}
-              onChange={handleChange('panel1')}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header">
-                <Typography sx={{ width: '100%', flexShrink: 0 }}>MEN'S</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails sx={{ p: '0px 16px' }}>
-                {mensCategory.map((item) => {
-                  return (
-                    <Link key={item.id} href={item.path}>
-                      <Box
-                        onClick={handleDrawerToggle}
-                        sx={{ color: 'white', fontSize: '11px', mb: '15px', pl: ' 5px' }}>
-                        {item.title}
-                      </Box>
-                    </Link>
-                  );
-                })}
-              </AccordionDetails>
-            </Accordion> */}
             <Divider color="black" />
           </Box>
         </Box>

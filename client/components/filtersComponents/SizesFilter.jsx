@@ -49,6 +49,8 @@ const SizesFilter = () => {
                   ml: '0px !Important',
                   m: '2px',
                   height: '40px',
+                  lineHeight: '15px',
+                  fontSize: '12px',
                   width: '40px',
                   borderLeft: '1px solid rgba(0, 0, 0, 0.12) !Important',
                 }}>
