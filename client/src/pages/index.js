@@ -13,7 +13,10 @@ const Home = ({
   sectionCategoryData,
   secondBannerData,
   sectionPopularCategoryData,
+  sectionBrandData,
 }) => {
+  console.log(sectionBrandData);
+
   return (
     <>
       <SectionBanner bannerData={bannerData} />
@@ -56,6 +59,14 @@ export async function getStaticProps() {
     },
   });
 
+  const sectionBrandQuery = qs.stringify({
+    populate: {
+      brandSection: {
+        populate: { image: true, products: true },
+      },
+    },
+  });
+
   const bannerResponse = await fetch(`${process.env.API_URL}/api/section-banners?populate=*`);
   const secondBannerResponse = await fetch(
     `${process.env.API_URL}/api/second-section-banners?populate=*`,
@@ -69,12 +80,17 @@ export async function getStaticProps() {
     `${process.env.API_URL}/api/section-categories?${sectionCategoryQuery}`,
   );
 
+  const sectionBrandResponse = await fetch(
+    `${process.env.API_URL}/api/section-brands?${sectionBrandQuery}`,
+  );
+
   const bannerDataJson = await bannerResponse.json();
   const secondBannerDataJson = await secondBannerResponse.json();
   const popularCategoryDataJson = await popularCategoryResponse.json();
   const newProductsJson = await newProductsResponse.json();
   const clearenceDataJson = await clearenceResponse.json();
   const sectionCategoryDataJson = await sectionCategoryResponse.json();
+  const sectionBrandDataJson = await sectionBrandResponse.json();
 
   return {
     props: {
@@ -84,6 +100,7 @@ export async function getStaticProps() {
       sectionCategoryData: sectionCategoryDataJson,
       secondBannerData: secondBannerDataJson?.data,
       sectionPopularCategoryData: popularCategoryDataJson?.data,
+      sectionBrandData: sectionBrandDataJson,
     },
   };
 }

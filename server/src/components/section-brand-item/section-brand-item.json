@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_section_brand_item_section_brand_items",
+  "info": {
+    "displayName": "sectionBrandItem",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "isShow": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "brand": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    }
+  }
+}

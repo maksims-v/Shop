@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "section_brands",
+  "info": {
+    "singularName": "section-brand",
+    "pluralName": "section-brands",
+    "displayName": "sectionBrand"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "brandSection": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "section-brand-item.section-brand-item"
+    }
+  }
+}
