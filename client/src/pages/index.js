@@ -5,6 +5,7 @@ import PopularCategorySection from 'components/PopularCategorySection';
 import ClearanseSlider from 'components/ClearanseSlider';
 import SectionCategory from 'components/SectionCategory';
 import SecondSectionBanner from 'components/SecondSectionBanner';
+import SectionBrands from 'components/SectionBrands';
 
 const Home = ({
   bannerData,
@@ -15,12 +16,11 @@ const Home = ({
   sectionPopularCategoryData,
   sectionBrandData,
 }) => {
-  console.log(sectionBrandData);
-
   return (
     <>
       <SectionBanner bannerData={bannerData} />
-      <PopularCategorySection sectionPopularCategoryData={sectionPopularCategoryData} />
+      <SectionBrands sectionBrandData={sectionBrandData} />
+      {/* <PopularCategorySection sectionPopularCategoryData={sectionPopularCategoryData} /> */}
       <NewArrivalsSlider newProductsData={newProductsData} />
       <SecondSectionBanner secondBannerData={secondBannerData} />
       <SectionCategory
@@ -62,7 +62,7 @@ export async function getStaticProps() {
   const sectionBrandQuery = qs.stringify({
     populate: {
       brandSection: {
-        populate: { image: true, products: true },
+        populate: { image: true, products: { populate: { image: true } } },
       },
     },
   });

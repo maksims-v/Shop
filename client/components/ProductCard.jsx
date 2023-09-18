@@ -12,18 +12,12 @@ import FiberNewIcon from '@mui/icons-material/FiberNew';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-const ProductCard = ({ item, clearence }) => {
+const ProductCard = ({ item, clearence, section }) => {
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
   const status = useSelector((state) => state.searchPageSlice.status);
 
   return (
-    <Card
-      sx={{
-        maxWidth: 250,
-        m: mobile ? '1px 0px' : '10px 0px',
-        height: mobile ? '330px' : '400px',
-        boxShadow: 'none',
-      }}>
+    <Card sx={{ maxWidth: 235, boxShadow: 'none' }}>
       <Link
         href={`/shop/${item?.pageCategory}/${
           (item?.category !== 'null' && item?.category) ||
@@ -38,78 +32,141 @@ const ProductCard = ({ item, clearence }) => {
           (item?.activityCategory !== 'null' && item?.activityCategory) ||
           (item?.accessoriesCategory !== 'null' && item?.accessoriesCategory)
         }/${item?.slug}`}>
-        <CardActionArea sx={{ minHeight: mobile ? '213px' : '283px' }}>
-          <CardMedia
-            component="img"
-            image={`${process.env.API_URL}${
-              clearence ? item.image?.data[0]?.attributes?.formats?.medium?.url : item?.image
-            }`}
-            alt="img"
-          />
-
-          {item.new && (
-            <FiberNewIcon
-              sx={{ color: '#0070d6', position: 'absolute', top: '7px', left: '7px' }}
+        {section !== 'brandSection' ? (
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              sx={{ p: '0px 5px' }}
+              image={`${process.env.API_URL}${
+                clearence || section == 'brandSection'
+                  ? item.image?.data[0]?.attributes?.formats?.medium?.url
+                  : item?.image
+              }`}
+              alt="img"
             />
-          )}
-        </CardActionArea>
-        {/* ) : (
-          <Skeleton variant="rectangular" width={230} height={283} />
-        )} */}
-        {status === 'loading' ? (
-          <Skeleton sx={{ mt: '20px' }} variant="rectangular" width={230} height={50} />
+
+            {item.new && (
+              <FiberNewIcon
+                sx={{ color: '#0070d6', position: 'absolute', top: '7px', left: '7px' }}
+              />
+            )}
+
+            <CardContent
+              sx={{
+                p: '0px 5px',
+                textAlign: 'left',
+                overflow: 'hidden',
+                height: '100px',
+                display: 'flex',
+                flexDirection: 'column',
+              }}>
+              <Typography sx={{ fontWeight: 'bold' }}>{item?.brand}</Typography>
+              <Typography sx={{ lineHeight: '18px', flex: '1 1 auto' }}>{item?.title}</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  textAlign: 'left',
+                }}>
+                {item?.sale ? (
+                  <Box display="flex">
+                    <Typography
+                      sx={{
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        color: '#bb3142',
+                      }}>
+                      {item?.price}$
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: '13px',
+                        pt: '9px',
+                        textDecoration: 'line-through',
+                      }}>
+                      {item?.sale ? item?.oldPrice : item?.price} $
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold',
+                      fontSize: '20px',
+                      pt: '5px',
+                      width: '100%',
+                    }}>
+                    {item?.price} $
+                  </Typography>
+                )}
+              </Box>
+            </CardContent>
+          </CardActionArea>
         ) : (
           <>
-            <CardContent sx={{ p: '10px 16px 0px 16px' }}>
-              <Typography sx={{ textAlign: 'left', fontWeight: 'bold' }}>{item?.brand}</Typography>
-            </CardContent>
-            <CardContent sx={{ p: '0px 16px' }}>
-              <Typography sx={{ textAlign: 'left', height: '50px', overflow: 'hidden' }}>
-                {item?.title}
-              </Typography>
-            </CardContent>
-            <CardActions
+            <CardMedia
+              component="img"
+              sx={{ p: '0px 5px' }}
+              image={`${process.env.API_URL}${
+                clearence || section == 'brandSection'
+                  ? item.image?.data[0]?.attributes?.formats?.medium?.url
+                  : item?.image
+              }`}
+              alt="img"
+            />
+
+            {item.new && (
+              <FiberNewIcon
+                sx={{ color: '#0070d6', position: 'absolute', top: '7px', left: '7px' }}
+              />
+            )}
+
+            <CardContent
               sx={{
-                display: 'flex',
-                p: '0px 0px 0px 10px',
+                p: '0px 5px',
                 textAlign: 'left',
+                overflow: 'hidden',
+                height: '100px',
+                display: 'flex',
+                flexDirection: 'column',
               }}>
-              {item?.sale ? (
-                <Box display="flex" pt="0px">
+              <Typography sx={{ fontWeight: 'bold' }}>{item?.brand}</Typography>
+              <Typography sx={{ lineHeight: '18px', flex: '1 1 auto' }}>{item?.title}</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  textAlign: 'left',
+                }}>
+                {item?.sale ? (
+                  <Box display="flex">
+                    <Typography
+                      sx={{
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        color: '#bb3142',
+                      }}>
+                      {item?.price}$
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: '13px',
+                        pt: '9px',
+                        textDecoration: 'line-through',
+                      }}>
+                      {item?.sale ? item?.oldPrice : item?.price} $
+                    </Typography>
+                  </Box>
+                ) : (
                   <Typography
                     sx={{
-                      fontSize: '20px',
                       fontWeight: 'bold',
-                      color: '#bb3142',
+                      fontSize: '20px',
+                      pt: '5px',
                       width: '100%',
-                      pl: '5px',
                     }}>
-                    {item?.price}$
+                    {item?.price} $
                   </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: '13px',
-                      pl: '5px',
-                      pt: '9px',
-                      width: '100%',
-                      textDecoration: 'line-through',
-                    }}>
-                    {item?.sale ? item?.oldPrice : item?.price} $
-                  </Typography>
-                </Box>
-              ) : (
-                <Typography
-                  sx={{
-                    fontWeight: 'bold',
-                    fontSize: '20px',
-                    pl: '5px',
-                    pt: '5px',
-                    width: '100%',
-                  }}>
-                  {item?.price} $
-                </Typography>
-              )}
-            </CardActions>
+                )}
+              </Box>
+            </CardContent>
           </>
         )}
       </Link>

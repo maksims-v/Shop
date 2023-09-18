@@ -6,11 +6,6 @@
   },
   "options": {},
   "attributes": {
-    "isShow": {
-      "type": "boolean",
-      "default": true,
-      "required": true
-    },
     "brand": {
       "type": "string",
       "required": true

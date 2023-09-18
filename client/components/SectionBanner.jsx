@@ -4,7 +4,7 @@ import Link from 'next/link';
 const SectionBanner = ({ bannerData }) => {
   return (
     bannerData.length !== 0 && (
-      <Box sx={{ mb: '50px' }}>
+      <Box sx={{ mb: '50px', width: '100%' }}>
         <Link
           href={`shop/${bannerData[0]?.attributes?.pageCategory}/${bannerData[0]?.attributes?.category}/${bannerData[0]?.attributes?.subcategory}`}>
           <img

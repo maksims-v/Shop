@@ -4,7 +4,8 @@
   "info": {
     "singularName": "section-brand",
     "pluralName": "section-brands",
-    "displayName": "sectionBrand"
+    "displayName": "sectionBrand",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -24,6 +25,16 @@
         }
       },
       "component": "section-brand-item.section-brand-item"
+    },
+    "isShow": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean",
+      "default": true,
+      "required": true
     }
   }
 }
