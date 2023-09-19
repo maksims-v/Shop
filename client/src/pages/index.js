@@ -19,8 +19,8 @@ const Home = ({
   return (
     <>
       <SectionBanner bannerData={bannerData} />
+      <PopularCategorySection sectionPopularCategoryData={sectionPopularCategoryData} />
       <SectionBrands sectionBrandData={sectionBrandData} />
-      {/* <PopularCategorySection sectionPopularCategoryData={sectionPopularCategoryData} /> */}
       <NewArrivalsSlider newProductsData={newProductsData} />
       <SecondSectionBanner secondBannerData={secondBannerData} />
       <SectionCategory

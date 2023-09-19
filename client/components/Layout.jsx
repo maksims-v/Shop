@@ -9,12 +9,20 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getUserFromLocalCookie } from '@/state/authSlice';
 import Cookies from 'js-cookie';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { setMobile } from '@/state/searchPageSlice';
 
 import { addToBasket } from '@/state/shoppingCartSlice';
 
 const Layout = ({ children }) => {
+  const mobileScreen = useMediaQuery('(max-width:570px)');
+
   const dispatch = useDispatch();
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
+
+  useEffect(() => {
+    dispatch(setMobile(mobileScreen ? true : false));
+  }, [mobileScreen]);
 
   useEffect(() => {
     const jwt = Cookies.get('jwt');

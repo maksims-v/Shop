@@ -6,7 +6,7 @@ const MobileFooter = () => {
   const data = useSelector((state) => state.footerSlice.data);
   const status = useSelector((state) => state.footerSlice.status);
   return (
-    <Box backgroundColor="#262624" color="white" p="40px 0px" mt="50px">
+    <Box backgroundColor="#262624" color="white" p="40px 0px" mt="20px">
       <Container maxWidth="md" sx={{ height: '100%' }}>
         {status === 'resolved' && (
           <Box
@@ -23,7 +23,7 @@ const MobileFooter = () => {
                 </Typography>
                 <List>
                   {data?.supportLinks[0]?.link?.map((item, index) => (
-                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '14px' }}>
+                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '16px' }}>
                       <Link href={item.href}>{item.label}</Link>
                     </ListItem>
                   ))}{' '}
@@ -35,7 +35,7 @@ const MobileFooter = () => {
                 </Typography>
                 <List>
                   {data?.aboutLinks[0]?.link?.map((item, index) => (
-                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '14px' }}>
+                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '16px' }}>
                       <Link href={item.href}>{item.label}</Link>
                     </ListItem>
                   ))}{' '}
@@ -49,7 +49,7 @@ const MobileFooter = () => {
                 </Typography>
                 <List>
                   {data?.allProductsLinks[0]?.link?.map((item, index) => (
-                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '14px' }}>
+                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '16px' }}>
                       <Link href={item.href}>{item.label}</Link>
                     </ListItem>
                   ))}{' '}
@@ -61,7 +61,7 @@ const MobileFooter = () => {
                 </Typography>
                 <List>
                   {data?.socialLinks[0]?.link?.map((item, index) => (
-                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '14px' }}>
+                    <ListItem key={index} sx={{ p: '0px 0px 0px 0px', fontSize: '16px' }}>
                       <Link href={item.href}>{item.label}</Link>
                     </ListItem>
                   ))}{' '}

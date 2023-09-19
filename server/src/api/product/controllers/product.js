@@ -39,9 +39,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     // pagination logic
     let startPage = 0;
-    let limitPage = 21 * currentPage;
+    let limitPage = 24 * currentPage;
     if (currentPage > 1) {
-      startPage = limitPage - 21;
+      startPage = limitPage - 24;
     } else {
       startPage = 0;
     }
@@ -89,7 +89,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       "api::product.product",
       {
         start: startPage,
-        limit: 21,
+        limit: 24,
         sort: howToSort ? [{ price: howToSort }] : { id: "desc" },
         filters: {
           publishedAt: {
@@ -271,7 +271,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     //---------------
 
     // get pages count
-    const pages = Math.ceil(paginationLength / 21);
+    const pages = Math.ceil(paginationLength / 24);
     //---------------
 
     // get pageCategory

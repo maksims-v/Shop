@@ -136,8 +136,7 @@ const MobileHeader = () => {
 
       <MobileSideBarMenu mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} />
       {openSearchMenu && (
-        <Paper
-          component="form"
+        <Box
           sx={{
             p: '2px 4px',
             position: 'fixed',
@@ -149,6 +148,7 @@ const MobileHeader = () => {
             backgroundColor: 'white',
             zIndex: '50',
             width: '102%',
+            borderBottom: '1.5px solid #727272',
           }}>
           <InputBase
             onChange={(e) => setSearchValue(e.target.value)}
@@ -157,14 +157,18 @@ const MobileHeader = () => {
             placeholder="Search"
             inputProps={{ 'aria-label': 'search' }}
           />
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <Divider sx={{ height: 28, m: 0.5 }} color="#727272" orientation="vertical" />
 
           <Link href={`/search/${searchValue}`}>
-            <IconButton onClick={toggleSearch} type="button" sx={{ p: '10px' }} aria-label="search">
+            <IconButton
+              onClick={toggleSearch}
+              type="button"
+              sx={{ p: '10px', color: '#f5b950' }}
+              aria-label="search">
               <SearchIcon />
             </IconButton>
           </Link>
-        </Paper>
+        </Box>
       )}
 
       <AuthModal setOpenModalAuth={setOpenModalAuth} openModalAuth={openModalAuth} />

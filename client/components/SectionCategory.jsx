@@ -3,15 +3,19 @@ import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import { useSelector } from 'react-redux';
 
 const responsive = {
-  0: { items: 1 },
-  568: { items: 2 },
+  0: { items: 3 },
+  568: { items: 3 },
+  870: { items: 4 },
+
   1152: { items: 5 },
 };
 
 const SectionCategory = ({ sectionCategoryData }) => {
   const [isClient, setIsClient] = useState(false);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
   useEffect(() => {
     setIsClient(true);
@@ -20,12 +24,11 @@ const SectionCategory = ({ sectionCategoryData }) => {
     return (
       <Box
         sx={{
-          borderRadius: '50%',
+          borderRadius: !mobile && '50%',
           overflow: 'hidden',
-          width: 200,
-          height: 200,
+          width: mobile ? '99%' : 200,
+          height: mobile ? '300px' : '200px',
           position: 'relative',
-          mb: '60px',
           p: '0 0.5px',
         }}>
         <Link href={`/shop/${item.pageCategory}/${item.category}`}>
@@ -34,7 +37,7 @@ const SectionCategory = ({ sectionCategoryData }) => {
               position: 'absolute',
               color: 'white',
               zIndex: 99,
-              top: '50%',
+              top: mobile ? '90%' : '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               fontWeight: 'bold',
@@ -47,7 +50,7 @@ const SectionCategory = ({ sectionCategoryData }) => {
             <img
               src={`${process.env.API_URL}${item.image?.data?.attributes?.url}`}
               alt={item.title}
-              style={{ height: '200px', width: '200px', objectFit: 'cover' }}
+              style={{ height: mobile ? '300px' : '200px', width: '200px', objectFit: 'cover' }}
               loading="lazy"
             />
           </Box>
@@ -57,10 +60,8 @@ const SectionCategory = ({ sectionCategoryData }) => {
   });
 
   return (
-    <Box sx={{ mb: '50px' }}>
-      <Typography
-        variant="h3"
-        sx={{ fontWeight: 'bold', fontSize: '32px', textAlign: 'center', mb: '20px' }}>
+    <Box sx={{ mb: !mobile && '50px' }}>
+      <Typography variant="h2" sx={{ textAlign: 'center', mb: '20px' }}>
         {' '}
         Shop By Section
       </Typography>
@@ -69,9 +70,8 @@ const SectionCategory = ({ sectionCategoryData }) => {
           animationDuration={800}
           disableDotsControls="true"
           disableButtonsControls="true"
-          true
           infinite
-          //  autoPlay
+          autoPlay
           autoPlayInterval={3000}
           items={data}
           responsive={responsive}

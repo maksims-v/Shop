@@ -13,7 +13,12 @@ const MobileSearchChip = () => {
       direction="row"
       flexWrap="wrap"
       spacing={0.2}
-      sx={{ m: '0 auto', mb: '10px', color: 'black', gap: '1px' }}>
+      sx={{
+        m: '0 auto',
+        mb: '10px',
+        color: 'black',
+        gap: '1px',
+      }}>
       {pageCategoryChecked?.map((item) => (
         <Chip key={item} label={item} size="small" />
       ))}

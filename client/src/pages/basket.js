@@ -83,6 +83,8 @@ const Basket = () => {
 
   const buyProducts = async () => {};
 
+  console.log(basket);
+
   return (
     <Box
       display="flex"
@@ -176,7 +178,10 @@ const Basket = () => {
                         item?.item?.accessoriesCategory)
                     }/${item?.item?.slug}`}>
                     <img
-                      src={`http://localhost:1337` + item.item.image.data[0].formats?.small.url}
+                      src={
+                        `http://localhost:1337` +
+                        item.item.image.data[0].attributes.formats?.small.url
+                      }
                       alt="alt"
                       width="70px"
                       height="84px"
@@ -255,13 +260,17 @@ const Basket = () => {
           </Typography>
           <Button
             onClick={cleanBasket}
-            sx={{ width: '120px' }}
+            sx={{ width: mediumScreen ? '120px' : '105px' }}
             variant="outlined"
             color="error"
             size="large">
             Clear
           </Button>
-          <Button onClick={buyProducts} variant="outlined" size="large">
+          <Button
+            onClick={buyProducts}
+            sx={{ width: mediumScreen ? '120px' : '105px' }}
+            variant="outlined"
+            size="large">
             Continue
           </Button>
         </Box>

@@ -107,7 +107,7 @@ export const searchPageSlice = createSlice({
   initialState,
   reducers: {
     setMobile(state, action) {
-      state.mobile = true;
+      state.mobile = action.payload;
     },
     inputValue(state, action) {
       state.inputSearchValue = action.payload;

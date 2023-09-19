@@ -14,8 +14,6 @@ const Search = ({ newSearch, searchData }) => {
 
   const dispatch = useDispatch();
 
-  console.log(newSearch);
-
   useEffect(() => {
     if (newSearch.length !== 0) {
       dispatch(clearAllFilters());

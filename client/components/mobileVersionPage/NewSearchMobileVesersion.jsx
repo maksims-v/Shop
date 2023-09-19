@@ -1,16 +1,13 @@
 import { Box } from '@mui/material';
 import ProductList from '../ProductList';
 import MobileFilters from '../filtersComponents/MobileFilters';
-import Layout from 'components/Layout';
-import MobileSearchChip from 'components/filtersComponents/MobileSearchChip';
 
 const NewSearchMobileVesersion = ({ newSearch, clearFilters }) => {
   return (
-      <Box display="flex" alignContent="center" flexDirection="column">
-        <MobileSearchChip />
-        <MobileFilters newSearch={newSearch} clearFilters={clearFilters} />
-        <ProductList />
-      </Box>
+    <Box sx={{ display: 'flex', alignContent: 'center', flexDirection: 'column', mt: '10px' }}>
+      <MobileFilters newSearch={newSearch} clearFilters={clearFilters} />
+      <ProductList />
+    </Box>
   );
 };
 

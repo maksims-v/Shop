@@ -1,13 +1,22 @@
 import { Box, Container, List, Typography, ListItem } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
+import MobileFooter from './mobileVersionPage/MobileFooter';
 
 const Footer = () => {
   const data = useSelector((state) => state.footerSlice.data);
   const status = useSelector((state) => state.footerSlice.status);
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
-  return (
-    <Box minHeight="300px" backgroundColor="#262624" color="white" pt="40px" mt="50px">
+  return mobile ? (
+    <MobileFooter />
+  ) : (
+    <Box
+      minHeight="300px"
+      backgroundColor="#262624"
+      color="white"
+      pt="40px"
+      mt={mobile ? '20px' : '50px'}>
       <Container maxWidth="md" sx={{ height: '100%' }}>
         {status === 'resolved' && (
           <Box

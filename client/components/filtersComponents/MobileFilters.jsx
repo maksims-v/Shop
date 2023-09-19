@@ -21,6 +21,7 @@ import SubCategoryFilter from './SubCategoryFilter';
 import { clearAllFilters, search, inputValue } from '@/state/searchPageSlice';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import MobileSearchChip from './MobileSearchChip';
 
 const disableMarginInAccordion = true;
 
@@ -39,6 +40,7 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
 
   const clear = () => {
     clearFilters();
+    dispatch(search({ pageCategory: 'all' }));
     setResetPriceSlider(!resetPriceSlider);
   };
 
@@ -52,6 +54,16 @@ const MobileFilters = ({ newSearch, clearFilters }) => {
 
   return (
     <>
+      {newSearch && (
+        <Typography variant="h3" sx={{ margin: ' 0 auto' }}>
+          Your search for
+          <Typography component="span" sx={{ pl: '5px', fontSize: '22px', fontWeight: '600' }}>
+            {newSearch}
+          </Typography>{' '}
+          {total} results
+        </Typography>
+      )}
+      <MobileSearchChip />
       <Box sx={{ display: 'flex', justifyContent: 'space-around', mb: '17px' }}>
         <CustomButton toggleButton={handleDrawerToggle}>SHOW FILTERS</CustomButton>
         <Link href={asPath}>

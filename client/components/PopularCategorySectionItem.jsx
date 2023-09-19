@@ -1,21 +1,24 @@
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 const PopularCategorySectionItem = ({ item }) => {
+  const mobile = useSelector((state) => state.searchPageSlice.mobile);
+
   return (
-    <Link href={`shop/${item.pageCategory}/${item.category}`}>
-      <Box
-        sx={{
-          height: '300px',
-          width: '270px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          position: 'relative',
-          borderRadius: '3px',
-          overflow: 'hidden',
-        }}>
+    <Box
+      sx={{
+        height: '300px',
+        width: mobile ? '49.5%' : '270px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: mobile ? 'space-around' : 'center',
+        flexDirection: 'column',
+        position: 'relative',
+        borderRadius: '3px',
+        overflow: 'hidden',
+      }}>
+      <Link href={`shop/${item.pageCategory}/${item.category}`}>
         <Box sx={{ '&:hover': { scale: '1.1', transition: '0.9s' } }}>
           <Box sx={{ '&:hover': { scale: '1.1', transition: '0.9s' } }}>
             <img
@@ -35,11 +38,13 @@ const PopularCategorySectionItem = ({ item }) => {
             color: 'white',
             position: 'absolute',
             bottom: '0px',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
           }}>
           {item.title}
         </Typography>
-      </Box>
-    </Link>
+      </Link>
+    </Box>
   );
 };
 

@@ -56,38 +56,58 @@ const MobileSideBarMenu = ({ mobileOpen, handleDrawerToggle }) => {
 
           <Box sx={{ backgroundColor: 'white' }}>
             {headerFetchData &&
-              headerFetchData.map((item, index) => (
-                <Accordion
-                  key={index}
-                  sx={{
-                    textAlign: 'left',
-                  }}
-                  disableGutters={disable}
-                  expanded={expanded === item.label}
-                  onChange={handleChange(item.label)}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header">
-                    <Typography sx={{ width: '100%', flexShrink: 0, fontWeight: 'bold' }}>
-                      {item.label}
-                    </Typography>
-                  </AccordionSummary>
-
-                  <AccordionDetails sx={{ p: '0px 16px' }}>
-                    {item.link.map((linkItem, index) => (
-                      <Link key={index} href={linkItem.href}>
-                        <Box
+              headerFetchData.map((item, index) =>
+                item.link.length == 0 ? (
+                  <Accordion
+                    key={index}
+                    sx={{
+                      textAlign: 'left',
+                    }}
+                    disableGutters={disable}
+                    expanded={expanded === item.label}
+                    onChange={handleChange(item.label)}>
+                    <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
+                      <Link href={item.href}>
+                        <Typography
                           onClick={handleDrawerToggle}
-                          sx={{ fontSize: '14px', mb: '5px', pl: ' 5px' }}>
-                          {linkItem.label}
-                        </Box>
+                          sx={{ width: '100%', flexShrink: 0, fontWeight: 'bold' }}>
+                          {item.label}
+                        </Typography>
                       </Link>
-                    ))}
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-            <Divider color="black" />
+                    </AccordionSummary>
+                  </Accordion>
+                ) : (
+                  <Accordion
+                    key={index}
+                    sx={{
+                      textAlign: 'left',
+                    }}
+                    disableGutters={disable}
+                    expanded={expanded === item.label}
+                    onChange={handleChange(item.label)}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1bh-content"
+                      id="panel1bh-header">
+                      <Typography sx={{ width: '100%', flexShrink: 0, fontWeight: 'bold' }}>
+                        {item.label}
+                      </Typography>
+                    </AccordionSummary>
+
+                    <AccordionDetails sx={{ p: '0px 16px' }}>
+                      {item.link.map((linkItem, index) => (
+                        <Link key={index} href={linkItem.href}>
+                          <Box
+                            onClick={handleDrawerToggle}
+                            sx={{ fontSize: '14px', mb: '5px', pl: ' 5px' }}>
+                            {linkItem.label}
+                          </Box>
+                        </Link>
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                ),
+              )}
           </Box>
         </Box>
       </Drawer>

@@ -61,7 +61,9 @@ const ProductCard = ({ item, clearence, section }) => {
                 flexDirection: 'column',
               }}>
               <Typography sx={{ fontWeight: 'bold' }}>{item?.brand}</Typography>
-              <Typography sx={{ lineHeight: '18px', flex: '1 1 auto' }}>{item?.title}</Typography>
+              <Typography sx={{ lineHeight: '15px', flex: '1 1 auto', overflow: 'hidden' }}>
+                {item?.title}
+              </Typography>
               <Box
                 sx={{
                   display: 'flex',
@@ -91,7 +93,6 @@ const ProductCard = ({ item, clearence, section }) => {
                     sx={{
                       fontWeight: 'bold',
                       fontSize: '20px',
-                      pt: '5px',
                       width: '100%',
                     }}>
                     {item?.price} $

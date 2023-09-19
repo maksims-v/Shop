@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, IconButton, Badge, Paper, InputBase, Divider, Container } from '@mui/material';
+import { Box, IconButton, Badge, InputBase, Divider, Container } from '@mui/material';
 import { PersonOutline, ShoppingBagOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
@@ -113,24 +113,24 @@ const Navbar = () => {
                 alignItems: 'center',
                 height: '60px',
               }}>
-              <Paper
-                component="form"
+              <Box
                 sx={{
                   p: '2px 4px',
                   display: 'flex',
                   alignItems: 'center',
-                  width: 250,
+                  width: 200,
                   height: 40,
                   mr: '10px',
+                  border: '1px solid #727272',
+                  borderRadius: '5px',
                 }}>
                 <InputBase
                   onChange={(e) => setSearchValue(e.target.value)}
                   value={searchValue}
                   sx={{ ml: 1, flex: 1 }}
                   placeholder="Search"
-                  inputProps={{ 'aria-label': 'search' }}
                 />
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" color="#727272" />
                 <Link href={`/search/${searchValue}`}>
                   <IconButton
                     onClick={() => setSearchValue('')}
@@ -140,7 +140,7 @@ const Navbar = () => {
                     <SearchIcon fontSize="small" />
                   </IconButton>
                 </Link>
-              </Paper>
+              </Box>
               <Box>
                 <Link href="/basket">
                   <Badge
