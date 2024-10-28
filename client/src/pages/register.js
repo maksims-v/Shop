@@ -30,46 +30,51 @@ const Register = () => {
     <Box sx={{ mt: '100px', width: '100%' }}>
       {' '}
       <Box maxWidth="400px" m="0 auto">
-        <form onSubmit={handleSubmit}>
-          <Box gap="10px" display="flex" flexDirection="column" alignItems="center">
-            {' '}
-            <TextField
-              sx={{ width: '300px' }}
-              id="email"
-              name="email"
-              label="Email"
-              value={userData.email}
-              onChange={(e) => handleChange(e)}
-            />
-            <TextField
-              sx={{ width: '300px' }}
-              id="username"
-              name="username"
-              label="Username"
-              type="username"
-              value={userData.username}
-              onChange={(e) => handleChange(e)}
-            />
-            <TextField
-              sx={{ width: '300px' }}
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              value={userData.password}
-              onChange={(e) => handleChange(e)}
-            />
-            <Box color="red"></Box>
-            <Button
-              sx={{ width: '100px' }}
-              color="primary"
-              variant="contained"
-              fullWidth
-              type="submit">
-              Registration
-            </Button>
-          </Box>
-        </form>
+        <Box
+          component="form"
+          autoComplete="off"
+          gap="10px"
+          display="flex"
+          onSubmit={handleSubmit}
+          flexDirection="column"
+          alignItems="center">
+          {' '}
+          <TextField
+            sx={{ width: '300px' }}
+            id="email"
+            name="email"
+            label="Email"
+            value={userData.email}
+            onChange={(e) => handleChange(e)}
+          />
+          <TextField
+            sx={{ width: '300px' }}
+            id="username"
+            name="username"
+            label="Username"
+            type="username"
+            value={userData.username}
+            onChange={(e) => handleChange(e)}
+          />
+          <TextField
+            sx={{ width: '300px' }}
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            value={userData.password}
+            onChange={(e) => handleChange(e)}
+          />
+          <Box color="red"></Box>
+          <Button
+            sx={{ width: '100px' }}
+            color="primary"
+            variant="contained"
+            fullWidth
+            type="submit">
+            Registration
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

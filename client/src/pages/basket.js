@@ -83,8 +83,6 @@ const Basket = () => {
 
   const buyProducts = async () => {};
 
-  console.log(basket);
-
   return (
     <Box
       display="flex"

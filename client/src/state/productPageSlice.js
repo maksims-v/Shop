@@ -89,6 +89,7 @@ export const productPageSlice = createSlice({
       state.similarProductsError = null;
     },
     [getSimilarProductData.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.similarProductData = action.payload;
       state.similarProductStatus = 'resolved';
     },

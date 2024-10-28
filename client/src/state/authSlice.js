@@ -18,7 +18,7 @@ export const login = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error('Server Error!');
+        throw new Error(response.message);
       }
 
       const data = response.json();
@@ -43,7 +43,7 @@ export const register = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error('Server Error!');
+        throw Error();
       }
 
       const data = response.json();
@@ -91,7 +91,6 @@ export const changeUserData = createAsyncThunk(
         },
         body: JSON.stringify(userData),
       });
-
       if (!response.ok) {
         throw new Error('Server Error!');
       }
@@ -146,6 +145,7 @@ export const authSlice = createSlice({
     },
 
     [login.rejected]: (state, action) => {
+      console.log(action.payload);
       state.status = 'rejected';
       state.error = action.payload;
     },
@@ -191,6 +191,7 @@ export const authSlice = createSlice({
     },
 
     [register.rejected]: (state, action) => {
+      console.log(action.payload);
       state.status = 'rejected';
       state.error = action.payload;
     },

@@ -43,6 +43,9 @@ export const relatedProductsSliderSlice = createSlice({
       state.error = null;
     },
     [getRelatedProductsSliderData.fulfilled]: (state, action) => {
+      console.log(action.payload);
+      console.log(action.payload.data.attributes.sortedProducts);
+
       state.data = action.payload.data.attributes.sortedProducts;
       state.status = 'resolved';
     },

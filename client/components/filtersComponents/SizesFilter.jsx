@@ -1,3 +1,6 @@
+import useSWR from 'swr';
+const qs = require('qs');
+
 import { useState, useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -5,14 +8,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import { setSizesChecked } from '@/state/searchPageSlice';
 
-const SizesFilter = () => {
-  const dispatch = useDispatch();
-  const sizes = useSelector((state) => state.searchPageSlice.sizes);
-  const sizesChecked = useSelector((state) => state.searchPageSlice.sizesChecked);
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-  const mobile = useSelector((state) => state.searchPageSlice.mobile);
+const fetchQuery = qs.stringify({
+  populate: { size: true },
+});
+
+const SizesFilter = () => {
+  const { data } = useSWR(`${process.env.API_URL}/api/sizes?${fetchQuery}`, fetcher);
 
   const [formats, setFormats] = useState();
+  const [currentSizes, setCurrentSizes] = useState(
+    data?.data[0]?.attributes?.size.map((item) => {
+      return item.size.toLowerCase();
+    }),
+  );
+
+  const { sizes, sizesChecked, mobile } = useSelector((state) => state.searchPageSlice);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setFormats(sizesChecked);

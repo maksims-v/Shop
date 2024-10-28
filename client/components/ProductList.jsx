@@ -8,6 +8,8 @@ const ProductList = () => {
   const data = useSelector((state) => state.searchPageSlice.data);
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
+  console.log(data);
+
   const dispatch = useDispatch();
 
   const changePage = (event, value) => {

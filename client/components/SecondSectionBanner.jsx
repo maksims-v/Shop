@@ -7,7 +7,7 @@ const SecondSectionBanner = ({ secondBannerData }) => {
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
 
-  return secondBannerData.map((item) => {
+  return secondBannerData?.map((item) => {
     return (
       item.attributes?.isShow && (
         <Box

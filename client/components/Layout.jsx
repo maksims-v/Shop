@@ -3,7 +3,6 @@ import Footer from './Footer';
 import MobileFooter from 'components/mobileVersionPage/MobileFooter';
 import { useSelector } from 'react-redux';
 import { Box, Container } from '@mui/material';
-import { getHeaderData } from '@/state/headerSlice';
 import { getFooterData } from '@/state/footerSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -28,7 +27,6 @@ const Layout = ({ children }) => {
     const jwt = Cookies.get('jwt');
     const basket = localStorage.getItem('cart');
     if (basket) dispatch(addToBasket(JSON.parse(basket)));
-    dispatch(getHeaderData());
     dispatch(getFooterData());
     if (jwt) {
       dispatch(getUserFromLocalCookie(jwt));

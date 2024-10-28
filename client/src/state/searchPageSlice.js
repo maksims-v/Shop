@@ -1,18 +1,40 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+// console.log(inputSearchValue);
+// console.log(changePrice);
+// console.log(brandsChecked);
+// console.log(sale);
+// console.log(categoryChecked);
+// console.log(pageCategoryChecked);
+// console.log(subCategoryChecked);
+// console.log(currentPage);
+// console.log(sortValue);
+
+const toggleItemInArray = (array, item) => {
+  return array.includes(item) ? array.filter((i) => i !== item) : [...array, item];
+};
+
+const updateSearchState = (state) => {
+  state.currentPage = 1;
+  state.searchFlag = !state.searchFlag;
+  state.newSearch = false;
+};
+
 export const search = createAsyncThunk(
   'shoppingCart/search',
   async function (value, { rejectWithValue, getState, dispatch }) {
-    const { inputSearchValue } = getState().searchPageSlice;
-    const { changePrice } = getState().searchPageSlice;
-    const { brandsChecked } = getState().searchPageSlice;
-    const { sale } = getState().searchPageSlice;
-    const { categoryChecked } = getState().searchPageSlice;
-    const { pageCategoryChecked } = getState().searchPageSlice;
-    const { subCategoryChecked } = getState().searchPageSlice;
-    const { sizesChecked } = getState().searchPageSlice;
-    const { currentPage } = getState().searchPageSlice;
-    const { sortValue } = getState().searchPageSlice;
+    const {
+      inputSearchValue,
+      changePrice,
+      brandsChecked,
+      sale,
+      categoryChecked,
+      pageCategoryChecked,
+      subCategoryChecked,
+      sizesChecked,
+      currentPage,
+      sortValue,
+    } = getState().searchPageSlice;
 
     const getPageCategoryValue =
       value?.pageCategory !== 'all' ? value.pageCategory : pageCategoryChecked;
@@ -42,7 +64,7 @@ export const search = createAsyncThunk(
       }
 
       const data = response.json();
-      dispatch(getAllSizes());
+      // dispatch(getAllSizes());
 
       return data;
     } catch (error) {
@@ -51,24 +73,24 @@ export const search = createAsyncThunk(
   },
 );
 
-export const getAllSizes = createAsyncThunk(
-  'shoppingCart/getAllSizes',
-  async function (_, { rejectWithValue }) {
-    try {
-      const response = await fetch(`${process.env.API_URL}/api/sizes`);
+// export const getAllSizes = createAsyncThunk(
+//   'shoppingCart/getAllSizes',
+//   async function (_, { rejectWithValue }) {
+//     try {
+//       const response = await fetch(`${process.env.API_URL}/api/sizes?populate[size]=true`);
 
-      if (!response.ok) {
-        throw new Error('Server Error!');
-      }
+//       if (!response.ok) {
+//         throw new Error('Server Error!');
+//       }
 
-      const data = response.json();
+//       const data = response.json();
 
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  },
-);
+//       return data;
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   },
+// );
 
 const initialState = {
   mobile: false,
@@ -113,63 +135,41 @@ export const searchPageSlice = createSlice({
       state.inputSearchValue = action.payload;
       state.newSearch = true;
     },
-
-    setPageCategoryChecked(state, action) {
-      const itemSearch = state.pageCategoryChecked.includes(action.payload);
-
-      !itemSearch
-        ? state.pageCategoryChecked.push(action.payload)
-        : (state.pageCategoryChecked = state.pageCategoryChecked.filter((item) => {
-            return item !== action.payload;
-          }));
-
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
-      state.newSearch = false;
-    },
     setSale(state, action) {
       state.sale = !state.sale;
-
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
-      state.newSearch = false;
+      updateSearchState(state);
+    },
+    setPageCategoryChecked(state, action) {
+      state.pageCategoryChecked = toggleItemInArray(state.pageCategoryChecked, action.payload);
+      updateSearchState(state);
     },
 
     setCategoryChecked(state, action) {
-      const itemSearch = state.categoryChecked.includes(action.payload);
-
-      !itemSearch
-        ? state.categoryChecked.push(action.payload)
-        : (state.categoryChecked = state.categoryChecked.filter((item) => {
-            return item !== action.payload;
-          }));
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
-      state.newSearch = false;
+      state.categoryChecked = toggleItemInArray(state.categoryChecked, action.payload);
+      updateSearchState(state);
     },
+
     setSubCategoryChecked(state, action) {
-      const itemSearch = state.subCategoryChecked.includes(action.payload);
-
-      !itemSearch
-        ? state.subCategoryChecked.push(action.payload)
-        : (state.subCategoryChecked = state.subCategoryChecked.filter((item) => {
-            return item !== action.payload;
-          }));
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
-      state.newSearch = false;
+      state.subCategoryChecked = toggleItemInArray(state.subCategoryChecked, action.payload);
+      updateSearchState(state);
     },
-    setBrandsChecked(state, action) {
-      const itemSearch = state.brandsChecked.includes(action.payload);
 
-      !itemSearch
-        ? state.brandsChecked.push(action.payload)
-        : (state.brandsChecked = state.brandsChecked.filter((item) => {
-            return item !== action.payload;
-          }));
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
+    setBrandsChecked(state, action) {
+      state.brandsChecked = toggleItemInArray(state.brandsChecked, action.payload);
+      updateSearchState(state);
+    },
+    setSizesChecked(state, action) {
+      state.sizesChecked = action.payload;
+      updateSearchState(state);
+    },
+    setSortValue(state, action) {
+      state.sortValue = action.payload;
+      updateSearchState(state);
+    },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
       state.newSearch = false;
+      state.searchFlag = !state.searchFlag;
     },
     setChangePrice(state, action) {
       if (
@@ -178,30 +178,7 @@ export const searchPageSlice = createSlice({
       ) {
         state.changePrice = action.payload;
       }
-
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
-      state.newSearch = false;
-    },
-
-    setSizesChecked(state, action) {
-      state.sizesChecked = action.payload;
-      state.searchFlag = !state.searchFlag;
-      state.currentPage = 1;
-      state.newSearch = false;
-    },
-
-    setCurrentPage(state, action) {
-      state.currentPage = action.payload;
-      state.newSearch = false;
-      state.searchFlag = !state.searchFlag;
-    },
-
-    setSortValue(state, action) {
-      state.sortValue = action.payload;
-      state.newSearch = false;
-      state.currentPage = 1;
-      state.searchFlag = !state.searchFlag;
+      updateSearchState(state);
     },
     clearAllFilters(state) {
       state.status = null;
@@ -245,23 +222,24 @@ export const searchPageSlice = createSlice({
         : state.priceMinAndMax;
 
       state.sizes = state.newSearch ? action.payload.meta.sizes : state.sizes;
+
       state.status = 'resolved';
     },
     [search.rejected]: setError,
 
-    [getAllSizes.fulfilled]: (state, action) => {
-      state.allSizesFromApi = action.payload;
-      const response = action.payload.data[0].attributes.size;
-      const sizesArr = response.map((item) => {
-        return item.size.toLowerCase();
-      });
-      state.allSizesFromApi = sizesArr;
+    // [getAllSizes.fulfilled]: (state, action) => {
+    //   state.allSizesFromApi = action.payload;
+    //   const response = action.payload?.data[0]?.attributes.size;
+    //   const sizesArr = response?.map((item) => {
+    //     return item.size.toLowerCase();
+    //   });
+    //   state.allSizesFromApi = sizesArr;
 
-      state.sizes = state.sizes.sort((a, b) => {
-        return state.allSizesFromApi.indexOf(a) - state.allSizesFromApi.indexOf(b);
-      });
-    },
-    [getAllSizes.rejected]: setError,
+    //   state.sizes = state.sizes.sort((a, b) => {
+    //     return state.allSizesFromApi.indexOf(a) - state.allSizesFromApi.indexOf(b);
+    //   });
+    // },
+    // [getAllSizes.rejected]: setError,
   },
 });
 

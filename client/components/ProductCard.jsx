@@ -39,7 +39,7 @@ const ProductCard = ({ item, clearence, section }) => {
               sx={{ p: '0px 5px' }}
               image={`${process.env.API_URL}${
                 clearence || section == 'brandSection'
-                  ? item.image?.data[0]?.attributes?.formats?.medium?.url
+                  ? item?.image?.data[0]?.attributes?.formats?.medium?.url
                   : item?.image
               }`}
               alt="img"
@@ -102,13 +102,13 @@ const ProductCard = ({ item, clearence, section }) => {
             </CardContent>
           </CardActionArea>
         ) : (
-          <>
+          <CardActionArea>
             <CardMedia
               component="img"
               sx={{ p: '0px 5px' }}
               image={`${process.env.API_URL}${
                 clearence || section == 'brandSection'
-                  ? item.image?.data[0]?.attributes?.formats?.medium?.url
+                  ? item?.image?.data[0]?.attributes?.formats?.medium?.url
                   : item?.image
               }`}
               alt="img"
@@ -168,7 +168,7 @@ const ProductCard = ({ item, clearence, section }) => {
                 )}
               </Box>
             </CardContent>
-          </>
+          </CardActionArea>
         )}
       </Link>
     </Card>

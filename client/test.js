@@ -1,12 +1,12 @@
-"use strict";
-const _ = require("lodash");
+'use strict';
+const _ = require('lodash');
 /**
  * product controller
  */
 
-const { createCoreController } = require("@strapi/strapi").factories;
+const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController("api::product.product", ({ strapi }) => ({
+module.exports = createCoreController('api::product.product', ({ strapi }) => ({
   async filterSearch(ctx) {
     const sanitizedQueryParams = await this.sanitizeQuery(ctx);
     const {
@@ -25,18 +25,16 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       newproduct,
     } = sanitizedQueryParams;
 
-    console.log(size);
-
     let howToSort = sorting;
 
-    if (sorting == "Sort By") {
+    if (sorting == 'Sort By') {
       howToSort = false;
-    } else if (sorting == "Latest arrivals") {
+    } else if (sorting == 'Latest arrivals') {
       howToSort = false;
-    } else if (sorting == "Price asc.") {
-      howToSort = "asc";
-    } else if (sorting == "Price desc.") {
-      howToSort = "desc";
+    } else if (sorting == 'Price asc.') {
+      howToSort = 'asc';
+    } else if (sorting == 'Price desc.') {
+      howToSort = 'desc';
     }
 
     // pagination logic
@@ -50,28 +48,21 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     //---------------
 
-    const searchItem = search ? search : "";
-    const salesSplitToArr = sale ? sale.split(",") : [];
-    const brandsSplitToArr = brands ? brands.split(",") : [];
-    const categorySplitToArr = category ? category.split(",") : [];
-    const pageCategorySplitArr = pageCategory ? pageCategory.split(",") : [];
-    const subCategoryArr = subcat ? subcat.split(",") : [];
+    const searchItem = search ? search : '';
+    const salesSplitToArr = sale ? sale.split(',') : [];
+    const brandsSplitToArr = brands ? brands.split(',') : [];
+    const categorySplitToArr = category ? category.split(',') : [];
+    const pageCategorySplitArr = pageCategory ? pageCategory.split(',') : [];
+    const subCategoryArr = subcat ? subcat.split(',') : [];
 
-    if (pageCategory == "all")
-      pageCategorySplitArr.push("women's", "men's", "equipment");
-    if (pageCategory == "men's" || pageCategory == "women's")
-      pageCategorySplitArr.push("all");
+    if (pageCategory == 'all') pageCategorySplitArr.push("women's", "men's", 'equipment');
+    if (pageCategory == "men's" || pageCategory == "women's") pageCategorySplitArr.push('all');
 
     let sizeArr = [];
-    if (
-      size === "false" ||
-      size === "undefined" ||
-      size == undefined ||
-      size === ""
-    ) {
+    if (size === 'false' || size === 'undefined' || size == undefined || size === '') {
       sizeArr = [];
     } else {
-      sizeArr = size.split(",");
+      sizeArr = size.split(',');
     }
     // sizeArr = size ? size.split(",") : [];
 
@@ -81,181 +72,169 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     // "sale" on/off
     let saleItem = false;
     salesSplitToArr.map((item) => {
-      if (item == "Sale") {
+      if (item == 'Sale') {
         saleItem = !saleItem;
       }
     });
     //---------------
 
-    const products = await strapi.entityService.findMany(
-      "api::product.product",
-      {
-        start: startPage,
-        limit: 100,
-        sort: howToSort ? [{ price: howToSort }] : { id: "desc" },
-        filters: {
-          publishedAt: {
-            $null: null,
+    const products = await strapi.entityService.findMany('api::product.product', {
+      start: startPage,
+      limit: 24,
+      sort: howToSort ? [{ price: howToSort }] : { id: 'desc' },
+      filters: {
+        publishedAt: {
+          $null: null,
+        },
+        $and: [
+          {
+            $or: [
+              { title: { $startsWith: searchItem } },
+              { brand: { $startsWith: searchItem } },
+              {
+                searchKeyWord: {
+                  keyWord: {
+                    $startsWith: searchItem,
+                  },
+                },
+              },
+            ],
           },
-          $and: [
-            {
-              $or: [
-                { title: { $startsWith: searchItem } },
-                { brand: { $startsWith: searchItem } },
-                {
-                  searchKeyWord: {
-                    keyWord: {
-                      $startsWith: searchItem,
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              $or: [{ price: { $between: [priceMin, priceMax] } }],
-            },
-            {
-              brand: {
-                $eqi: brandsSplitToArr,
-              },
-            },
-            {
-              pageCategory: {
-                $eqi: pageCategorySplitArr,
-              },
-            },
-            {
-              $or: [
-                {
-                  category: {
-                    $eqi: categorySplitToArr,
-                  },
-                },
-                {
-                  equipmentCategory: {
-                    $eqi: categorySplitToArr,
-                  },
-                },
-              ],
-            },
-            {
-              $or: [
-                { lampsLanternsCategory: { $eqi: subCategoryArr } },
-                { campSleepCategory: { $eqi: subCategoryArr } },
-                { toolsGearCategory: { $eqi: subCategoryArr } },
-                { otherCategory: { $eqi: subCategoryArr } },
-                { clothingCategory: { $eqi: subCategoryArr } },
-                { footwearCategory: { $eqi: subCategoryArr } },
-                { accessoriesCategory: { $eqi: subCategoryArr } },
-                { activityCategory: { $eqi: subCategoryArr } },
-              ],
-            },
-            {
-              $or: [
-                { sale: saleItem ? true : true },
-                { sale: saleItem ? true : false },
-              ],
-            },
-            { clearance: clearance == "false" ? { $eqi: [] } : true },
-            { new: newproduct == "false" ? { $eqi: [] } : true },
-            {
-              size: {
-                size: {
-                  $eqi: sizeArr,
-                },
-              },
-            },
-          ],
-        },
-        populate: {
-          image: true,
-          size: true,
-        },
-      }
-    );
-
-    const pagination = await strapi.entityService.findMany(
-      "api::product.product",
-      {
-        filters: {
-          publishedAt: {
-            $null: null,
+          {
+            $or: [{ price: { $between: [priceMin, priceMax] } }],
           },
-          $and: [
-            {
-              $or: [
-                { title: { $startsWith: searchItem } },
-                { brand: { $startsWith: searchItem } },
-                {
-                  searchKeyWord: {
-                    keyWord: {
-                      $startsWith: searchItem,
-                    },
-                  },
+          {
+            brand: {
+              $eqi: brandsSplitToArr,
+            },
+          },
+          {
+            pageCategory: {
+              $eqi: pageCategorySplitArr,
+            },
+          },
+          {
+            $or: [
+              {
+                category: {
+                  $eqi: categorySplitToArr,
                 },
-              ],
-            },
-            {
-              $or: [{ price: { $between: [priceMin, priceMax] } }],
-            },
-            {
-              brand: {
-                $eqi: brandsSplitToArr,
               },
-            },
-            {
-              pageCategory: {
-                $eqi: pageCategorySplitArr,
+              {
+                equipmentCategory: {
+                  $eqi: categorySplitToArr,
+                },
               },
-            },
-
-            {
-              $or: [
-                {
-                  category: {
-                    $eqi: categorySplitToArr,
-                  },
-                },
-                {
-                  equipmentCategory: {
-                    $eqi: categorySplitToArr,
-                  },
-                },
-              ],
-            },
-
-            {
-              $or: [
-                { lampsLanternsCategory: { $eqi: subCategoryArr } },
-                { campSleepCategory: { $eqi: subCategoryArr } },
-                { toolsGearCategory: { $eqi: subCategoryArr } },
-                { otherCategory: { $eqi: subCategoryArr } },
-                { clothingCategory: { $eqi: subCategoryArr } },
-                { footwearCategory: { $eqi: subCategoryArr } },
-                { accessoriesCategory: { $eqi: subCategoryArr } },
-                { activityCategory: { $eqi: subCategoryArr } },
-              ],
-            },
-            {
-              $or: [
-                { sale: saleItem ? true : true },
-                { sale: saleItem ? true : false },
-              ],
-            },
-            { clearance: clearance == "false" ? { $eqi: [] } : true },
-            { new: newproduct == "false" ? { $eqi: [] } : true },
-            {
+            ],
+          },
+          {
+            $or: [
+              { lampsLanternsCategory: { $eqi: subCategoryArr } },
+              { campSleepCategory: { $eqi: subCategoryArr } },
+              { toolsGearCategory: { $eqi: subCategoryArr } },
+              { otherCategory: { $eqi: subCategoryArr } },
+              { clothingCategory: { $eqi: subCategoryArr } },
+              { footwearCategory: { $eqi: subCategoryArr } },
+              { accessoriesCategory: { $eqi: subCategoryArr } },
+              { activityCategory: { $eqi: subCategoryArr } },
+            ],
+          },
+          {
+            $or: [{ sale: saleItem ? true : true }, { sale: saleItem ? true : false }],
+          },
+          { clearance: clearance == 'false' ? { $eqi: [] } : true },
+          { new: newproduct == 'false' ? { $eqi: [] } : true },
+          {
+            size: {
               size: {
-                size: {
-                  $eqi: sizeArr,
-                },
+                $eqi: sizeArr,
               },
             },
-          ],
+          },
+        ],
+      },
+      populate: {
+        image: true,
+        size: true,
+      },
+    });
+
+    const pagination = await strapi.entityService.findMany('api::product.product', {
+      filters: {
+        publishedAt: {
+          $null: null,
         },
-        populate: { size: true },
-      }
-    );
+        $and: [
+          {
+            $or: [
+              { title: { $startsWith: searchItem } },
+              { brand: { $startsWith: searchItem } },
+              {
+                searchKeyWord: {
+                  keyWord: {
+                    $startsWith: searchItem,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            $or: [{ price: { $between: [priceMin, priceMax] } }],
+          },
+          {
+            brand: {
+              $eqi: brandsSplitToArr,
+            },
+          },
+          {
+            pageCategory: {
+              $eqi: pageCategorySplitArr,
+            },
+          },
+
+          {
+            $or: [
+              {
+                category: {
+                  $eqi: categorySplitToArr,
+                },
+              },
+              {
+                equipmentCategory: {
+                  $eqi: categorySplitToArr,
+                },
+              },
+            ],
+          },
+
+          {
+            $or: [
+              { lampsLanternsCategory: { $eqi: subCategoryArr } },
+              { campSleepCategory: { $eqi: subCategoryArr } },
+              { toolsGearCategory: { $eqi: subCategoryArr } },
+              { otherCategory: { $eqi: subCategoryArr } },
+              { clothingCategory: { $eqi: subCategoryArr } },
+              { footwearCategory: { $eqi: subCategoryArr } },
+              { accessoriesCategory: { $eqi: subCategoryArr } },
+              { activityCategory: { $eqi: subCategoryArr } },
+            ],
+          },
+          {
+            $or: [{ sale: saleItem ? true : true }, { sale: saleItem ? true : false }],
+          },
+          { clearance: clearance == 'false' ? { $eqi: [] } : true },
+          { new: newproduct == 'false' ? { $eqi: [] } : true },
+          {
+            size: {
+              size: {
+                $eqi: sizeArr,
+              },
+            },
+          },
+        ],
+      },
+      populate: { size: true },
+    });
 
     // get Min, Max price
     if (products.length !== 0) {
@@ -281,7 +260,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       return item.pageCategory.toLowerCase();
     });
     const getUniqPageCategory = allPageCategory.filter(
-      (item, id) => allPageCategory.indexOf(item) === id
+      (item, id) => allPageCategory.indexOf(item) === id,
     );
     //---------------
 
@@ -291,21 +270,19 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const allCategory = pagination.map((item) => {
       return item.category.toLowerCase();
     });
-    const getUniqCategory = allCategory.filter(
-      (item, id) => allCategory.indexOf(item) === id
-    );
+    const getUniqCategory = allCategory.filter((item, id) => allCategory.indexOf(item) === id);
 
     const allEquipmentCategory = pagination.map((item) => {
       return item.equipmentCategory.toLowerCase();
     });
     const getEquipmentCategory = allEquipmentCategory.filter(
-      (item, id) => allEquipmentCategory.indexOf(item) === id
+      (item, id) => allEquipmentCategory.indexOf(item) === id,
     );
 
     conCatCategory = [...getUniqCategory, ...getEquipmentCategory];
 
     const removeNullFromCategoryArr = conCatCategory.filter((item) => {
-      if (item !== "null") return item;
+      if (item !== 'null') return item;
     });
     //---------------
 
@@ -317,56 +294,56 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       return item.clothingCategory.toLowerCase();
     });
     const getUniqClothingSubCategory = allClothingSubCategory.filter(
-      (item, id) => allClothingSubCategory.indexOf(item) === id
+      (item, id) => allClothingSubCategory.indexOf(item) === id,
     );
 
     const allAccessoriesSubCategory = pagination.map((item) => {
       return item.accessoriesCategory.toLowerCase();
     });
     const getAccessoriesSubCategory = allAccessoriesSubCategory.filter(
-      (item, id) => allAccessoriesSubCategory.indexOf(item) === id
+      (item, id) => allAccessoriesSubCategory.indexOf(item) === id,
     );
 
     const allFootwearSubCategory = pagination.map((item) => {
       return item.footwearCategory.toLowerCase();
     });
     const getFootwearSubCategory = allFootwearSubCategory.filter(
-      (item, id) => allFootwearSubCategory.indexOf(item) === id
+      (item, id) => allFootwearSubCategory.indexOf(item) === id,
     );
 
     const allActivitySubCategory = pagination.map((item) => {
       return item.activityCategory.toLowerCase();
     });
     const getActivitySubCategory = allActivitySubCategory.filter(
-      (item, id) => allActivitySubCategory.indexOf(item) === id
+      (item, id) => allActivitySubCategory.indexOf(item) === id,
     );
 
     const allLampsLanternsSubCategory = pagination.map((item) => {
       return item.lampsLanternsCategory.toLowerCase();
     });
     const getUniqLampsLanternsSubCategory = allLampsLanternsSubCategory.filter(
-      (item, id) => allLampsLanternsSubCategory.indexOf(item) === id
+      (item, id) => allLampsLanternsSubCategory.indexOf(item) === id,
     );
 
     const allCampSleepSubCategory = pagination.map((item) => {
       return item.campSleepCategory.toLowerCase();
     });
     const getUniqCampSleepSubCategory = allCampSleepSubCategory.filter(
-      (item, id) => allCampSleepSubCategory.indexOf(item) === id
+      (item, id) => allCampSleepSubCategory.indexOf(item) === id,
     );
 
     const allToolsGearSubCategory = pagination.map((item) => {
       return item.toolsGearCategory.toLowerCase();
     });
     const getUniqToolsGearSubCategory = allToolsGearSubCategory.filter(
-      (item, id) => allToolsGearSubCategory.indexOf(item) === id
+      (item, id) => allToolsGearSubCategory.indexOf(item) === id,
     );
 
     const allOtherSubCategory = pagination.map((item) => {
       return item.otherCategory.toLowerCase();
     });
     const getUniqOtherSubCategory = allOtherSubCategory.filter(
-      (item, id) => allOtherSubCategory.indexOf(item) === id
+      (item, id) => allOtherSubCategory.indexOf(item) === id,
     );
 
     conCatSubCategory = [
@@ -381,7 +358,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     ];
 
     const removeNullFromSubCategoryArr = conCatSubCategory.filter((item) => {
-      if (item !== "null") return item;
+      if (item !== 'null') return item;
     });
     //---------------
 
@@ -390,9 +367,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       return item.brand.toLowerCase();
     });
 
-    const getUniqBrands = allBrands.filter(
-      (item, id) => allBrands.indexOf(item) === id
-    );
+    const getUniqBrands = allBrands.filter((item, id) => allBrands.indexOf(item) === id);
     //---------------
 
     // get sizes
@@ -410,7 +385,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     const filterSizesConCat = filterSizes.flat(2);
 
     const getUniqSize = filterSizesConCat.filter(
-      (item, id) => filterSizesConCat.indexOf(item) === id
+      (item, id) => filterSizesConCat.indexOf(item) === id,
     );
 
     //---------------
@@ -436,7 +411,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         brands: getUniqBrands,
         sizes: getUniqSize,
       },
-      ctx
+      ctx,
     );
 
     return this.transformResponse(sanitizedEntity, sanitizedPagination);
@@ -470,8 +445,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
     const productId = id;
 
-    const entity = await strapi.entityService.findMany("api::product.product", {
-      limit: 100,
+    const entity = await strapi.entityService.findMany('api::product.product', {
+      limit: 20,
       filters: {
         publishedAt: {
           $ne: null,

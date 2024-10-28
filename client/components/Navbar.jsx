@@ -1,3 +1,6 @@
+import useSWR from 'swr';
+const qs = require('qs');
+
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -12,11 +15,25 @@ import { unsetToken } from '@/lib/auth';
 import MobileHeader from './mobileVersionPage/MobileHeader';
 import Image from 'next/image';
 
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+const fetchQuery = qs.stringify({
+  populate: {
+    linkList: {
+      populate: { link: '*' },
+    },
+  },
+});
+
 const Navbar = () => {
+  const { data, isLoading, error } = useSWR(
+    `${process.env.API_URL}/api/layout-headers?${fetchQuery}`,
+    fetcher,
+  );
+
   const isAuth = useSelector((state) => state.authSlice.isAuth);
   const basket = useSelector((state) => state.shoppingCartSlice.basket);
   const mobile = useSelector((state) => state.searchPageSlice.mobile);
-  const headerFetchData = useSelector((state) => state.headerSlice.data);
 
   const router = useRouter();
 
@@ -35,6 +52,9 @@ const Navbar = () => {
     router.replace('/');
     unsetToken();
   };
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
 
   return mobile ? (
     <MobileHeader />
@@ -69,8 +89,8 @@ const Navbar = () => {
               color: 'white',
               gap: '20px',
             }}>
-            {headerFetchData &&
-              headerFetchData.map((item) => {
+            {data &&
+              data?.data[0]?.attributes?.linkList.map((item) => {
                 return (
                   <Link key={item.label} href={`${item.href}`}>
                     <Box

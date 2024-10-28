@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Box, Tabs, Tab } from '@mui/material';
 import UserSettings from 'components/UserSettings';
 import { useRouter } from 'next/router';
-import Layout from 'components/Layout';
 
 export default function CenteredTabs() {
   const [value, setValue] = useState(0);
